@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Especificación técnica del Sistema de Captación de Leads — Mueblería Christami">
+<title>Especificación · Captación de Leads · Mueblería Christami</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ========================================================================
+     PALETA OFICIAL CHRISTAMI
+     ======================================================================== */
+  :root {
+    --brown-deep: #3A2614;
+    --brown: #6B4423;
+    --brown-warm: #8B5A2B;
+    --wood-light: #A67B5B;
+    --cream: #F5EBDC;
+    --cream-soft: #FAF5EE;
+    --olive: #7A8450;
+    --olive-deep: #5D6638;
+    --ink: #2A1F18;
+    --muted: #6F5E50;
+    --line: #E5D9C7;
+
+    --bg: var(--cream);
+    --surface: var(--cream-soft);
+    --text: var(--ink);
+    --text-muted: var(--muted);
+    --border: var(--line);
+    --heading: var(--brown-deep);
+    --subheading: var(--brown);
+    --accent: var(--olive);
+    --accent-hover: var(--olive-deep);
+    --code-bg: var(--brown-deep);
+    --code-text: var(--cream-soft);
+    --sidebar-bg: var(--brown-deep);
+    --sidebar-text: var(--cream);
+    --shadow-sm: 0 1px 2px rgba(58, 38, 20, 0.04);
+    --shadow-md: 0 2px 8px rgba(58, 38, 20, 0.06);
+    --shadow-lg: 0 8px 24px rgba(58, 38, 20, 0.08);
+    --radius: 8px;
+
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  [data-theme="dark"] {
+    --bg: #1F1610;
+    --surface: #2A1F18;
+    --text: var(--cream-soft);
+    --text-muted: #A89684;
+    --border: #4A382A;
+    --heading: var(--cream-soft);
+    --subheading: var(--wood-light);
+    --accent: var(--olive);
+    --accent-hover: #95A36A;
+    --code-bg: #0F0A07;
+    --code-text: var(--cream-soft);
+    --sidebar-bg: #150E08;
+    --sidebar-text: var(--cream-soft);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ========================================================================
+     RESET & BASE
+     ======================================================================== */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection { background: var(--olive); color: var(--cream); }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--wood-light); border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--brown); }
+
+  :focus-visible {
+    outline: 2px solid var(--olive);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* ========================================================================
+     TIPOGRAFÍA
+     ======================================================================== */
+  h1, h2, h3, h4 { font-family: var(--serif); color: var(--heading); margin: 0 0 0.6em; line-height: 1.25; }
+  h1 { font-size: 2.6rem; font-weight: 700; letter-spacing: -0.02em; }
+  h2 { font-size: 2rem; font-weight: 700; letter-spacing: -0.015em; }
+  h3 { font-size: 1.3rem; font-weight: 600; color: var(--subheading); font-family: var(--sans); letter-spacing: -0.005em; }
+  h4 { font-size: 1.05rem; font-weight: 600; color: var(--subheading); font-family: var(--sans); }
+  p { margin: 0 0 1em; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s ease; }
+  a:hover { color: var(--accent-hover); border-bottom-color: currentColor; }
+  strong { color: var(--heading); font-weight: 600; }
+  small { color: var(--text-muted); font-size: 0.85rem; }
+
+  /* ========================================================================
+     LAYOUT
+     ======================================================================== */
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 280px;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    padding: 32px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+    z-index: 100;
+  }
+
+  .sidebar-header {
+    padding: 0 28px 24px;
+    border-bottom: 1px solid rgba(245, 235, 220, 0.12);
+    margin-bottom: 20px;
+  }
+  .sidebar-header .mark {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+  .sidebar-header .sub {
+    font-size: 0.78rem;
+    color: var(--wood-light);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .sidebar nav { padding: 0 12px; }
+  .sidebar nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 16px;
+    color: rgba(245, 235, 220, 0.72);
+    font-size: 0.92rem;
+    border-radius: 6px;
+    border-bottom: none;
+    border-left: 3px solid transparent;
+    margin: 1px 0;
+    transition: all 0.2s ease;
+    line-height: 1.4;
+  }
+  .sidebar nav a:hover {
+    color: var(--cream);
+    background: rgba(245, 235, 220, 0.06);
+  }
+  .sidebar nav a.active {
+    color: var(--cream);
+    background: rgba(122, 132, 80, 0.18);
+    border-left-color: var(--olive);
+  }
+  .sidebar nav a .num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--wood-light);
+    min-width: 18px;
+  }
+  .sidebar nav a.active .num { color: var(--olive); }
+
+  .main {
+    flex: 1;
+    min-width: 0;
+    padding: 64px 96px;
+  }
+  .content {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* Header bar */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 64px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar .meta {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .topbar .meta strong { color: var(--brown-warm); font-weight: 600; }
+
+  .toggle-theme,
+  .menu-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+  }
+  .toggle-theme:hover,
+  .menu-btn:hover {
+    border-color: var(--olive);
+    color: var(--olive);
+    transform: translateY(-1px);
+  }
+  .toggle-theme svg, .menu-btn svg { width: 18px; height: 18px; }
+  .toggle-theme .icon-moon { display: none; }
+  [data-theme="dark"] .toggle-theme .icon-sun { display: none; }
+  [data-theme="dark"] .toggle-theme .icon-moon { display: block; }
+  .menu-btn { display: none; }
+
+  /* ========================================================================
+     SECCIONES
+     ======================================================================== */
+  section {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 24px;
+  }
+  section:last-of-type { border-bottom: none; }
+
+  .section-num {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--brown-warm);
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    padding: 4px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .lead {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin: 0 0 32px;
+    max-width: 680px;
+  }
+
+  /* ========================================================================
+     COMPONENTES
+     ======================================================================== */
+
+  /* Tarjetas */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .card h4 { margin-top: 0; }
+
+  .grid { display: grid; gap: 16px; }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 900px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
+
+  .metric {
+    text-align: left;
+  }
+  .metric .num {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--brown-deep);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  [data-theme="dark"] .metric .num { color: var(--wood-light); }
+  .metric .label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    background: var(--surface);
+    color: var(--brown-warm);
+    border: 1px solid var(--border);
+    margin: 2px 4px 2px 0;
+  }
+  .badge.olive { background: rgba(122, 132, 80, 0.12); color: var(--olive-deep); border-color: rgba(122, 132, 80, 0.3); }
+  [data-theme="dark"] .badge.olive { color: #B7C18C; }
+  .badge.brown { background: rgba(139, 90, 43, 0.12); color: var(--brown-warm); border-color: rgba(139, 90, 43, 0.3); }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 22px 24px;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    line-height: 1.65;
+    margin: 16px 0;
+    position: relative;
+    border: 1px solid var(--brown);
+  }
+  code { font-family: var(--mono); font-size: 0.88em; }
+  :not(pre) > code {
+    background: var(--surface);
+    color: var(--brown-warm);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    font-size: 0.85em;
+  }
+  pre code { background: transparent; padding: 0; border: none; color: inherit; }
+
+  /* Syntax highlighting */
+  .kw { color: #C9B17F; font-weight: 500; }
+  .str { color: #A67B5B; }
+  .com { color: #6F5E50; font-style: italic; }
+  .fn { color: #B7C18C; }
+  .num { color: #D4AF7A; }
+  .typ { color: #B7C18C; }
+
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(245, 235, 220, 0.08);
+    color: var(--cream-soft);
+    border: 1px solid rgba(245, 235, 220, 0.2);
+    padding: 5px 12px;
+    font-size: 0.72rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--sans);
+    letter-spacing: 0.04em;
+    transition: all 0.2s ease;
+    opacity: 0;
+  }
+  pre:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover {
+    background: rgba(245, 235, 220, 0.15);
+    border-color: var(--olive);
+  }
+  .copy-btn.copied { background: var(--olive); color: var(--cream); border-color: var(--olive); }
+
+  /* Tablas */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.92rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: rgba(139, 90, 43, 0.06);
+    color: var(--brown-deep);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  [data-theme="dark"] th { color: var(--wood-light); background: rgba(139, 90, 43, 0.18); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(122, 132, 80, 0.04); }
+
+  /* ========================================================================
+     EMBUDO SVG
+     ======================================================================== */
+  .funnel-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+  .funnel-svg { width: 100%; height: auto; display: block; }
+  .funnel-stage { cursor: pointer; transition: opacity 0.2s ease; }
+  .funnel-stage:hover { opacity: 0.85; }
+  .funnel-stage text { font-family: var(--sans); pointer-events: none; }
+  .funnel-tooltip {
+    position: absolute;
+    background: var(--brown-deep);
+    color: var(--cream-soft);
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    max-width: 260px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: var(--shadow-lg);
+    z-index: 10;
+    line-height: 1.5;
+  }
+  .funnel-tooltip.show { opacity: 1; }
+  .funnel-tooltip strong { color: var(--wood-light); display: block; margin-bottom: 4px; }
+
+  /* ========================================================================
+     ARQUITECTURA SVG
+     ======================================================================== */
+  .arch-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+  }
+  .arch-svg { min-width: 700px; width: 100%; height: auto; }
+
+  /* ========================================================================
+     ÁRBOL DE RUTAS
+     ======================================================================== */
+  .tree {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    line-height: 1.85;
+    box-shadow: var(--shadow-sm);
+  }
+  .tree-row { display: flex; align-items: baseline; }
+  .tree-path { color: var(--brown-warm); white-space: pre; }
+  .tree-desc { color: var(--text-muted); margin-left: 16px; font-family: var(--sans); font-size: 0.85rem; }
+  .tree .dir { color: var(--brown-deep); font-weight: 500; }
+  [data-theme="dark"] .tree .dir { color: var(--wood-light); }
+  .tree .file { color: var(--olive-deep); }
+  [data-theme="dark"] .tree .file { color: #B7C18C; }
+
+  /* ========================================================================
+     TABS
+     ======================================================================== */
+  .tabs { margin: 16px 0; }
+  .tab-headers {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px 18px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--brown-warm); }
+  .tab-btn.active {
+    color: var(--olive-deep);
+    border-bottom-color: var(--olive);
+  }
+  [data-theme="dark"] .tab-btn.active { color: #B7C18C; }
+  .tab-content { display: none; animation: fadeIn 0.25s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========================================================================
+     TIMELINE
+     ======================================================================== */
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+  }
+  .day {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .day-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--olive);
+    color: var(--olive-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  [data-theme="dark"] .day-circle { color: #B7C18C; background: var(--surface); }
+  .day-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--brown-deep);
+    margin-bottom: 6px;
+  }
+  [data-theme="dark"] .day-title { color: var(--cream-soft); }
+  .day-task {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ========================================================================
+     ACORDEONES
+     ======================================================================== */
+  .accordion-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .accordion-trigger {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 16px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--brown-deep);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease;
+  }
+  [data-theme="dark"] .accordion-trigger { color: var(--cream-soft); }
+  .accordion-trigger:hover { background: rgba(122, 132, 80, 0.05); }
+  .accordion-trigger .chev {
+    transition: transform 0.3s ease;
+    color: var(--brown-warm);
+    font-size: 1.3rem;
+  }
+  .accordion-item.open .accordion-trigger .chev { transform: rotate(45deg); }
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 20px;
+  }
+  .accordion-item.open .accordion-content {
+    max-height: 600px;
+    padding: 0 20px 18px;
+  }
+  .accordion-content p { margin: 8px 0; color: var(--text-muted); font-size: 0.94rem; }
+  .accordion-content ul { margin: 8px 0 8px 18px; padding: 0; }
+  .accordion-content li { margin-bottom: 4px; color: var(--text-muted); font-size: 0.94rem; }
+
+  /* ========================================================================
+     ANIMACIONES
+     ======================================================================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* Listas estilizadas */
+  ul.fields, ol.fields { padding-left: 20px; }
+  ul.fields li, ol.fields li { margin-bottom: 6px; }
+  ul.fields li code, ol.fields li code { margin-right: 6px; }
+
+  .note {
+    border-left: 3px solid var(--olive);
+    background: rgba(122, 132, 80, 0.05);
+    padding: 14px 18px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin: 18px 0;
+    font-size: 0.94rem;
+  }
+  .note strong { color: var(--olive-deep); }
+  [data-theme="dark"] .note strong { color: #B7C18C; }
+
+  /* ========================================================================
+     SECCIÓN ALCANCE (visualmente prominente)
+     ======================================================================== */
+  section#alcance {
+    background: linear-gradient(to right, rgba(122, 132, 80, 0.07), rgba(122, 132, 80, 0.01));
+    border-left: 4px solid var(--olive);
+    padding-left: 28px;
+    padding-right: 24px;
+    margin-left: -28px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  [data-theme="dark"] section#alcance {
+    background: linear-gradient(to right, rgba(122, 132, 80, 0.14), rgba(122, 132, 80, 0.02));
+  }
+  section#alcance .section-num {
+    background: var(--olive);
+    color: var(--cream);
+    border-color: var(--olive);
+    font-weight: 600;
+    font-family: var(--sans);
+    letter-spacing: 0.1em;
+  }
+  .nav-scope .num { color: var(--olive) !important; font-size: 0.9rem !important; }
+  .nav-handoff .num { color: var(--wood-light) !important; }
+
+  .scope-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .scope-col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 22px 14px;
+    box-shadow: var(--shadow-sm);
+  }
+  .scope-col.scope-in { border-left: 3px solid var(--olive); }
+  .scope-col.scope-out { border-left: 3px solid #B85450; }
+  .scope-col h3 {
+    margin: 0 0 14px;
+    font-size: 1rem;
+    font-family: var(--sans);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .scope-in h3 { color: var(--olive-deep); }
+  [data-theme="dark"] .scope-in h3 { color: #B7C18C; }
+  .scope-out h3 { color: #B85450; }
+  .scope-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .scope-list li {
+    position: relative;
+    padding: 9px 0 9px 26px;
+    border-top: 1px solid var(--border);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .scope-list li:first-child { border-top: none; padding-top: 2px; }
+  .scope-list li::before {
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+  .scope-in .scope-list li::before { content: '\2713'; color: var(--olive); }
+  .scope-out .scope-list li::before { content: '\2715'; color: #B85450; }
+  .scope-in .scope-list li:first-child::before { top: 2px; }
+  .scope-out .scope-list li:first-child::before { top: 2px; }
+
+  /* Sección Handoff: page-break para PDF/print */
+  section#handoff .section-num {
+    background: var(--wood-light);
+    color: var(--brown-deep);
+    border-color: var(--wood-light);
+    font-weight: 600;
+  }
+  .handoff-cards { margin-top: 16px; }
+  .handoff-card-no {
+    border-left: 3px solid #B85450 !important;
+  }
+  .handoff-card-yes {
+    border-left: 3px solid var(--olive) !important;
+  }
+  .handoff-card-no h4 { color: #B85450; margin-top: 0; }
+  .handoff-card-yes h4 { color: var(--olive-deep); margin-top: 0; }
+  [data-theme="dark"] .handoff-card-yes h4 { color: #B7C18C; }
+  .handoff-card-no ul, .handoff-card-yes ul {
+    margin: 8px 0 0 18px;
+    padding: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .handoff-card-no li, .handoff-card-yes li { margin-bottom: 4px; }
+
+  /* ========================================================================
+     RESPONSIVE
+     ======================================================================== */
+  @media (max-width: 1100px) {
+    .main { padding: 48px 56px; }
+  }
+  @media (max-width: 900px) {
+    .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .timeline {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .timeline::before { display: none; }
+    .day { display: flex; align-items: center; text-align: left; gap: 16px; }
+    .day-circle { margin: 0; flex-shrink: 0; }
+  }
+  @media (max-width: 768px) {
+    .main { padding: 32px 28px; }
+    .sidebar {
+      position: fixed;
+      transform: translateX(-100%);
+      width: 84%;
+      max-width: 320px;
+      box-shadow: var(--shadow-lg);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .menu-btn { display: inline-flex; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.6rem; }
+    section { padding: 40px 0; }
+    .topbar { margin-bottom: 40px; flex-wrap: wrap; gap: 12px; }
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(58, 38, 20, 0.5);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .backdrop.show { opacity: 1; pointer-events: auto; }
+  }
+  @media (max-width: 768px) {
+    .scope-grid { grid-template-columns: 1fr; }
+    section#alcance { padding-left: 18px; margin-left: 0; }
+  }
+  @media (max-width: 480px) {
+    .main { padding: 24px 18px; }
+    .funnel-wrap, .arch-wrap, .card, .tree { padding: 18px; }
+    h1 { font-size: 1.7rem; }
+    pre { padding: 16px; font-size: 0.78rem; }
+  }
+
+  /* ========================================================================
+     PRINT
+     ======================================================================== */
+  @media print {
+    body { background: white; color: black; font-size: 11pt; }
+    .sidebar, .topbar .toggle-theme, .menu-btn, .copy-btn, .backdrop { display: none !important; }
+    .main { padding: 0; }
+    .content { max-width: 100%; }
+    section {
+      padding: 24px 0;
+      page-break-inside: avoid;
+      border-bottom: 1px solid #ccc;
+    }
+    h1, h2, h3, h4 { color: #2a1f18; page-break-after: avoid; }
+    pre {
+      background: #f5f5f5 !important;
+      color: #2a1f18 !important;
+      border: 1px solid #ddd;
+      page-break-inside: avoid;
+    }
+    .kw, .str, .com, .fn, .num, .typ { color: #2a1f18 !important; }
+    .kw { font-weight: bold; }
+    .com { font-style: italic; color: #666 !important; }
+    .card, .tree, .funnel-wrap, .arch-wrap, table {
+      background: white !important;
+      border: 1px solid #ddd;
+      box-shadow: none;
+      page-break-inside: avoid;
+    }
+    .accordion-content { max-height: none !important; padding: 0 20px 18px !important; }
+    .accordion-trigger .chev { display: none; }
+    a { color: #2a1f18; text-decoration: underline; }
+    .badge { border: 1px solid #ccc; }
+    section#handoff { page-break-before: always; }
+    section#alcance { background: white !important; border-left: 3px solid #2a1f18; }
+    .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .scope-col { background: white !important; border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; }
+  }
+
+  kbd {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: var(--mono);
+    font-size: 0.82em;
+    color: var(--brown-deep);
+    box-shadow: inset 0 -1px 0 rgba(58, 38, 20, 0.05);
+  }
+  [data-theme="dark"] kbd { color: var(--cream-soft); }
+</style>
+</head>
+<body>
+
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout">
+
+  <!-- ============================ SIDEBAR ============================ -->
+  <aside class="sidebar" id="sidebar" aria-label="Navegación de secciones">
+    <div class="sidebar-header">
+      <div class="mark">Christami</div>
+      <div class="sub">Especificación técnica</div>
+    </div>
+    <nav aria-label="Secciones del documento">
+      <a href="#resumen" data-section="resumen"><span class="num">01</span>Resumen ejecutivo</a>
+      <a href="#alcance" data-section="alcance" class="nav-scope"><span class="num">★</span>Alcance y handoff</a>
+      <a href="#embudo" data-section="embudo"><span class="num">02</span>Embudo visual</a>
+      <a href="#stack" data-section="stack"><span class="num">03</span>Stack técnico</a>
+      <a href="#arquitectura" data-section="arquitectura"><span class="num">04</span>Arquitectura</a>
+      <a href="#rutas" data-section="rutas"><span class="num">05</span>Rutas Next.js</a>
+      <a href="#db" data-section="db"><span class="num">06</span>Base de datos</a>
+      <a href="#rls" data-section="rls"><span class="num">07</span>Políticas RLS</a>
+      <a href="#formulario" data-section="formulario"><span class="num">08</span>Formulario</a>
+      <a href="#integraciones" data-section="integraciones"><span class="num">09</span>Integraciones</a>
+      <a href="#cronograma" data-section="cronograma"><span class="num">10</span>Cronograma</a>
+      <a href="#trabajo" data-section="trabajo"><span class="num">11</span>División de trabajo</a>
+      <a href="#costos" data-section="costos"><span class="num">12</span>Costos operativos</a>
+      <a href="#env" data-section="env"><span class="num">13</span>Variables de entorno</a>
+      <a href="#decisiones" data-section="decisiones"><span class="num">14</span>Decisiones abiertas</a>
+      <a href="#handoff" data-section="handoff" class="nav-handoff"><span class="num">15</span>Handoff marketing</a>
+    </nav>
+  </aside>
+
+  <!-- ============================ MAIN ============================ -->
+  <main class="main">
+    <div class="content">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div class="meta">
+          <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          v1.0 · <strong>Doc interno</strong> · 2026
+        </div>
+        <button class="toggle-theme" id="themeToggle" aria-label="Cambiar tema">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.5" y1="4.5" x2="6.5" y2="6.5"/><line x1="17.5" y1="17.5" x2="19.5" y2="19.5"/><line x1="4.5" y1="19.5" x2="6.5" y2="17.5"/><line x1="17.5" y1="6.5" x2="19.5" y2="4.5"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- TÍTULO PRINCIPAL -->
+      <header style="margin-bottom: 32px;">
+        <div class="section-num">SPEC · FUNNEL LEADS</div>
+        <h1>Sistema de Captación de Leads<br>Mueblería Christami</h1>
+        <p class="lead">Especificación técnica para construir un embudo digital que reemplace la dependencia de referidos y capte clientes calificados desde Meta Ads en 7 días.</p>
+      </header>
+
+      <!-- ============================ 01 RESUMEN ============================ -->
+      <section id="resumen" class="reveal">
+        <div class="section-num">01</div>
+        <h2>Resumen ejecutivo</h2>
+        <p class="lead">Qué construimos, qué problema resuelve y los números que esperamos mover.</p>
+
+        <h3>El problema</h3>
+        <p>Christami depende casi por completo de referidos para captar nuevos clientes. Esto limita el crecimiento, genera estacionalidad impredecible y deja la captación fuera del control del equipo. No hay un canal digital propio que opere de forma continua.</p>
+
+        <h3>La solución</h3>
+        <p>Un embudo digital de bajo costo y alta velocidad: anuncios en Meta dirigen tráfico a una landing con VSL (video sales letter), un formulario corto califica el interés, y un mensaje pre-llenado en WhatsApp lleva al lead al equipo de ventas para cierre por conversación o visita en terreno.</p>
+
+        <h3>Métricas objetivo (mes 1)</h3>
+        <div class="grid grid-4" style="margin-top: 18px;">
+          <div class="card metric">
+            <div class="num">2–4%</div>
+            <div class="label">Conversión landing → formulario</div>
+          </div>
+          <div class="card metric">
+            <div class="num">≤ $8.000</div>
+            <div class="label">Costo por lead (CLP)</div>
+          </div>
+          <div class="card metric">
+            <div class="num">15%</div>
+            <div class="label">Cierre lead → venta</div>
+          </div>
+          <div class="card metric">
+            <div class="num">7 días</div>
+            <div class="label">De cero a en producción</div>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top: 24px;">
+          <strong>Nota:</strong> los números son hipótesis iniciales. La primera campaña de 2 semanas servirá para validar y recalibrar antes de escalar presupuesto.
+        </div>
+      </section>
+
+      <!-- ============================ ★ ALCANCE Y HANDOFF ============================ -->
+      <section id="alcance" class="reveal">
+        <div class="section-num">★ ALCANCE</div>
+        <h2>Alcance y handoff</h2>
+        <p class="lead">Este desarrollo entrega la <strong>infraestructura web del embudo</strong>. No incluye gestión de campañas, producción audiovisual ni acompañamiento publicitario. Léelo antes de cualquier otra cosa.</p>
+
+        <div class="scope-grid">
+          <div class="scope-col scope-in">
+            <h3>Incluido en este desarrollo</h3>
+            <ul class="scope-list">
+              <li>Landing page completa, responsive, con VSL embebido (placeholder hasta que el cliente provea el video final)</li>
+              <li>Formulario de calificación funcional, con validaciones y lógica de scoring</li>
+              <li>Base de datos Supabase con tablas, políticas RLS y panel admin básico para visualizar leads</li>
+              <li>Redirección automática a WhatsApp con mensaje prellenado y datos del lead</li>
+              <li>Meta Pixel instalado y configurado · eventos PageView, ViewContent, Lead, CompleteRegistration, Contact</li>
+              <li>Google Analytics 4 instalado con eventos personalizados</li>
+              <li>Notificación por email (Resend) cada vez que entra un lead nuevo</li>
+              <li>Dominio configurado, certificado SSL, deploy productivo en Vercel</li>
+              <li>Documentación de handoff para el equipo de marketing (ver sección 15)</li>
+              <li>Capacitación inicial de <strong>1 hora</strong> al cliente o su equipo para que sepan dónde ver los leads</li>
+            </ul>
+          </div>
+          <div class="scope-col scope-out">
+            <h3>Fuera del alcance (otro proveedor)</h3>
+            <ul class="scope-list">
+              <li>Creación de cuentas en Meta Business, Instagram Business, Google Ads</li>
+              <li>Diseño y producción del VSL (video sales letter)</li>
+              <li>Diseño gráfico, copy o producción de anuncios</li>
+              <li>Configuración, carga de presupuesto o gestión de campañas Meta Ads / Google Ads</li>
+              <li>Optimización de pauta, segmentación de audiencias, A/B testing de creatividades</li>
+              <li>Manejo de objeciones por WhatsApp, scripts de cierre de venta</li>
+              <li>Estrategia de contenido en redes sociales</li>
+              <li>Soporte continuo de campañas o "acompañamiento" durante 90 días</li>
+              <li>Garantías sobre número de leads, tasa de conversión o ROAS</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top: 24px;">
+          <strong>Por qué esta separación:</strong> mantenerla explícita protege a las tres partes — cliente, agencia de marketing y desarrollo. Cada uno conoce su responsabilidad y nadie asume tareas para las que no se contrató. El cliente debe contratar una agencia o freelancer de marketing para todo lo que está en la columna derecha.
+        </div>
+      </section>
+
+      <!-- ============================ 02 EMBUDO ============================ -->
+      <section id="embudo" class="reveal">
+        <div class="section-num">02</div>
+        <h2>Embudo visual</h2>
+        <p class="lead">Cinco etapas, del impacto al cierre. Pasa el cursor sobre cada etapa para ver el detalle.</p>
+
+        <div class="funnel-wrap" id="funnelWrap">
+          <svg class="funnel-svg" viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" aria-label="Diagrama del embudo de conversión">
+            <!-- Etapa 1: Anuncios -->
+            <g class="funnel-stage" data-stage="0">
+              <polygon points="40,40 760,40 700,110 100,110" fill="#A67B5B" />
+              <text x="400" y="78" text-anchor="middle" fill="#FAF5EE" font-size="18" font-weight="600">1 · Anuncios Meta (Instagram + Facebook)</text>
+              <text x="400" y="100" text-anchor="middle" fill="#FAF5EE" font-size="12" opacity="0.85">Impresiones objetivo · CTR esperado 1.5–2.5%</text>
+            </g>
+            <!-- Etapa 2: Landing -->
+            <g class="funnel-stage" data-stage="1">
+              <polygon points="110,120 690,120 640,200 160,200" fill="#8B5A2B" />
+              <text x="400" y="160" text-anchor="middle" fill="#FAF5EE" font-size="17" font-weight="600">2 · Landing Page con VSL</text>
+              <text x="400" y="182" text-anchor="middle" fill="#FAF5EE" font-size="12" opacity="0.85">Video + CTA · meta: 2–4% scroll-to-form</text>
+            </g>
+            <!-- Etapa 3: Formulario -->
+            <g class="funnel-stage" data-stage="2">
+              <polygon points="170,210 630,210 580,280 220,280" fill="#6B4423" />
+              <text x="400" y="247" text-anchor="middle" fill="#FAF5EE" font-size="17" font-weight="600">3 · Formulario de calificación</text>
+              <text x="400" y="269" text-anchor="middle" fill="#FAF5EE" font-size="12" opacity="0.85">7 campos · score automático 0–100</text>
+            </g>
+            <!-- Etapa 4: WhatsApp -->
+            <g class="funnel-stage" data-stage="3">
+              <polygon points="230,290 570,290 530,350 270,350" fill="#7A8450" />
+              <text x="400" y="324" text-anchor="middle" fill="#FAF5EE" font-size="16" font-weight="600">4 · WhatsApp con mensaje pre-llenado</text>
+              <text x="400" y="344" text-anchor="middle" fill="#FAF5EE" font-size="12" opacity="0.9">wa.me + UTM en el texto</text>
+            </g>
+            <!-- Etapa 5: Cierre -->
+            <g class="funnel-stage" data-stage="4">
+              <polygon points="280,360 520,360 480,410 320,410" fill="#3A2614" />
+              <text x="400" y="390" text-anchor="middle" fill="#FAF5EE" font-size="15" font-weight="600">5 · Cierre · conversación o visita</text>
+            </g>
+          </svg>
+          <div class="funnel-tooltip" id="funnelTooltip" role="tooltip"></div>
+        </div>
+      </section>
+
+      <!-- ============================ 03 STACK ============================ -->
+      <section id="stack" class="reveal">
+        <div class="section-num">03</div>
+        <h2>Stack técnico</h2>
+        <p class="lead">Herramientas elegidas por velocidad de desarrollo, costo inicial cero y compatibilidad con un equipo de dos.</p>
+
+        <div class="grid grid-2" style="margin-top: 24px;">
+          <div class="card">
+            <h4>Next.js 16 · App Router</h4>
+            <p>SSR + RSC para SEO de la landing y server actions para el formulario. TypeScript estricto desde el día 1.</p>
+            <span class="badge olive">Frontend</span>
+          </div>
+          <div class="card">
+            <h4>Tailwind CSS v4</h4>
+            <p>Velocidad de prototipado y consistencia visual. La paleta Christami queda definida como tokens en <code>@theme</code>.</p>
+            <span class="badge olive">UI</span>
+          </div>
+          <div class="card">
+            <h4>Supabase (sa-east-1)</h4>
+            <p>Postgres + Auth + Storage en una sola consola. Región São Paulo para latencia baja desde Chile. Plan Free al inicio.</p>
+            <span class="badge brown">Backend</span>
+          </div>
+          <div class="card">
+            <h4>Vercel · Hobby</h4>
+            <p>Deploy desde GitHub, preview por PR, edge runtime para la landing. Migración a Pro cuando el tráfico supere los límites.</p>
+            <span class="badge brown">Hosting</span>
+          </div>
+          <div class="card">
+            <h4>Resend</h4>
+            <p>Notificación por email a Christami cada vez que entra un lead. Tier gratis cubre los primeros 3.000 emails/mes.</p>
+            <span class="badge">Email</span>
+          </div>
+          <div class="card">
+            <h4>WhatsApp · wa.me</h4>
+            <p>Sin API oficial al inicio: enlace <code>wa.me</code> con mensaje pre-llenado. Si volumen crece, evaluar Cloud API.</p>
+            <span class="badge">Mensajería</span>
+          </div>
+          <div class="card">
+            <h4>Meta Pixel + GA4</h4>
+            <p>Pixel para optimización de campañas, GA4 para análisis de comportamiento en la landing y atribución de UTMs.</p>
+            <span class="badge">Tracking</span>
+          </div>
+          <div class="card">
+            <h4>GitHub</h4>
+            <p>Repo privado, main protegida, PRs obligatorios. Conventional commits para mantener legible la historia entre dos personas.</p>
+            <span class="badge">Repo</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ 04 ARQUITECTURA ============================ -->
+      <section id="arquitectura" class="reveal">
+        <div class="section-num">04</div>
+        <h2>Arquitectura del sistema</h2>
+        <p class="lead">Flujo de datos desde el clic en el anuncio hasta la notificación al equipo de ventas.</p>
+
+        <div class="arch-wrap">
+          <svg class="arch-svg" viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" aria-label="Diagrama de arquitectura">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0,0 L10,5 L0,10 z" fill="#8B5A2B" />
+              </marker>
+            </defs>
+
+            <!-- Usuario -->
+            <g>
+              <rect x="20" y="180" width="120" height="60" rx="8" fill="#A67B5B" />
+              <text x="80" y="208" text-anchor="middle" fill="#FAF5EE" font-size="13" font-weight="600">Usuario</text>
+              <text x="80" y="225" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.85">Instagram / FB</text>
+            </g>
+
+            <!-- Vercel (Next.js) -->
+            <g>
+              <rect x="200" y="160" width="160" height="100" rx="8" fill="#3A2614" />
+              <text x="280" y="190" text-anchor="middle" fill="#FAF5EE" font-size="14" font-weight="700">Vercel</text>
+              <text x="280" y="210" text-anchor="middle" fill="#A67B5B" font-size="11">Next.js 16</text>
+              <text x="280" y="228" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.75">Landing + form</text>
+              <text x="280" y="244" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.75">Server Action</text>
+            </g>
+
+            <!-- Supabase -->
+            <g>
+              <rect x="430" y="40" width="160" height="90" rx="8" fill="#7A8450" />
+              <text x="510" y="72" text-anchor="middle" fill="#FAF5EE" font-size="14" font-weight="700">Supabase</text>
+              <text x="510" y="92" text-anchor="middle" fill="#FAF5EE" font-size="11" opacity="0.9">Postgres · sa-east-1</text>
+              <text x="510" y="110" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.8">leads · interacciones</text>
+            </g>
+
+            <!-- Resend -->
+            <g>
+              <rect x="430" y="160" width="160" height="80" rx="8" fill="#8B5A2B" />
+              <text x="510" y="190" text-anchor="middle" fill="#FAF5EE" font-size="14" font-weight="700">Resend</text>
+              <text x="510" y="210" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.85">Email notificación</text>
+              <text x="510" y="226" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.7">→ ventas@christami</text>
+            </g>
+
+            <!-- WhatsApp -->
+            <g>
+              <rect x="430" y="270" width="160" height="80" rx="8" fill="#5D6638" />
+              <text x="510" y="300" text-anchor="middle" fill="#FAF5EE" font-size="14" font-weight="700">WhatsApp</text>
+              <text x="510" y="320" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.85">wa.me redirect</text>
+              <text x="510" y="336" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.7">Mensaje pre-llenado</text>
+            </g>
+
+            <!-- Meta Pixel -->
+            <g>
+              <rect x="630" y="160" width="110" height="60" rx="8" fill="#6B4423" />
+              <text x="685" y="185" text-anchor="middle" fill="#FAF5EE" font-size="12" font-weight="600">Meta Pixel</text>
+              <text x="685" y="203" text-anchor="middle" fill="#FAF5EE" font-size="10" opacity="0.8">+ GA4</text>
+            </g>
+
+            <!-- Flechas -->
+            <line x1="140" y1="210" x2="195" y2="210" stroke="#8B5A2B" stroke-width="2" marker-end="url(#arrow)" />
+            <line x1="360" y1="190" x2="425" y2="100" stroke="#8B5A2B" stroke-width="2" marker-end="url(#arrow)" />
+            <line x1="360" y1="210" x2="425" y2="195" stroke="#8B5A2B" stroke-width="2" marker-end="url(#arrow)" />
+            <line x1="360" y1="240" x2="425" y2="305" stroke="#8B5A2B" stroke-width="2" marker-end="url(#arrow)" />
+            <line x1="360" y1="220" x2="625" y2="190" stroke="#8B5A2B" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow)" />
+
+            <!-- Labels flechas -->
+            <text x="155" y="200" font-size="9" fill="#6F5E50">HTTPS</text>
+            <text x="370" y="135" font-size="9" fill="#6F5E50">INSERT lead</text>
+            <text x="370" y="183" font-size="9" fill="#6F5E50">trigger email</text>
+            <text x="370" y="280" font-size="9" fill="#6F5E50">redirect</text>
+            <text x="485" y="155" font-size="9" fill="#6F5E50">events client-side</text>
+          </svg>
+        </div>
+
+        <div class="note" style="margin-top: 16px;">
+          <strong>Server Action en lugar de API route:</strong> menos boilerplate y validación con Zod en el mismo archivo. El INSERT a Supabase y el envío vía Resend ocurren en serie dentro del action; si Resend falla, el lead ya está guardado y se notifica por log.
+        </div>
+      </section>
+
+      <!-- ============================ 05 RUTAS ============================ -->
+      <section id="rutas" class="reveal">
+        <div class="section-num">05</div>
+        <h2>Estructura de rutas Next.js</h2>
+        <p class="lead">App Router con rutas explícitas y una zona admin protegida por Supabase Auth.</p>
+
+        <div class="tree">
+          <div class="tree-row"><span class="tree-path"><span class="dir">app/</span></span><span class="tree-desc">raíz del App Router</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="file">layout.tsx</span></span><span class="tree-desc">layout global · fuentes · Meta Pixel · GA4</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="file">page.tsx</span></span><span class="tree-desc">landing principal · VSL + formulario</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="file">globals.css</span></span><span class="tree-desc">tokens Tailwind · paleta Christami</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="dir">gracias/</span></span><span class="tree-desc">página intermedia post-submit</span></div>
+          <div class="tree-row"><span class="tree-path">│   └── <span class="file">page.tsx</span></span><span class="tree-desc">trigger Pixel "Lead" + redirect a WhatsApp</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="dir">admin/</span></span><span class="tree-desc">zona protegida</span></div>
+          <div class="tree-row"><span class="tree-path">│   ├── <span class="file">layout.tsx</span></span><span class="tree-desc">verificación de sesión Supabase</span></div>
+          <div class="tree-row"><span class="tree-path">│   ├── <span class="file">page.tsx</span></span><span class="tree-desc">dashboard · lista de leads</span></div>
+          <div class="tree-row"><span class="tree-path">│   └── <span class="dir">leads/[id]/</span></span><span class="tree-desc">detalle del lead · timeline</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="dir">login/</span></span><span class="tree-desc">acceso admin · OTP por email</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="dir">actions/</span></span><span class="tree-desc">Server Actions</span></div>
+          <div class="tree-row"><span class="tree-path">│   └── <span class="file">submit-lead.ts</span></span><span class="tree-desc">validación · INSERT · envío Resend</span></div>
+          <div class="tree-row"><span class="tree-path">├── <span class="dir">lib/</span></span><span class="tree-desc">utilidades compartidas</span></div>
+          <div class="tree-row"><span class="tree-path">│   ├── <span class="file">supabase/</span></span><span class="tree-desc">clientes server + browser</span></div>
+          <div class="tree-row"><span class="tree-path">│   ├── <span class="file">score.ts</span></span><span class="tree-desc">cálculo de score del lead</span></div>
+          <div class="tree-row"><span class="tree-path">│   └── <span class="file">whatsapp.ts</span></span><span class="tree-desc">builder del wa.me link</span></div>
+          <div class="tree-row"><span class="tree-path">└── <span class="dir">components/</span></span><span class="tree-desc">UI reutilizable</span></div>
+          <div class="tree-row"><span class="tree-path">    ├── <span class="file">VSL.tsx</span></span><span class="tree-desc">player de video</span></div>
+          <div class="tree-row"><span class="tree-path">    ├── <span class="file">LeadForm.tsx</span></span><span class="tree-desc">formulario con validación cliente</span></div>
+          <div class="tree-row"><span class="tree-path">    └── <span class="file">Pixel.tsx</span></span><span class="tree-desc">snippet Meta Pixel + GA4</span></div>
+        </div>
+      </section>
+
+      <!-- ============================ 06 DB ============================ -->
+      <section id="db" class="reveal">
+        <div class="section-num">06</div>
+        <h2>Esquema de base de datos</h2>
+        <p class="lead">Dos tablas, un par de índices y constraints estrictos para no acumular basura.</p>
+
+        <div class="tabs">
+          <div class="tab-headers" role="tablist">
+            <button class="tab-btn active" data-tab="leads" role="tab">leads</button>
+            <button class="tab-btn" data-tab="interacciones" role="tab">interacciones</button>
+            <button class="tab-btn" data-tab="schema" role="tab">SQL completo</button>
+          </div>
+
+          <div class="tab-content active" data-tab-content="leads">
+            <h3 style="margin-top: 20px;">Tabla <code>leads</code></h3>
+            <table>
+              <thead><tr><th>Campo</th><th>Tipo</th><th>Notas</th></tr></thead>
+              <tbody>
+                <tr><td><code>id</code></td><td>uuid</td><td>PK · gen_random_uuid()</td></tr>
+                <tr><td><code>created_at</code></td><td>timestamptz</td><td>default now() · indexado desc</td></tr>
+                <tr><td><code>nombre</code></td><td>text</td><td>NOT NULL</td></tr>
+                <tr><td><code>email</code></td><td>text</td><td>opcional</td></tr>
+                <tr><td><code>telefono</code></td><td>text</td><td>NOT NULL · formato +56 9 XXXX XXXX</td></tr>
+                <tr><td><code>ciudad</code></td><td>text</td><td>opcional</td></tr>
+                <tr><td><code>tipo_proyecto</code></td><td>text · CHECK</td><td>cocina · dormitorio · living · oficina · otro</td></tr>
+                <tr><td><code>presupuesto_rango</code></td><td>text · CHECK</td><td>menos_1m · 1m_3m · 3m_5m · mas_5m</td></tr>
+                <tr><td><code>plazo</code></td><td>text · CHECK</td><td>inmediato · 1_3_meses · 3_6_meses · solo_cotizando</td></tr>
+                <tr><td><code>score</code></td><td>int</td><td>default 0 · calculado server-side</td></tr>
+                <tr><td><code>estado</code></td><td>text · CHECK</td><td>nuevo · contactado · calificado · ganado · perdido</td></tr>
+                <tr><td><code>utm_source</code></td><td>text</td><td>desde query string</td></tr>
+                <tr><td><code>utm_campaign</code></td><td>text</td><td>desde query string</td></tr>
+                <tr><td><code>utm_medium</code></td><td>text</td><td>desde query string</td></tr>
+                <tr><td><code>notas</code></td><td>text</td><td>libre · admin</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Índices:</strong> <code>idx_leads_estado(estado)</code>, <code>idx_leads_created(created_at desc)</code>.</p>
+          </div>
+
+          <div class="tab-content" data-tab-content="interacciones">
+            <h3 style="margin-top: 20px;">Tabla <code>interacciones</code></h3>
+            <p>Bitácora de cada contacto con el lead (WhatsApp, llamada, visita). Se completa manualmente desde el admin o automáticamente al crearse el lead.</p>
+            <table>
+              <thead><tr><th>Campo</th><th>Tipo</th><th>Notas</th></tr></thead>
+              <tbody>
+                <tr><td><code>id</code></td><td>uuid</td><td>PK</td></tr>
+                <tr><td><code>lead_id</code></td><td>uuid · FK</td><td>references leads(id) ON DELETE CASCADE</td></tr>
+                <tr><td><code>tipo</code></td><td>text · CHECK</td><td>whatsapp · email · llamada · visita</td></tr>
+                <tr><td><code>fecha</code></td><td>timestamptz</td><td>default now()</td></tr>
+                <tr><td><code>contenido</code></td><td>text</td><td>resumen libre de la interacción</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tab-content" data-tab-content="schema">
+            <pre><button class="copy-btn">Copiar</button><code><span class="com">-- Tabla leads</span>
+<span class="kw">create table</span> leads (
+  id <span class="typ">uuid</span> <span class="kw">primary key default</span> <span class="fn">gen_random_uuid</span>(),
+  created_at <span class="typ">timestamptz</span> <span class="kw">default</span> <span class="fn">now</span>(),
+  nombre <span class="typ">text</span> <span class="kw">not null</span>,
+  email <span class="typ">text</span>,
+  telefono <span class="typ">text</span> <span class="kw">not null</span>,
+  ciudad <span class="typ">text</span>,
+  tipo_proyecto <span class="typ">text</span> <span class="kw">check</span> (tipo_proyecto <span class="kw">in</span> (<span class="str">'cocina'</span>,<span class="str">'dormitorio'</span>,<span class="str">'living'</span>,<span class="str">'oficina'</span>,<span class="str">'otro'</span>)),
+  presupuesto_rango <span class="typ">text</span> <span class="kw">check</span> (presupuesto_rango <span class="kw">in</span> (<span class="str">'menos_1m'</span>,<span class="str">'1m_3m'</span>,<span class="str">'3m_5m'</span>,<span class="str">'mas_5m'</span>)),
+  plazo <span class="typ">text</span> <span class="kw">check</span> (plazo <span class="kw">in</span> (<span class="str">'inmediato'</span>,<span class="str">'1_3_meses'</span>,<span class="str">'3_6_meses'</span>,<span class="str">'solo_cotizando'</span>)),
+  score <span class="typ">int</span> <span class="kw">default</span> <span class="num">0</span>,
+  estado <span class="typ">text</span> <span class="kw">default</span> <span class="str">'nuevo'</span> <span class="kw">check</span> (estado <span class="kw">in</span> (<span class="str">'nuevo'</span>,<span class="str">'contactado'</span>,<span class="str">'calificado'</span>,<span class="str">'ganado'</span>,<span class="str">'perdido'</span>)),
+  utm_source <span class="typ">text</span>,
+  utm_campaign <span class="typ">text</span>,
+  utm_medium <span class="typ">text</span>,
+  notas <span class="typ">text</span>
+);
+
+<span class="com">-- Tabla interacciones</span>
+<span class="kw">create table</span> interacciones (
+  id <span class="typ">uuid</span> <span class="kw">primary key default</span> <span class="fn">gen_random_uuid</span>(),
+  lead_id <span class="typ">uuid</span> <span class="kw">references</span> leads(id) <span class="kw">on delete cascade</span>,
+  tipo <span class="typ">text</span> <span class="kw">check</span> (tipo <span class="kw">in</span> (<span class="str">'whatsapp'</span>,<span class="str">'email'</span>,<span class="str">'llamada'</span>,<span class="str">'visita'</span>)),
+  fecha <span class="typ">timestamptz</span> <span class="kw">default</span> <span class="fn">now</span>(),
+  contenido <span class="typ">text</span>
+);
+
+<span class="kw">create index</span> idx_leads_estado <span class="kw">on</span> leads(estado);
+<span class="kw">create index</span> idx_leads_created <span class="kw">on</span> leads(created_at <span class="kw">desc</span>);</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ 07 RLS ============================ -->
+      <section id="rls" class="reveal">
+        <div class="section-num">07</div>
+        <h2>Políticas RLS</h2>
+        <p class="lead">Row Level Security activo en ambas tablas. El formulario público inserta vía <code>anon key</code>; el admin lee y modifica con sesión.</p>
+
+        <h3>Activación y políticas para <code>leads</code></h3>
+        <pre><button class="copy-btn">Copiar</button><code><span class="com">-- Activar RLS</span>
+<span class="kw">alter table</span> leads <span class="kw">enable row level security</span>;
+
+<span class="com">-- INSERT público: cualquiera puede crear un lead desde el formulario</span>
+<span class="kw">create policy</span> <span class="str">"leads_insert_public"</span>
+  <span class="kw">on</span> leads <span class="kw">for insert</span>
+  <span class="kw">to</span> anon, authenticated
+  <span class="kw">with check</span> (<span class="kw">true</span>);
+
+<span class="com">-- SELECT solo autenticados (admin del cliente)</span>
+<span class="kw">create policy</span> <span class="str">"leads_select_authenticated"</span>
+  <span class="kw">on</span> leads <span class="kw">for select</span>
+  <span class="kw">to</span> authenticated
+  <span class="kw">using</span> (<span class="kw">true</span>);
+
+<span class="com">-- UPDATE solo autenticados</span>
+<span class="kw">create policy</span> <span class="str">"leads_update_authenticated"</span>
+  <span class="kw">on</span> leads <span class="kw">for update</span>
+  <span class="kw">to</span> authenticated
+  <span class="kw">using</span> (<span class="kw">true</span>)
+  <span class="kw">with check</span> (<span class="kw">true</span>);
+
+<span class="com">-- DELETE deshabilitado por defecto (no creamos policy)</span></code></pre>
+
+        <h3>Políticas para <code>interacciones</code></h3>
+        <pre><button class="copy-btn">Copiar</button><code><span class="kw">alter table</span> interacciones <span class="kw">enable row level security</span>;
+
+<span class="com">-- Toda la tabla es de uso interno: sólo autenticados</span>
+<span class="kw">create policy</span> <span class="str">"interacciones_all_authenticated"</span>
+  <span class="kw">on</span> interacciones <span class="kw">for all</span>
+  <span class="kw">to</span> authenticated
+  <span class="kw">using</span> (<span class="kw">true</span>)
+  <span class="kw">with check</span> (<span class="kw">true</span>);</code></pre>
+
+        <div class="note">
+          <strong>Importante:</strong> el campo <code>score</code> se calcula en el server action antes del INSERT. Aunque la policy de INSERT acepta cualquier valor, el cliente nunca lo envía: viene siempre del servidor. Si más adelante queremos enforzarlo a nivel DB, agregar una <code>before insert trigger</code>.
+        </div>
+      </section>
+
+      <!-- ============================ 08 FORMULARIO ============================ -->
+      <section id="formulario" class="reveal">
+        <div class="section-num">08</div>
+        <h2>Formulario de calificación</h2>
+        <p class="lead">Siete campos, ninguno opcional excepto email y notas. Tiempo objetivo de llenado: menos de 60 segundos.</p>
+
+        <h3>Campos y validación</h3>
+        <table>
+          <thead><tr><th>Campo</th><th>Tipo UI</th><th>Validación</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Nombre</strong></td><td>text</td><td>2–60 caracteres · trim</td></tr>
+            <tr><td><strong>Teléfono</strong></td><td>tel</td><td>regex chileno <code>^\+?56?\s?9\s?\d{4}\s?\d{4}$</code> · normaliza a +56 9 XXXX XXXX</td></tr>
+            <tr><td><strong>Email</strong></td><td>email (opcional)</td><td>regex estándar si está presente</td></tr>
+            <tr><td><strong>Ciudad</strong></td><td>text</td><td>2–60 caracteres</td></tr>
+            <tr><td><strong>Tipo de proyecto</strong></td><td>select</td><td>cocina · dormitorio · living · oficina · otro</td></tr>
+            <tr><td><strong>Rango de presupuesto</strong></td><td>select</td><td>4 opciones cerradas (ver enum)</td></tr>
+            <tr><td><strong>Plazo de compra</strong></td><td>select</td><td>4 opciones cerradas (ver enum)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Lógica de scoring</h3>
+        <p>El score se calcula en el server action al insertar. Va de 0 a 100. Cada respuesta suma puntos según la cercanía a "lead caliente":</p>
+
+        <pre><button class="copy-btn">Copiar</button><code><span class="com">// app/lib/score.ts</span>
+<span class="kw">export function</span> <span class="fn">calcScore</span>(lead: LeadInput): <span class="typ">number</span> {
+  <span class="kw">let</span> score = <span class="num">0</span>;
+
+  <span class="com">// Plazo: cuanto antes, mejor</span>
+  <span class="kw">const</span> plazoPts = {
+    inmediato: <span class="num">40</span>,
+    <span class="str">'1_3_meses'</span>: <span class="num">28</span>,
+    <span class="str">'3_6_meses'</span>: <span class="num">12</span>,
+    solo_cotizando: <span class="num">4</span>,
+  };
+  score += plazoPts[lead.plazo] ?? <span class="num">0</span>;
+
+  <span class="com">// Presupuesto: rangos altos pesan más</span>
+  <span class="kw">const</span> presupPts = {
+    mas_5m: <span class="num">35</span>,
+    <span class="str">'3m_5m'</span>: <span class="num">25</span>,
+    <span class="str">'1m_3m'</span>: <span class="num">15</span>,
+    menos_1m: <span class="num">5</span>,
+  };
+  score += presupPts[lead.presupuesto_rango] ?? <span class="num">0</span>;
+
+  <span class="com">// Tipo de proyecto: cocina y dormitorio son los más rentables</span>
+  <span class="kw">const</span> tipoPts = { cocina: <span class="num">15</span>, dormitorio: <span class="num">12</span>, living: <span class="num">10</span>, oficina: <span class="num">8</span>, otro: <span class="num">5</span> };
+  score += tipoPts[lead.tipo_proyecto] ?? <span class="num">0</span>;
+
+  <span class="com">// Bonus: dejó email (canal extra de contacto)</span>
+  <span class="kw">if</span> (lead.email) score += <span class="num">5</span>;
+
+  <span class="com">// Bonus: viene de campaña pagada identificable</span>
+  <span class="kw">if</span> (lead.utm_source === <span class="str">'meta'</span>) score += <span class="num">5</span>;
+
+  <span class="kw">return</span> <span class="fn">Math</span>.min(score, <span class="num">100</span>);
+}</code></pre>
+
+        <h3>Umbrales sugeridos</h3>
+        <ul class="fields">
+          <li><span class="badge olive">80–100</span> Lead caliente · contactar en <strong>menos de 1 hora</strong></li>
+          <li><span class="badge brown">50–79</span> Lead tibio · contactar el mismo día</li>
+          <li><span class="badge">0–49</span> Lead frío · email automático + seguimiento semanal</li>
+        </ul>
+      </section>
+
+      <!-- ============================ 09 INTEGRACIONES ============================ -->
+      <section id="integraciones" class="reveal">
+        <div class="section-num">09</div>
+        <h2>Integraciones</h2>
+        <p class="lead">Cuatro piezas externas, cada una con su contrato bien definido.</p>
+
+        <h3>Meta Pixel · eventos</h3>
+        <table>
+          <thead><tr><th>Evento</th><th>Cuándo se dispara</th><th>Parámetros</th></tr></thead>
+          <tbody>
+            <tr><td><code>PageView</code></td><td>Carga inicial de la landing</td><td>—</td></tr>
+            <tr><td><code>ViewContent</code></td><td>VSL pasa el 25%</td><td><code>content_name: 'vsl-christami'</code></td></tr>
+            <tr><td><code>InitiateCheckout</code></td><td>Click en "Quiero cotizar"</td><td>—</td></tr>
+            <tr><td><code>Lead</code></td><td>Formulario enviado con éxito</td><td><code>value: score</code>, <code>currency: 'CLP'</code></td></tr>
+          </tbody>
+        </table>
+
+        <h3>WhatsApp · formato del link</h3>
+        <pre><button class="copy-btn">Copiar</button><code><span class="com">// app/lib/whatsapp.ts</span>
+<span class="kw">const</span> NUMERO = <span class="str">'56912345678'</span>; <span class="com">// reemplazar con número real Christami</span>
+
+<span class="kw">export function</span> <span class="fn">buildWaLink</span>(lead: Lead): <span class="typ">string</span> {
+  <span class="kw">const</span> msg = [
+    <span class="str">`Hola, soy ${lead.nombre}.`</span>,
+    <span class="str">`Vi su anuncio y completé el formulario.`</span>,
+    <span class="str">`Proyecto: ${lead.tipo_proyecto}`</span>,
+    <span class="str">`Plazo: ${lead.plazo}`</span>,
+    <span class="str">`Presupuesto: ${lead.presupuesto_rango}`</span>,
+    <span class="str">`Ciudad: ${lead.ciudad}`</span>,
+  ].<span class="fn">join</span>(<span class="str">'\n'</span>);
+
+  <span class="kw">return</span> <span class="str">`https://wa.me/${NUMERO}?text=${</span><span class="fn">encodeURIComponent</span>(msg)<span class="str">}`</span>;
+}</code></pre>
+
+        <h3>Resend · template de email</h3>
+        <pre><button class="copy-btn">Copiar</button><code><span class="com">// app/actions/submit-lead.ts (extracto)</span>
+<span class="kw">await</span> resend.emails.<span class="fn">send</span>({
+  from: <span class="str">'Christami &lt;leads@christami.cl&gt;'</span>,
+  to: <span class="str">'ventas@christami.cl'</span>,
+  subject: <span class="str">`Nuevo lead · score ${lead.score} · ${lead.nombre}`</span>,
+  html: <span class="fn">renderLeadEmail</span>(lead),
+});</code></pre>
+
+        <h3>Google Analytics 4 · eventos custom</h3>
+        <ul class="fields">
+          <li><code>landing_view</code> — view automática</li>
+          <li><code>vsl_play</code> — usuario inicia el video</li>
+          <li><code>form_start</code> — primer focus en un campo</li>
+          <li><code>form_submit</code> — envío exitoso, incluye <code>score</code> como parámetro</li>
+          <li><code>whatsapp_click</code> — usuario llega a /gracias y abre WhatsApp</li>
+        </ul>
+      </section>
+
+      <!-- ============================ 10 CRONOGRAMA ============================ -->
+      <section id="cronograma" class="reveal">
+        <div class="section-num">10</div>
+        <h2>Cronograma · 7 días</h2>
+        <p class="lead">De repositorio vacío a campaña corriendo en una semana. Ritmo agresivo, sin sobreingeniería.</p>
+
+        <div class="timeline">
+          <div class="day">
+            <div class="day-circle">1</div>
+            <div class="day-title">Setup</div>
+            <div class="day-task">Repo, Vercel, Supabase, dominio. Schema + RLS aplicados.</div>
+          </div>
+          <div class="day">
+            <div class="day-circle">2</div>
+            <div class="day-title">Landing</div>
+            <div class="day-task">Layout, paleta, hero, sección VSL placeholder, footer.</div>
+          </div>
+          <div class="day">
+            <div class="day-circle">3</div>
+            <div class="day-title">Formulario</div>
+            <div class="day-task">Componente + validación cliente + server action + scoring.</div>
+          </div>
+          <div class="day">
+            <div class="day-circle">4</div>
+            <div class="day-title">Integraciones</div>
+            <div class="day-task">Resend, WhatsApp builder, Pixel, GA4. Página /gracias.</div>
+          </div>
+          <div class="day">
+            <div class="day-circle">5</div>
+            <div class="day-title">Admin</div>
+            <div class="day-task">Login OTP, tabla de leads, detalle, cambio de estado.</div>
+          </div>
+          <div class="day">
+            <div class="day-circle">6</div>
+            <div class="day-title">QA</div>
+            <div class="day-task">Lighthouse, responsive, accesibilidad, prueba E2E manual.</div>
+          </div>
+          <div class="day">
+            <div class="day-circle">7</div>
+            <div class="day-title">Launch</div>
+            <div class="day-task">Subir VSL final, configurar campaña Meta, monitoreo.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ 11 TRABAJO ============================ -->
+      <section id="trabajo" class="reveal">
+        <div class="section-num">11</div>
+        <h2>División de trabajo</h2>
+        <p class="lead">Frontend / Backend partido por afinidad, pero todo el código se revisa en PR.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 50%;">Gregory (frontend + diseño)</th>
+              <th style="width: 50%;">Colega (backend + ops)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Diseño visual de la landing, paleta y tipografía</td>
+              <td>Setup de Supabase (proyecto, tablas, RLS, índices)</td>
+            </tr>
+            <tr>
+              <td>Componentes UI: hero, VSL player, formulario</td>
+              <td>Server action <code>submit-lead</code>, validación con Zod</td>
+            </tr>
+            <tr>
+              <td>Página <code>/gracias</code> con redirect a WhatsApp</td>
+              <td>Función de scoring + tests unitarios</td>
+            </tr>
+            <tr>
+              <td>Integración Pixel + GA4 cliente</td>
+              <td>Integración Resend + template HTML del email</td>
+            </tr>
+            <tr>
+              <td>Admin: layout, tabla de leads, filtros</td>
+              <td>Admin: auth flow (OTP) + RLS verificada</td>
+            </tr>
+            <tr>
+              <td>Responsive, accesibilidad, Lighthouse</td>
+              <td>Deploy, dominio, variables de entorno, monitoreo</td>
+            </tr>
+            <tr>
+              <td>Coordinación con cliente para VSL y copy</td>
+              <td>Setup Meta Pixel + verificación en Business Manager</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note">
+          <strong>Reglas de colaboración:</strong> PRs pequeños (&lt;300 líneas), un revisor obligatorio, conventional commits (<code>feat:</code>, <code>fix:</code>, <code>chore:</code>). Sin push directo a <code>main</code>. Daily de 15 min vía WhatsApp/Meet a las 9:30.
+        </div>
+      </section>
+
+      <!-- ============================ 12 COSTOS ============================ -->
+      <section id="costos" class="reveal">
+        <div class="section-num">12</div>
+        <h2>Costos operativos</h2>
+        <p class="lead">El stack arranca prácticamente gratis. El único gasto duro al inicio es el dominio y la campaña Meta.</p>
+
+        <table>
+          <thead><tr><th>Concepto</th><th>Plan</th><th>Costo mensual (USD)</th><th>Costo anual (USD)</th></tr></thead>
+          <tbody>
+            <tr><td>Dominio <code>.cl</code></td><td>NIC Chile · 2 años</td><td>—</td><td>~$22 (2 años)</td></tr>
+            <tr><td>Vercel</td><td>Hobby</td><td>$0</td><td>$0</td></tr>
+            <tr><td>Supabase</td><td>Free</td><td>$0</td><td>$0</td></tr>
+            <tr><td>Resend</td><td>Free (3k emails/mes)</td><td>$0</td><td>$0</td></tr>
+            <tr><td>GitHub</td><td>Free (repo privado)</td><td>$0</td><td>$0</td></tr>
+            <tr><td>Meta Ads</td><td>Presupuesto sugerido</td><td>~$200</td><td>~$2.400</td></tr>
+            <tr><td>Google Analytics 4</td><td>—</td><td>$0</td><td>$0</td></tr>
+            <tr style="background: rgba(122,132,80,0.06);">
+              <td><strong>Total infraestructura año 1</strong></td><td></td><td></td>
+              <td><strong>~$11 (sin ads)</strong></td>
+            </tr>
+            <tr style="background: rgba(122,132,80,0.06);">
+              <td><strong>Total con campaña Meta sostenida</strong></td><td></td><td></td>
+              <td><strong>~$2.411</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="note">
+          <strong>Cuándo migrar de plan:</strong> Vercel Pro ($20/mes) si superamos 100GB de bandwidth o necesitamos analytics avanzados. Supabase Pro ($25/mes) si superamos 500MB DB o requerimos backups diarios y branching. Resend Pro ($20/mes) si necesitamos dominios verificados extras o &gt;3k emails/mes.
+        </div>
+      </section>
+
+      <!-- ============================ 13 ENV ============================ -->
+      <section id="env" class="reveal">
+        <div class="section-num">13</div>
+        <h2>Variables de entorno</h2>
+        <p class="lead">Archivo <code>.env.local</code>. Las que empiezan con <code>NEXT_PUBLIC_</code> son visibles en el cliente — usar con cuidado.</p>
+
+        <pre><button class="copy-btn">Copiar</button><code><span class="com"># Supabase</span>
+<span class="kw">NEXT_PUBLIC_SUPABASE_URL</span>=<span class="str">https://xxxx.supabase.co</span>
+<span class="kw">NEXT_PUBLIC_SUPABASE_ANON_KEY</span>=<span class="str">eyJhbGciOi...</span>
+<span class="kw">SUPABASE_SERVICE_ROLE_KEY</span>=<span class="str">eyJhbGciOi...</span>   <span class="com"># solo server, NUNCA al cliente</span>
+
+<span class="com"># Resend</span>
+<span class="kw">RESEND_API_KEY</span>=<span class="str">re_xxxxxxxx</span>
+<span class="kw">RESEND_FROM</span>=<span class="str">leads@christami.cl</span>
+<span class="kw">RESEND_TO</span>=<span class="str">ventas@christami.cl</span>
+
+<span class="com"># WhatsApp</span>
+<span class="kw">NEXT_PUBLIC_WA_NUMBER</span>=<span class="str">56912345678</span>          <span class="com"># sin + ni espacios</span>
+
+<span class="com"># Tracking</span>
+<span class="kw">NEXT_PUBLIC_META_PIXEL_ID</span>=<span class="str">123456789012345</span>
+<span class="kw">NEXT_PUBLIC_GA_ID</span>=<span class="str">G-XXXXXXXXXX</span>
+
+<span class="com"># App</span>
+<span class="kw">NEXT_PUBLIC_SITE_URL</span>=<span class="str">https://christami.cl</span>
+<span class="kw">NODE_ENV</span>=<span class="str">production</span></code></pre>
+
+        <div class="note">
+          <strong>Importante:</strong> <code>SUPABASE_SERVICE_ROLE_KEY</code> nunca se importa en componentes cliente. Sólo en server actions o route handlers. Validar con un import-check al CI.
+        </div>
+      </section>
+
+      <!-- ============================ 14 DECISIONES ============================ -->
+      <section id="decisiones" class="reveal">
+        <div class="section-num">14</div>
+        <h2>Decisiones abiertas</h2>
+        <p class="lead">Preguntas pendientes de resolver con el cliente o entre los dos antes de empezar.</p>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span>¿Quién graba el VSL y con qué calidad?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="accordion-content">
+            <p>Opciones evaluadas:</p>
+            <ul>
+              <li><strong>Cliente graba con celular</strong> — gratis, autenticidad alta, riesgo de calidad pobre.</li>
+              <li><strong>Productora externa</strong> — calidad premium, costo $400–800 USD, plazo +1 semana.</li>
+              <li><strong>Cliente graba dirigido por nosotros vía WhatsApp/Meet</strong> — balance ideal, costo $0, requiere 2 sesiones.</li>
+            </ul>
+            <p><strong>Pendiente:</strong> confirmar fecha de grabación y guion. Sugerencia: comenzar con un VSL placeholder + texto, lanzar campaña pequeña, reemplazar cuando esté listo el final.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span>¿Dominio <code>.cl</code> o <code>.com</code>?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="accordion-content">
+            <p>Mercado objetivo es 100% Chile, por lo que <strong>.cl transmite cercanía y confianza local</strong>. Costo similar (~$22 USD/2 años). Si <code>christami.cl</code> está disponible, esa es la elección por defecto.</p>
+            <p><strong>Pendiente:</strong> verificar disponibilidad en NIC y comprar.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span>¿Quién atiende los WhatsApp entrantes y en qué horario?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="accordion-content">
+            <p>El cuello de botella del embudo no es técnico, es humano. Si nadie responde rápido, el score 80+ se enfría en 30 minutos. Necesitamos definir:</p>
+            <ul>
+              <li>Persona responsable de primera respuesta</li>
+              <li>Horario de cobertura (idealmente 9–21h lunes a sábado)</li>
+              <li>Plan B fuera de horario: mensaje automático con expectativa de respuesta</li>
+            </ul>
+            <p><strong>Pendiente:</strong> confirmar con el cliente.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span>¿Lanzamos primero solo en una ciudad o en todo Chile?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="accordion-content">
+            <p>Christami opera principalmente en la región X. La logística de visita en terreno limita el alcance. Recomendación: <strong>empezar segmentando Meta Ads sólo a la zona operativa</strong> para no quemar presupuesto en leads que no podemos atender.</p>
+            <p><strong>Pendiente:</strong> confirmar radio operativo del cliente y configurar geo-targeting acorde.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span>¿Necesitamos consentimiento GDPR/Ley 19.628?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="accordion-content">
+            <p>Ley 19.628 de Chile exige consentimiento informado para tratamiento de datos personales. Acciones mínimas:</p>
+            <ul>
+              <li>Checkbox de consentimiento en el formulario (no pre-marcado)</li>
+              <li>Página <code>/privacidad</code> con texto legal claro</li>
+              <li>Banner de cookies si usamos Pixel + GA4</li>
+            </ul>
+            <p><strong>Pendiente:</strong> redactar política de privacidad (template revisable) y decidir entre banner de cookies simple vs. herramienta tipo Cookiebot.</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-trigger" aria-expanded="false">
+            <span>¿Cuál es el plan si el costo por lead supera la meta?</span>
+            <span class="chev">+</span>
+          </button>
+          <div class="accordion-content">
+            <p>Si después de 14 días el CPL supera $12.000 CLP sostenidamente, opciones:</p>
+            <ul>
+              <li>Iterar creativos (probar 3 nuevos cada semana)</li>
+              <li>Ajustar segmentación (intereses + lookalike de clientes actuales)</li>
+              <li>Cambiar el formulario a 4 campos en vez de 7 (más leads, menos calificación → revisar trade-off)</li>
+              <li>Cortar la campaña, volver a referidos y reconsiderar estrategia</li>
+            </ul>
+            <p><strong>Pendiente:</strong> acordar criterio de "stop loss" con el cliente antes del lanzamiento.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ 15 HANDOFF MARKETING ============================ -->
+      <section id="handoff" class="reveal">
+        <div class="section-num">15 · HANDOFF</div>
+        <h2>Handoff para equipo de marketing</h2>
+        <p class="lead">Sección autocontenida pensada para imprimirse o exportarse a PDF y entregarse a la agencia o freelancer que gestionará las campañas. Léase como un documento independiente del resto.</p>
+
+        <h3>1 · Qué está conectado y funcionando</h3>
+        <table>
+          <thead><tr><th>Recurso</th><th>Valor / URL</th></tr></thead>
+          <tbody>
+            <tr><td>Landing en producción</td><td><code>https://muebleriachristami.cl</code> <span class="badge">por confirmar dominio</span></td></tr>
+            <tr><td>Panel admin de leads</td><td><code>https://muebleriachristami.cl/admin</code></td></tr>
+            <tr><td>ID Meta Pixel</td><td><code>123456789012345</code> <span class="badge">placeholder</span></td></tr>
+            <tr><td>ID Google Analytics 4</td><td><code>G-XXXXXXXXXX</code> <span class="badge">placeholder</span></td></tr>
+            <tr><td>Cuenta Resend (notificaciones)</td><td>Configurada · envío desde <code>leads@christami.cl</code> hacia <code>ventas@christami.cl</code></td></tr>
+            <tr><td>Número de WhatsApp receptor</td><td><code>+56 9 1234 5678</code> <span class="badge">placeholder</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3>2 · Eventos de conversión disponibles para optimizar campañas</h3>
+        <p>Los siguientes eventos se disparan automáticamente desde la landing tanto a Meta Pixel como a GA4. La agencia puede optimizar sus campañas hacia cualquiera de ellos.</p>
+        <table>
+          <thead><tr><th>Evento</th><th>Cuándo dispara</th><th>Uso recomendado</th></tr></thead>
+          <tbody>
+            <tr><td><code>PageView</code></td><td>Visita a la landing</td><td>Métrica de tráfico · no usar como objetivo de optimización</td></tr>
+            <tr><td><code>ViewContent</code></td><td>Usuario reproduce el VSL (pasa el 25%)</td><td>Audiencia de retargeting · interés tibio</td></tr>
+            <tr><td><code>Lead</code></td><td>Usuario inicia el formulario (primer focus)</td><td>Intención · usar para audiencias de remarketing</td></tr>
+            <tr><td><code>CompleteRegistration</code></td><td>Usuario envía el formulario calificado con éxito</td><td><strong>Evento principal de conversión</strong> · optimizar campañas hacia este</td></tr>
+            <tr><td><code>Contact</code></td><td>Usuario hace click en el botón WhatsApp</td><td>Conversión secundaria · señal de intención fuerte</td></tr>
+          </tbody>
+        </table>
+
+        <h3>3 · Acceso a Meta Pixel y Google Analytics 4</h3>
+        <p>El cliente debe agregar a la agencia como usuario en sus plataformas. El equipo de desarrollo no gestiona estos accesos.</p>
+
+        <h4>Meta Business Manager</h4>
+        <ol class="fields">
+          <li>Ingresar a <code>business.facebook.com</code> con la cuenta del cliente</li>
+          <li>Ir a <strong>Configuración del negocio → Usuarios → Personas → Agregar</strong></li>
+          <li>Email de la agencia · permisos sobre el <strong>píxel</strong> y la <strong>cuenta publicitaria</strong> (rol Admin si gestionará campañas, Analista si sólo lee)</li>
+          <li>Confirmar que la agencia tenga acceso al Pixel ID listado arriba</li>
+        </ol>
+
+        <h4>Google Analytics 4</h4>
+        <ol class="fields">
+          <li>Ingresar a <code>analytics.google.com</code> con la cuenta del cliente</li>
+          <li>Ir a <strong>Admin (engranaje) → Gestión de acceso a la propiedad → +</strong></li>
+          <li>Email de la agencia · rol <strong>Editor</strong> (Analista si sólo necesita leer)</li>
+          <li>Verificar que aparezca la propiedad <code>G-XXXXXXXXXX</code></li>
+        </ol>
+
+        <h3>4 · Parámetros UTM esperados</h3>
+        <p>La landing captura automáticamente <code>utm_source</code>, <code>utm_campaign</code> y <code>utm_medium</code> desde el query string y los guarda junto a cada lead en la base de datos. La agencia debe usar URLs con UTMs en todos sus anuncios:</p>
+        <pre><button class="copy-btn">Copiar</button><code><span class="str">https://muebleriachristami.cl/?utm_source=meta&utm_campaign=cocinas_q2&utm_medium=instagram</span></code></pre>
+        <p><strong>Convención sugerida:</strong></p>
+        <ul class="fields">
+          <li><code>utm_source</code> — plataforma origen: <code>meta</code>, <code>google</code>, <code>email</code>, <code>tiktok</code></li>
+          <li><code>utm_medium</code> — formato/canal: <code>instagram</code>, <code>facebook</code>, <code>reels</code>, <code>stories</code>, <code>search</code></li>
+          <li><code>utm_campaign</code> — nombre interno de la campaña: <code>cocinas_q2</code>, <code>dormitorios_invierno_2026</code>, <code>black_friday</code></li>
+        </ul>
+        <div class="note">
+          <strong>Recomendación:</strong> mantener una hoja de cálculo con todas las URLs UTM generadas para evitar inconsistencias entre anuncios y poder cruzar datos en el panel admin.
+        </div>
+
+        <h3>5 · Lo que la agencia debe traer</h3>
+        <ul class="fields">
+          <li><strong>Creatividades</strong> — imágenes y/o videos para los anuncios</li>
+          <li><strong>Copy de anuncios</strong> — titular, descripción, CTA</li>
+          <li><strong>Estrategia de segmentación</strong> — intereses, ubicaciones, lookalike, exclusiones</li>
+          <li><strong>Presupuesto de pauta</strong> — diario o por campaña</li>
+          <li><strong>VSL final</strong> — video sales letter para reemplazar el placeholder en la landing</li>
+          <li><strong>Cuentas activas</strong> — Meta Business Manager y Google Ads con método de pago verificado</li>
+        </ul>
+
+        <h3>6 · Lo que NO debe pedirle al equipo de desarrollo</h3>
+        <div class="grid grid-2 handoff-cards">
+          <div class="card handoff-card-no">
+            <h4>✗ No solicitar a desarrollo</h4>
+            <ul>
+              <li>Cambios en el funcionamiento de campañas</li>
+              <li>Ajustes de audiencia o segmentación</li>
+              <li>Reportes de pauta, ROAS, CPL u optimización publicitaria</li>
+              <li>Manejo de objeciones de leads por WhatsApp</li>
+              <li>Estrategia de contenido en redes sociales</li>
+              <li>Configuración de píxeles en plataformas adicionales</li>
+            </ul>
+          </div>
+          <div class="card handoff-card-yes">
+            <h4>✓ Sí está disponible bajo mantención</h4>
+            <ul>
+              <li>Cambios de texto o imágenes en el sitio</li>
+              <li>Reemplazo del VSL placeholder por el final</li>
+              <li>Nuevos campos en el formulario</li>
+              <li>Ajustes técnicos al tracking (eventos extra)</li>
+              <li>Bugs o caídas del servicio</li>
+              <li>Reportes de leads desde el panel admin</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top: 24px;">
+          <strong>Contacto desarrollo:</strong> Gregory · <em>email pendiente</em>. Tiempo de respuesta para bugs críticos en producción: 24h hábiles. Cambios o mejoras al sitio: bajo acuerdo previo por hora trabajada o paquete de mantención mensual.
+        </div>
+
+        <div class="note" style="margin-top: 12px; border-left-color: var(--wood-light); background: rgba(166, 123, 91, 0.06);">
+          <strong>Para imprimir esta sección como PDF:</strong> usá <kbd>Cmd/Ctrl + P</kbd> y seleccioná "Guardar como PDF". La hoja de estilos de impresión oculta el sidebar y formatea todo en una página limpia. Esta sección comienza en una página nueva automáticamente.
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer style="padding: 48px 0 24px; color: var(--text-muted); font-size: 0.85rem; text-align: center; border-top: 1px solid var(--border); margin-top: 40px;">
+        Especificación v1.1 · Mueblería Christami · Documento interno de alineación previa al desarrollo.
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ===================== THEME ===================== */
+  const THEME_KEY = 'christami-spec-theme';
+  const html = document.documentElement;
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme === 'dark' || (savedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    html.setAttribute('data-theme', 'dark');
+  }
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    const current = html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    if (next === 'dark') html.setAttribute('data-theme', 'dark');
+    else html.removeAttribute('data-theme');
+    localStorage.setItem(THEME_KEY, next);
+  });
+
+  /* ===================== SCROLL SPY ===================== */
+  const navLinks = document.querySelectorAll('.sidebar nav a[data-section]');
+  const sections = Array.from(navLinks).map(a => document.getElementById(a.getAttribute('data-section')));
+
+  function updateActive() {
+    const fromTop = window.scrollY + 120;
+    let activeIdx = 0;
+    sections.forEach((sec, i) => {
+      if (sec && sec.offsetTop <= fromTop) activeIdx = i;
+    });
+    navLinks.forEach((a, i) => a.classList.toggle('active', i === activeIdx));
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  window.addEventListener('resize', updateActive);
+  updateActive();
+
+  /* ===================== MOBILE MENU ===================== */
+  const sidebar = document.getElementById('sidebar');
+  const menuBtn = document.getElementById('menuBtn');
+  const backdrop = document.getElementById('backdrop');
+  function closeMenu() {
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('show');
+  }
+  menuBtn.addEventListener('click', function () {
+    sidebar.classList.toggle('open');
+    backdrop.classList.toggle('show');
+  });
+  backdrop.addEventListener('click', closeMenu);
+  navLinks.forEach(a => a.addEventListener('click', closeMenu));
+
+  /* ===================== COPY BUTTONS ===================== */
+  document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code');
+      const text = code ? code.innerText : pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        const original = btn.textContent;
+        btn.textContent = 'Copiado ✓';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(function () {
+        btn.textContent = 'Error';
+        setTimeout(function () { btn.textContent = 'Copiar'; }, 2000);
+      });
+    });
+  });
+
+  /* ===================== TABS ===================== */
+  document.querySelectorAll('.tabs').forEach(function (tabsContainer) {
+    const btns = tabsContainer.querySelectorAll('.tab-btn');
+    const contents = tabsContainer.querySelectorAll('.tab-content');
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const target = btn.getAttribute('data-tab');
+        btns.forEach(b => b.classList.toggle('active', b === btn));
+        contents.forEach(c => c.classList.toggle('active', c.getAttribute('data-tab-content') === target));
+      });
+    });
+  });
+
+  /* ===================== ACCORDION ===================== */
+  document.querySelectorAll('.accordion-trigger').forEach(function (trigger) {
+    trigger.addEventListener('click', function () {
+      const item = trigger.parentElement;
+      const isOpen = item.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', String(isOpen));
+    });
+  });
+
+  /* ===================== FUNNEL TOOLTIPS ===================== */
+  const stages = [
+    {
+      title: 'Anuncios Meta',
+      body: 'Creativos optimizados para Instagram Reels y feed de Facebook. Segmentación por interés + lookalike de clientes actuales. Objetivo: tráfico calificado a la landing.'
+    },
+    {
+      title: 'Landing Page con VSL',
+      body: 'Video de 60–90s explicando el problema, la solución y la confianza de Christami. CTA visible siempre. Diseñada para móvil primero.'
+    },
+    {
+      title: 'Formulario de calificación',
+      body: '7 campos · menos de 60s para completar. Score automático 0–100 calculado server-side al insertar en Supabase.'
+    },
+    {
+      title: 'Redirección a WhatsApp',
+      body: 'wa.me/<número> con mensaje pre-llenado que incluye nombre, proyecto, plazo y presupuesto. UTM incrustadas para atribución.'
+    },
+    {
+      title: 'Cierre · conversación o visita',
+      body: 'Equipo de ventas responde según prioridad por score. Leads calientes en <1 hora. Cierre por WhatsApp o visita en terreno.'
+    }
+  ];
+  const tooltip = document.getElementById('funnelTooltip');
+  const funnelWrap = document.getElementById('funnelWrap');
+  document.querySelectorAll('.funnel-stage').forEach(function (stage) {
+    stage.addEventListener('mouseenter', function (e) {
+      const idx = parseInt(stage.getAttribute('data-stage'), 10);
+      const data = stages[idx];
+      tooltip.innerHTML = '<strong>' + data.title + '</strong>' + data.body;
+      tooltip.classList.add('show');
+    });
+    stage.addEventListener('mousemove', function (e) {
+      const rect = funnelWrap.getBoundingClientRect();
+      const x = e.clientX - rect.left + 14;
+      const y = e.clientY - rect.top + 14;
+      tooltip.style.left = Math.min(x, rect.width - 280) + 'px';
+      tooltip.style.top = y + 'px';
+    });
+    stage.addEventListener('mouseleave', function () {
+      tooltip.classList.remove('show');
+    });
+    /* Touch: tap to toggle */
+    stage.addEventListener('click', function (e) {
+      const idx = parseInt(stage.getAttribute('data-stage'), 10);
+      const data = stages[idx];
+      tooltip.innerHTML = '<strong>' + data.title + '</strong>' + data.body;
+      tooltip.classList.add('show');
+      const rect = funnelWrap.getBoundingClientRect();
+      const bbox = stage.getBoundingClientRect();
+      tooltip.style.left = (bbox.left - rect.left + 20) + 'px';
+      tooltip.style.top = (bbox.top - rect.top + bbox.height / 2) + 'px';
+      setTimeout(() => tooltip.classList.remove('show'), 4000);
+    });
+  });
+
+  /* ===================== REVEAL ON SCROLL ===================== */
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }
+
+})();
+</script>
+
+</body>
+</html>

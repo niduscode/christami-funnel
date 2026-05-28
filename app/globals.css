@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brown-deep: #3A2614;
+  --color-brown: #6B4423;
+  --color-brown-warm: #8B5A2B;
+  --color-wood-light: #A67B5B;
+  --color-cream: #F5EBDC;
+  --color-cream-soft: #FAF5EE;
+  --color-olive: #7A8450;
+  --color-olive-deep: #5D6638;
+  --color-ink: #2A1F18;
+  --color-muted: #6F5E50;
+  --color-line: #E5D9C7;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+}
+
+:root {
+  --brown-deep: #3A2614;
+  --brown: #6B4423;
+  --brown-warm: #8B5A2B;
+  --wood-light: #A67B5B;
+  /* Fondos claros con tono madera (un punto más oscuros que blanco puro) */
+  --cream:      #ECDFC6;
+  --cream-soft: #F4EADB;
+  --olive: #7A8450;
+  --olive-deep: #5D6638;
+  --ink: #2A1F18;
+  --muted: #6F5E50;
+  --line: #DCCDB4;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+::selection {
+  background: var(--olive);
+  color: var(--cream-soft);
+}

@@ -1,0 +1,18 @@
+node_modules/
+.next/
+.vercel/
+.env
+.env.local
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.idea/
+.vscode/
+
+# Documentos del cliente (propuestas, entregas) — NO al repo público
+*.pdf
+propuesta-*.html
+entrega-*.html
+Propuesta-*.html
+Entrega-*.html
