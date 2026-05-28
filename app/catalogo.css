@@ -3113,3 +3113,128 @@
     .contact-tile-body p  { color: rgba(241, 229, 200, 0.85); }
     .contact-tile-qr-label { color: #F1E5C8; }
   }
+
+  /* ============================================================
+     PÁGINA /GRACIAS — confirmación post-form
+     ============================================================ */
+  .gracias-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 140px 24px 80px;
+    background: var(--cream-soft);
+  }
+  .gracias-card {
+    width: 100%;
+    max-width: 560px;
+    text-align: center;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 48px 36px;
+    box-shadow: var(--shadow-soft);
+  }
+  .gracias-badge {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background: var(--olive);
+    color: var(--cream-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(122, 132, 80, 0.35);
+  }
+  .gracias-badge svg { width: 30px; height: 30px; }
+  .gracias-card .section-eyebrow {
+    display: block;
+    margin-bottom: 14px;
+    color: var(--olive);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .gracias-title {
+    font-family: var(--serif);
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+    line-height: 1.2;
+    color: var(--brown-deep);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .gracias-title em {
+    font-style: italic;
+    color: var(--brown-warm);
+  }
+  .gracias-name {
+    color: var(--brown);
+    font-weight: 600;
+  }
+  .gracias-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 28px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .gracias-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #25D366;
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.35);
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .gracias-cta:hover {
+    background: #1eaa53;
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px rgba(37, 211, 102, 0.45);
+  }
+  .gracias-cta svg { flex-shrink: 0; }
+  .gracias-secondary {
+    margin-top: 26px;
+    font-size: 0.92rem;
+  }
+  .gracias-secondary a {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .gracias-secondary a:hover {
+    color: var(--brown);
+    border-bottom-color: var(--olive);
+  }
+
+  /* Mobile */
+  @media (max-width: 600px) {
+    .gracias-page { padding: 120px 16px 60px; }
+    .gracias-card { padding: 36px 24px; }
+  }
+
+  /* DARK MODE: ajustes específicos */
+  @media (prefers-color-scheme: dark) {
+    .gracias-page { background: var(--cream-soft); }
+    .gracias-card {
+      background: #1C160F;
+      border-color: #2F2620;
+    }
+    .gracias-title { color: #F0DDB7; }
+    .gracias-title em { color: #E0B988; }
+    .gracias-name { color: #D6B080; }
+    .gracias-sub { color: rgba(241, 229, 200, 0.78); }
+    .gracias-secondary a { color: rgba(241, 229, 200, 0.7); }
+    .gracias-secondary a:hover { color: #F0DDB7; }
+  }
