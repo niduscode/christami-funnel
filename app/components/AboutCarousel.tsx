@@ -8,7 +8,12 @@ import { ABOUT_MEDIA, type AboutMedia } from "@/app/lib/oficina-taller";
 const IMAGE_MS = 1200;   // 1.20s — fotos cortas
 const VIDEO_MS = 3000;   // 3.00s — videos cortados, no esperan a terminar
 
-/** Fisher–Yates shuffle (in-place sobre copia) */
+// Subset máximo del total de media: con 65 videos el navegador
+// no puede preloadear todos a la vez. 18 alcanza para variedad
+// y evita colgar Safari.
+const MAX_ITEMS = 18;
+
+/** Fisher–Yates shuffle (out-of-place) */
 function shuffle<T>(arr: T[]): T[] {
   const out = arr.slice();
   for (let k = out.length - 1; k > 0; k--) {
@@ -19,78 +24,109 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export function AboutCarousel() {
-  // Orden inicial = el de la lista (para que el HTML SSR coincida con
-  // el hidratado del cliente). Después del mount lo barajamos.
-  const [media, setMedia] = useState<AboutMedia[]>(ABOUT_MEDIA);
+  // playlist inicial = primeros N items del original (matchea SSR).
+  // Después del mount lo barajamos y tomamos un subset random distinto
+  // en cada carga.
+  const [playlist, setPlaylist] = useState<AboutMedia[]>(
+    () => ABOUT_MEDIA.slice(0, MAX_ITEMS)
+  );
   const [i, setI] = useState(0);
-  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
+  const [nextI, setNextI] = useState(1);
 
-  // Shuffle único al montar — cada visita al sitio ve un orden distinto
+  // Refs separados para los dos slots (current/next) para precargar
+  const currVidRef = useRef<HTMLVideoElement | null>(null);
+  const nextVidRef = useRef<HTMLVideoElement | null>(null);
+
+  // Shuffle inicial post-mount
   useEffect(() => {
-    setMedia((arr) => shuffle(arr));
+    setPlaylist(shuffle(ABOUT_MEDIA).slice(0, MAX_ITEMS));
     setI(0);
+    setNextI(1);
   }, []);
 
-  // Avance automático: corta exacto a IMAGE_MS / VIDEO_MS
+  // Avance del carrusel + control de playback de videos
   useEffect(() => {
-    if (media.length === 0) return;
-    const cur = media[i];
+    if (playlist.length === 0) return;
+    const cur = playlist[i];
 
-    // Reproducir el video actual desde 0
-    if (cur.type === "video") {
-      const v = videoRefs.current[i];
-      if (v) {
-        try {
-          v.currentTime = 0;
-          v.play().catch(() => {});
-        } catch {}
-      }
+    // Reproducir el video actual (si lo es) desde 0
+    if (cur.type === "video" && currVidRef.current) {
+      try {
+        currVidRef.current.currentTime = 0;
+        currVidRef.current.play().catch(() => {});
+      } catch {}
     }
-
-    // Pausar los demás videos
-    media.forEach((m, idx) => {
-      if (idx !== i && m.type === "video") {
-        const v = videoRefs.current[idx];
-        if (v) {
-          try { v.pause(); } catch {}
-        }
-      }
-    });
 
     const dur = cur.type === "video" ? VIDEO_MS : IMAGE_MS;
     const id = window.setTimeout(() => {
-      setI((x) => (x + 1) % media.length);
+      setI((x) => (x + 1) % playlist.length);
+      setNextI((x) => (x + 1) % playlist.length);
     }, dur);
     return () => window.clearTimeout(id);
-  }, [i, media]);
+  }, [i, playlist]);
+
+  if (playlist.length === 0) return null;
+
+  const curMedia = playlist[i];
+  const nextMedia = playlist[nextI];
 
   return (
     <div className="about-image about-carousel reveal" style={{ position: "relative" }}>
-      {media.map((m, idx) =>
-        m.type === "video" ? (
-          <video
-            key={m.src}
-            ref={(el) => { videoRefs.current[idx] = el; }}
-            src={m.src}
-            muted
-            playsInline
-            preload={idx === 0 ? "auto" : "metadata"}
-            className={idx === i ? "is-active" : ""}
-          />
-        ) : (
-          <img
-            key={m.src}
-            src={m.src}
-            alt=""
-            loading={idx === 0 ? "eager" : "lazy"}
-            className={idx === i ? "is-active" : ""}
-          />
-        )
-      )}
+      {/* SLOT ACTIVO — visible */}
+      <MediaSlot
+        key={`cur-${i}`}
+        media={curMedia}
+        active
+        videoRef={curVidRef}
+        preload="auto"
+      />
+      {/* SLOT NEXT — invisible, precarga el siguiente. Esto permite
+          que la transición no tenga "popping" porque el media ya está
+          en memoria del browser cuando le toca su turno. */}
+      <MediaSlot
+        key={`next-${nextI}`}
+        media={nextMedia}
+        active={false}
+        videoRef={nextVidRef}
+        preload="metadata"
+      />
       <div className="about-badge">
         <strong>6</strong>
         <span>Años</span>
       </div>
     </div>
+  );
+}
+
+function MediaSlot({
+  media,
+  active,
+  videoRef,
+  preload,
+}: {
+  media: AboutMedia;
+  active: boolean;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+  preload: "auto" | "metadata" | "none";
+}) {
+  if (media.type === "video") {
+    return (
+      <video
+        ref={videoRef}
+        src={media.src}
+        muted
+        playsInline
+        preload={preload}
+        className={active ? "is-active" : ""}
+      />
+    );
+  }
+  return (
+    <img
+      src={media.src}
+      alt=""
+      loading={active ? "eager" : "lazy"}
+      className={active ? "is-active" : ""}
+    />
   );
 }
