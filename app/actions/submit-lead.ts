@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { Resend } from "resend";
-import { getSupabaseServer } from "@/app/lib/supabase/server";
+import { getSupabaseAdmin } from "@/app/lib/supabase/admin";
 import { leadInputSchema, normalizeTelefono } from "@/app/lib/schemas";
 import { calcScore } from "@/app/lib/score";
 import { renderLeadEmail } from "@/app/lib/email";
@@ -34,7 +34,10 @@ export async function submitLead(_prev: SubmitState | null, formData: FormData):
   const input = parsed.data;
   const score = calcScore(input);
 
-  const supabase = await getSupabaseServer();
+  // Service-role: el form es público pero el insert corre server-side, así
+  // evitamos darle GRANT SELECT a anon (que requeriría PostgREST cuando
+  // hacés .select() después del INSERT) sin abrir el read a anon.
+  const supabase = getSupabaseAdmin();
   const { data: inserted, error } = await supabase
     .from("leads")
     .insert({
