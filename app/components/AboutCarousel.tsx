@@ -77,7 +77,7 @@ export function AboutCarousel() {
         key={`cur-${i}`}
         media={curMedia}
         active
-        videoRef={curVidRef}
+        videoRef={currVidRef}
         preload="auto"
       />
       {/* SLOT NEXT — invisible, precarga el siguiente. Esto permite
