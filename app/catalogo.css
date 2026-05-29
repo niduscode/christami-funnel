@@ -74,34 +74,46 @@
   .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     text-decoration: none;
     color: var(--cream);
     transition: color 0.4s ease;
   }
   nav.topbar.scrolled .brand { color: var(--brown-deep); }
   .brand-logo {
-    width: 44px; height: 44px;
+    width: 52px; height: 52px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid currentColor;
+    border: 2.5px solid currentColor;
     background: var(--cream);
+    /* Sombra para destacar sobre fotos claras del hero */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+  .brand:hover .brand-logo { transform: scale(1.04); }
+  nav.topbar.scrolled .brand-logo { box-shadow: 0 2px 8px rgba(58, 38, 20, 0.18); }
   .brand-text {
     font-family: var(--serif);
-    font-weight: 600;
-    font-size: 1.2rem;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 1.45rem;
+    letter-spacing: 0.6px;
+    line-height: 1.1;
+    /* Sombra suave para garantizar lectura sobre cualquier foto del hero */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
   }
+  nav.topbar.scrolled .brand-text { text-shadow: none; }
   .brand-text small {
     display: block;
     font-family: var(--sans);
-    font-size: 0.65rem;
-    letter-spacing: 3px;
+    font-size: 0.72rem;
+    letter-spacing: 3.5px;
     text-transform: uppercase;
-    opacity: 0.75;
-    font-weight: 500;
+    opacity: 0.92;
+    font-weight: 600;
+    margin-top: 2px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
   }
+  nav.topbar.scrolled .brand-text small { text-shadow: none; opacity: 0.78; }
   .nav-links {
     display: flex;
     gap: 32px;
@@ -111,13 +123,18 @@
   .nav-links a {
     color: var(--cream);
     text-decoration: none;
-    font-size: 0.92rem;
-    font-weight: 500;
-    letter-spacing: 0.3px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
     position: relative;
     transition: color 0.3s;
+    /* Mismo truco: text-shadow solo en estado transparente sobre hero */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   }
-  nav.topbar.scrolled .nav-links a { color: var(--brown-deep); }
+  nav.topbar.scrolled .nav-links a {
+    color: var(--brown-deep);
+    text-shadow: none;
+  }
   .nav-links a::after {
     content: "";
     position: absolute;
@@ -128,13 +145,28 @@
   }
   .nav-links a:hover::after { width: 100%; }
   .nav-cta {
-    background: var(--olive);
-    color: var(--cream) !important;
-    padding: 10px 20px;
+    /* Gradiente cálido madera para destacar del resto del nav y romper
+       con la paleta olive de la sección. Texto oscuro para contraste alto. */
+    background: linear-gradient(135deg, #B8895F 0%, #D4A574 100%);
+    color: #2A1F18 !important;
+    padding: 12px 24px;
     border-radius: 999px;
-    font-weight: 600 !important;
+    font-weight: 700 !important;
+    font-size: 0.96rem;
+    letter-spacing: 0.4px;
+    box-shadow:
+      0 8px 24px rgba(166, 123, 91, 0.45),
+      0 0 0 1px rgba(255, 235, 200, 0.30) inset;
+    text-shadow: none !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   }
-  .nav-cta:hover { background: var(--olive-deep); }
+  .nav-cta:hover {
+    background: linear-gradient(135deg, #C9A07B 0%, #E3B98C 100%);
+    transform: translateY(-2px);
+    box-shadow:
+      0 12px 32px rgba(166, 123, 91, 0.55),
+      0 0 0 1px rgba(255, 235, 200, 0.40) inset;
+  }
   .nav-cta::after { display: none !important; }
   .menu-toggle {
     display: none;
@@ -364,6 +396,27 @@
     color: var(--brown-deep);
     transform: translateY(-2px);
   }
+  /* CTA con énfasis cálido — usado en el hero para "Cotiza tu proyecto".
+     Gradiente madera + glow para que cante sobre el carrusel hero, sin
+     competir directamente con el .btn-primary (cream) de "Ver catálogo". */
+  .btn-accent {
+    background: linear-gradient(135deg, #B8895F 0%, #D4A574 100%);
+    color: #2A1F18;
+    border-color: transparent;
+    box-shadow:
+      0 12px 32px rgba(166, 123, 91, 0.45),
+      0 0 0 1px rgba(255, 235, 200, 0.28) inset;
+  }
+  .btn-accent:hover {
+    background: linear-gradient(135deg, #C9A07B 0%, #E3B98C 100%);
+    color: #1C160F;
+    transform: translateY(-2px);
+    box-shadow:
+      0 18px 40px rgba(166, 123, 91, 0.55),
+      0 0 0 1px rgba(255, 235, 200, 0.40) inset;
+  }
+  .btn-accent svg { transition: transform 0.25s ease; }
+  .btn-accent:hover svg { transform: translateX(3px); }
   .btn-whatsapp {
     background: #25D366;
     color: white;
