@@ -7,12 +7,12 @@ const FAQS: { q: string; a: string }[] = [
     a: "Depende del tamaño, materiales y herrajes que elijas. Escríbenos por WhatsApp con fotos y medidas (aunque sean aproximadas) y te enviamos una cotización por escrito en menos de 48 h, sin compromiso.",
   },
   {
-    q: "¿Hacen visita técnica gratis?",
-    a: "Sí. Coordinamos visita en sitio sin costo en toda la Región de Los Lagos para tomar medidas exactas y entender cómo aprovechar mejor tu espacio.",
+    q: "¿La visita técnica tiene costo?",
+    a: "Sí, tiene un costo simbólico que después se descuenta de tu cotización si aprobás el proyecto. Dentro de Puerto Montt son $10.000. Fuera de Puerto Montt el costo depende del kilometraje — te lo pasamos antes de coordinar para que decidas sin sorpresas.",
   },
   {
     q: "¿Cuánto tarda en estar listo?",
-    a: "Cocinas y closets grandes: 4–6 semanas desde que apruebas el diseño. Muebles individuales (vanitorios, racks de TV, escritorios): 2–3 semanas. Te entregamos cronograma por escrito.",
+    a: "Cocinas y clósets: entre 20 y 30 días hábiles desde que aprobás el diseño. La instalación en tu casa toma 2 o 3 días más, según la distancia y el tamaño del proyecto. Te entregamos un cronograma por escrito al firmar.",
   },
   {
     q: "¿Qué materiales y herrajes usan?",
@@ -20,15 +20,15 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "¿La instalación está incluida?",
-    a: "Sí. Diseño, fabricación, traslado e instalación están dentro del precio cotizado. Sin costos sorpresa al final.",
+    a: "Sí, la instalación siempre va incluida en el precio cotizado. Lo único que se cobra aparte es el flete (traslado del mobiliario desde nuestro taller hasta tu domicilio), que varía según la distancia.",
   },
   {
     q: "¿Llegan a mi ciudad?",
-    a: "Cubrimos toda la Región de Los Lagos: Puerto Montt, Puerto Varas, Osorno, Los Muermos, Isla de Chiloé y alrededores. Si tu zona está fuera, consúltanos igual — solemos llegar.",
+    a: "Cubrimos toda la Región de Los Lagos: Puerto Montt, Puerto Varas, Osorno, Los Muermos, Isla de Chiloé y alrededores. Por ahora no salimos de la región — los costos de traslado y viáticos a otras regiones no nos permitirían mantener nuestros precios.",
   },
   {
-    q: "¿Puedo pagar en cuotas?",
-    a: "Sí. Trabajamos con un anticipo al confirmar el diseño y el resto se reparte hasta la entrega. Acordamos un esquema que te acomode.",
+    q: "¿Cómo es la modalidad de pago?",
+    a: "Trabajamos con un esquema simple de 50/50: 50% al aprobar el proyecto (para empezar la fabricación) y el 50% restante al terminar la instalación en tu casa. Sin cuotas escondidas ni sorpresas al final.",
   },
   {
     q: "¿Y si no me gusta el diseño?",
