@@ -368,14 +368,8 @@ export default async function HomePage({
           </div>
           <div className="contact-grid">
             <div className="contact-qr-stack reveal-stagger">
-              {/* QR card 1 — Instagram */}
-              <a
-                className="contact-qr-card"
-                href={CONTACT.instagram}
-                target="_blank"
-                rel="noopener"
-                aria-label="Síguenos en Instagram"
-              >
+              {/* QR card 1 — Instagram (no clickeable, solo informativo) */}
+              <div className="contact-qr-card">
                 <div className="contact-qr-card-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -402,19 +396,13 @@ export default async function HomePage({
                     <span className="contact-qr-card-link-icon contact-item-icon-ig">
                       {ICONS.instagram}
                     </span>
-                    @muebleriachristami
+                    Instagram
                   </span>
                 </div>
-              </a>
+              </div>
 
-              {/* QR card 2 — WhatsApp */}
-              <a
-                className="contact-qr-card"
-                href="https://api.whatsapp.com/send/?phone=56953041094&text&type=phone_number&app_absent=0&utm_source=qr"
-                target="_blank"
-                rel="noopener"
-                aria-label="Escríbenos por WhatsApp"
-              >
+              {/* QR card 2 — WhatsApp (no clickeable, solo informativo) */}
+              <div className="contact-qr-card">
                 <div className="contact-qr-card-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -441,10 +429,10 @@ export default async function HomePage({
                     <span className="contact-qr-card-link-icon contact-item-icon-wa">
                       {ICONS.whatsapp}
                     </span>
-                    {CONTACT.whatsappE164}
+                    WhatsApp
                   </span>
                 </div>
-              </a>
+              </div>
             </div>
 
             <div className="map-card reveal">

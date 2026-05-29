@@ -2971,16 +2971,10 @@
     background: rgba(245, 235, 220, 0.05);
     border: 1px solid rgba(245, 235, 220, 0.12);
     border-radius: 16px;
-    text-decoration: none;
     color: inherit;
-    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
     position: relative;
     overflow: hidden;
-  }
-  .contact-qr-card:hover {
-    background: rgba(245, 235, 220, 0.09);
-    border-color: var(--olive);
-    transform: translateY(-2px);
+    /* Tarjetas informativas — sin cursor pointer ni hover lift */
   }
   /* Imagen QR + logo */
   .contact-qr-card-img {
@@ -3086,7 +3080,6 @@
       background: rgba(241, 229, 200, 0.04);
       border-color: rgba(241, 229, 200, 0.12);
     }
-    .contact-qr-card:hover { background: rgba(241, 229, 200, 0.09); }
     .contact-qr-card h3 { color: #F0DDB7; }
     .contact-qr-card p  { color: rgba(241, 229, 200, 0.82); }
     .contact-qr-card-badge { color: #9DA866; }

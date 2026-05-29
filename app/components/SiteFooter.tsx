@@ -8,14 +8,12 @@ export const CONTACT = {
   facebook: "https://www.facebook.com/share/1JP1RXSiuS/?mibextid=wwXIfr",
   tiktok: "https://www.tiktok.com/@christamidelgado",
   direccion: "Via Romana 1812, Parque Cardonal, Los Lagos, Chile 5480000",
-  maps: "https://maps.app.goo.gl/MSEnir6LmJPcsJQ78",
-  // Usamos COORDENADAS (no dirección) para que Google Maps NO abra el
-  // "place card" blanco arriba a la izquierda. Con `q=lat,lng` se ve solo
-  // el marker, sin pop-up. El enlace para "Cómo llegar" (CONTACT.maps)
-  // sigue apuntando a la ubicación real con todos sus datos.
-  // Parque Cardonal, Puerto Montt — aprox.
+  maps: "https://maps.app.goo.gl/sUNHMpQK7QBDqViD9?g_st=ic",
+  // Coordenadas extraídas del shortlink (Puerto Montt, sector Parque Cardonal).
+  // Con `q=lat,lng` Google muestra solo el marker, sin el place card blanco
+  // que aparece cuando usás una dirección como query.
   mapEmbed:
-    "https://www.google.com/maps?q=-41.4612,-72.9387&z=15&hl=es&output=embed",
+    "https://www.google.com/maps?q=-41.4682,-72.9696&z=15&hl=es&output=embed",
 };
 
 export function SiteFooter() {
