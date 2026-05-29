@@ -1622,6 +1622,11 @@
     section.block { padding: 80px 0; }
     .project { margin-bottom: 80px; }
     .map-card { min-height: 320px; }
+    /* Sin el mapa al lado forzando altura via align-items: stretch, el
+       flex: 1 1 0 de los .contact-qr-card colapsa a 0 (no hay altura
+       padre que repartir). Volvemos a "crece según contenido". */
+    .contact-qr-stack { gap: 18px; }
+    .contact-qr-card { flex: 0 0 auto; min-height: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
