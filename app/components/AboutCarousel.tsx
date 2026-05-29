@@ -142,6 +142,10 @@ function MediaSlot({
   // preload="auto" en AMBOS slots: con keys estables, los <video> persisten
   // y el slot inactivo va cargando en paralelo. Cuando le toque activo,
   // el primer frame ya está decodificado → no más pantalla negra.
+  // autoPlay + loop: iOS Safari es quisquilloso. Con autoPlay como hint el
+  // browser intenta arrancar apenas el primer frame está listo. loop cubre
+  // el caso de videos más cortos que VIDEO_MS (no se quedan en negro al
+  // terminar antes del swap).
   if (media.type === "video") {
     return (
       <video
@@ -149,6 +153,8 @@ function MediaSlot({
         src={media.src}
         muted
         playsInline
+        autoPlay
+        loop
         preload="auto"
         className={active ? "is-active" : ""}
       />

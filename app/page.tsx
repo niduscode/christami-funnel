@@ -176,58 +176,57 @@ export default async function HomePage({
       <section className="block about wood-bg" id="nosotros">
         <div className="container">
           <div className="about-grid">
-            {/* Heading: en mobile aparece arriba del celular para dar
-                contexto inmediato. En desktop ocupa la fila superior
-                izquierda del grid. */}
-            <div className="about-heading reveal">
-              <div className="section-eyebrow">Sobre nosotros</div>
-              <h2>
-                Seis años fabricando los{" "}
-                <em style={{ fontStyle: "italic", color: "var(--brown-warm)" }}>
-                  muebles soñados
-                </em>{" "}
-                de la Región de Los Lagos
-              </h2>
+            {/* En desktop, .about-text es un único item de la columna
+                izquierda y mantiene el flujo natural del original.
+                En mobile pasa a display:contents — sus hijos actúan como
+                items directos del grid, lo que permite que el carousel
+                se cuele entre heading y body via grid-template-areas. */}
+            <div className="about-text reveal">
+              <div className="about-heading">
+                <div className="section-eyebrow">Sobre nosotros</div>
+                <h2>
+                  Seis años fabricando los{" "}
+                  <em style={{ fontStyle: "italic", color: "var(--brown-warm)" }}>
+                    muebles soñados
+                  </em>{" "}
+                  de la Región de Los Lagos
+                </h2>
+              </div>
+              <div className="about-body">
+                <p>
+                  En Mueblería Christami diseñamos y fabricamos cada mueble desde cero, escuchando lo
+                  que necesitas y adaptándolo a tu espacio. Cocinas, closets, vitrinas, islas,
+                  comedores — todo a medida.
+                </p>
+                <p>
+                  Trabajamos con cubiertas Galaxy, Fintop, perfiles de aluminio, iluminación LED y los
+                  mejores acabados del mercado. Lo que sale del taller no es solo un mueble: es una
+                  pieza pensada para durar y para verse perfecta en tu casa.
+                </p>
+                <p>
+                  <strong style={{ color: "var(--brown-deep)" }}>
+                    Llegamos a toda la Región de Los Lagos:
+                  </strong>{" "}
+                  Puerto Montt, Puerto Varas, Osorno, Los Muermos, Isla de Chiloé y más ciudades.
+                  Diseñamos, fabricamos, trasladamos e instalamos donde estés.
+                </p>
+              </div>
+              <div className="stats">
+                <div>
+                  <div className="stat-num" data-counter="6">0</div>
+                  <div className="stat-label">Años de experiencia</div>
+                </div>
+                <div>
+                  <div className="stat-num" data-counter="100">0</div>
+                  <div className="stat-label">Proyectos entregados</div>
+                </div>
+                <div>
+                  <div className="stat-num" data-counter="100" data-suffix="%">0</div>
+                  <div className="stat-label">A medida</div>
+                </div>
+              </div>
             </div>
-            {/* En desktop ocupa toda la columna derecha (3 filas).
-                En mobile aparece JUSTO DEBAJO del heading, antes de
-                los párrafos, para que el usuario vea el video sin
-                scrollear medio metro. */}
             <AboutCarousel />
-            {/* Body: párrafos descriptivos. */}
-            <div className="about-body reveal">
-              <p>
-                En Mueblería Christami diseñamos y fabricamos cada mueble desde cero, escuchando lo
-                que necesitas y adaptándolo a tu espacio. Cocinas, closets, vitrinas, islas,
-                comedores — todo a medida.
-              </p>
-              <p>
-                Trabajamos con cubiertas Galaxy, Fintop, perfiles de aluminio, iluminación LED y los
-                mejores acabados del mercado. Lo que sale del taller no es solo un mueble: es una
-                pieza pensada para durar y para verse perfecta en tu casa.
-              </p>
-              <p>
-                <strong style={{ color: "var(--brown-deep)" }}>
-                  Llegamos a toda la Región de Los Lagos:
-                </strong>{" "}
-                Puerto Montt, Puerto Varas, Osorno, Los Muermos, Isla de Chiloé y más ciudades.
-                Diseñamos, fabricamos, trasladamos e instalamos donde estés.
-              </p>
-            </div>
-            <div className="stats reveal">
-              <div>
-                <div className="stat-num" data-counter="6">0</div>
-                <div className="stat-label">Años de experiencia</div>
-              </div>
-              <div>
-                <div className="stat-num" data-counter="100">0</div>
-                <div className="stat-label">Proyectos entregados</div>
-              </div>
-              <div>
-                <div className="stat-num" data-counter="100" data-suffix="%">0</div>
-                <div className="stat-label">A medida</div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

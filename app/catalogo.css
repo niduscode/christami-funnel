@@ -582,23 +582,15 @@
     background: var(--cream-soft);
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%);
   }
+  /* Desktop: 2 columnas como el original. .about-text es un único item
+     que contiene heading + body + stats. .about-image (AboutCarousel)
+     va a la derecha. Vertical-centered como antes. */
   .about-grid {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
-    grid-template-areas:
-      "heading carousel"
-      "body    carousel"
-      "stats   carousel";
-    column-gap: 80px;
-    row-gap: 24px;
-    align-items: start;
+    gap: 80px;
+    align-items: center;
   }
-  .about-heading { grid-area: heading; }
-  .about-body    { grid-area: body; }
-  .about-grid > .stats { grid-area: stats; }
-  .about-grid > .about-image { grid-area: carousel; align-self: center; }
-  /* Compat: si en algún lado queda .about-text aún, lo tratamos como body */
-  .about-text { grid-area: body; }
   .about-heading h2,
   .about-text h2 {
     font-family: var(--serif);
@@ -717,28 +709,31 @@
   }
   /* anula el hover scale que aplicaba al img directo de about-image */
   .about-image.phone-mockup:hover img { transform: none; }
-  /* Rectángulo de pantalla del iPhone — tightening 1.5-2% hacia adentro
-     de las coords medidas (flood-fill marcó top 15% / bottom 18% / left
-     20.5% / right 27.5%) porque el chroma-key dejaba un anillo translúcido
-     en los bordes y el video se "veía" desbordando el chasis.
-     Specificity .about-image.phone-mockup > .about-carousel (1 clase)
-     para vencer la regla legacy '.about-carousel { position: relative }'
-     que viene MÁS ABAJO en el archivo y la pisaría. */
+  /* Rectángulo de pantalla del iPhone — coords y dimensiones calibradas
+     para que el centro coincida con el centro de la pantalla real (46.5%
+     horizontal, 48.5% vertical en el PNG 736x1308). Ancho 50%, alto 69%
+     son casi exactos a la pantalla real (51.9% × 67.3%).
+     ROTACIÓN: el iPhone en la foto está tilteado ~3° clockwise. Rotamos
+     el screen container la misma cantidad para que el video siga el
+     ángulo del bezel en vez de quedar derecho mientras la pantalla está
+     diagonal. */
   .about-image.phone-mockup .phone-mockup-screen {
     position: absolute;
-    top: 17%;
-    bottom: 20%;
-    left: 22.5%;
-    right: 29.5%;
-    border-radius: 6%;          /* esquinas un punto más redondeadas */
+    top: 14%;
+    bottom: 17%;
+    left: 22%;
+    right: 28%;
+    border-radius: 6%;
     overflow: hidden;
-    background: #2A2018;        /* fallback más cálido y menos jarring que negro */
+    background: #2A2018;
     z-index: 1;
+    transform: rotate(3deg);
+    transform-origin: center;
   }
   /* El frame del iPhone va ENCIMA del screen para tapar los bordes
-     del video con el chasis del propio celular. Aplicamos una máscara
-     que difumina la zona BAJA (muñeca) para que no se vea el corte
-     duro de la foto contra el fondo de la sección. */
+     del video con el chasis. El fade de la muñeca y los laterales
+     YA está horneado en el PNG via alpha gradient (no CSS mask) —
+     mucho más robusto y consistente entre navegadores. */
   .phone-mockup-frame {
     position: absolute;
     inset: 0;
@@ -747,23 +742,6 @@
     object-fit: contain;
     pointer-events: none;
     z-index: 2;
-    /* Fade SÓLO en la zona de la muñeca (90%-100% de altura) para que
-       no se note el corte horizontal de la foto contra el bg de la
-       sección. El chasis del celular y los dedos quedan intactos. */
-    mask-image: linear-gradient(
-      to bottom,
-      black 0%,
-      black 88%,
-      rgba(0, 0, 0, 0.5) 95%,
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      black 0%,
-      black 88%,
-      rgba(0, 0, 0, 0.5) 95%,
-      transparent 100%
-    );
   }
   /* Reubica el badge "6 Años" — antes salía en bottom:-30 right:-30
      pero con el iPhone alto y delgado eso quedaba lejos del visual.
@@ -905,6 +883,48 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 24px;
+  }
+  /* Mobile (≤640px): pasa a 2 columnas con cards más compactas. En 'Todos'
+     pueden ser 14-20 proyectos → con 1 col de aspect 4/3 eso era ~3800px
+     de scroll. Con 2 cols + aspect 4/5 baja a ~2100px. */
+  @media (max-width: 640px) {
+    .catalog-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .catalog-card {
+      aspect-ratio: 4 / 5;       /* algo más vertical, encaja mejor 2-up */
+      border-radius: 8px;
+    }
+    .catalog-card-overlay { padding: 12px; }
+    .card-tag {
+      font-size: 0.58rem;
+      padding: 3px 9px;
+      margin-bottom: 6px;
+      letter-spacing: 1.1px;
+    }
+    .card-title {
+      font-size: 0.92rem;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+    /* En mobile el CTA "Ver detalle" no aporta — sólo agrega altura.
+       Lo ocultamos; el tap en la card abre el modal igual. */
+    .card-cta { display: none; }
+    /* Counter de fotos: más chico para no tapar la imagen */
+    .card-media-count { font-size: 0.65rem; padding: 3px 8px; }
+    /* Filter bar: más compacta */
+    .filter-bar { gap: 6px; margin-bottom: 28px; }
+    .filter-btn {
+      padding: 7px 14px;
+      font-size: 0.76rem;
+    }
+    .filter-btn .count { display: none; }   /* libera espacio */
+  }
+  @media (max-width: 380px) {
+    .catalog-grid { gap: 10px; }
+    .card-title { font-size: 0.85rem; }
+    .filter-btn { padding: 6px 12px; font-size: 0.72rem; }
   }
   .catalog-card {
     position: relative;
@@ -1808,35 +1828,39 @@
   @media (max-width: 880px) {
     .about-grid {
       grid-template-columns: 1fr;
-      /* MOBILE: el celular sube ENTRE heading y body para que el video
-         aparezca apenas debajo del título (sin scroll largo). Stats al
-         final como cierre. */
+      /* MOBILE reorder: .about-text se vuelve transparente al grid
+         (display: contents) para que sus hijos heading/body/stats
+         actúen como items directos del grid. Así podemos colar el
+         carousel ENTRE heading y body sin tocar el JSX desktop. */
       grid-template-areas:
         "heading"
         "carousel"
         "body"
         "stats";
-      column-gap: 0;
-      row-gap: 24px;
+      gap: 24px;
     }
+    .about-text { display: contents; }
+    .about-heading { grid-area: heading; }
+    .about-body    { grid-area: body; }
+    .about-grid .stats { grid-area: stats; }
+    .about-grid > .about-image { grid-area: carousel; }
     .contact-grid {
       grid-template-columns: 1fr;
       gap: 50px;
     }
-    /* Celular más compacto en mobile: max-width chico para que NO
-       tome toda la pantalla vertical (era 380 que daba ~675px alto). */
+    /* Mobile: celular mantiene buen tamaño pero centrado, NO max-width
+       250 chico (eso hacía que se viera mal). El usuario quería que
+       el video se VEA bien dimensionado, no más chico. */
     .about-image.phone-mockup {
-      max-width: 240px;
+      max-width: 320px;
       justify-self: center;
     }
     .about-image { max-width: 100%; justify-self: stretch; }
     .about-badge { width: 110px; height: 110px; right: 20px; bottom: -20px; }
-    section.block { padding: 60px 0; }
-    /* Heading mobile: tip de tamaño */
-    .about-heading h2 { margin-bottom: 0; font-size: 1.65rem; line-height: 1.25; }
-    .about-body p { font-size: 0.96rem; line-height: 1.7; margin-bottom: 14px; }
-    /* Stats mobile más densos: menos padding-top y border más cerca */
-    .about-grid > .stats {
+    section.block { padding: 70px 0; }
+    .about-heading h2 { margin-bottom: 0; font-size: 1.7rem; line-height: 1.25; }
+    .about-body p { font-size: 0.98rem; line-height: 1.7; margin-bottom: 14px; }
+    .about-grid .stats {
       margin-top: 8px;
       padding-top: 24px;
       gap: 12px;
@@ -1845,8 +1869,8 @@
     .map-card { min-height: 320px; }
   }
   @media (max-width: 480px) {
-    .about-image.phone-mockup { max-width: 210px; }
-    .about-heading h2 { font-size: 1.5rem; }
+    .about-image.phone-mockup { max-width: 280px; }
+    .about-heading h2 { font-size: 1.55rem; }
     .stat-num { font-size: 1.6rem; }
     .stat-label { font-size: 0.68rem; letter-spacing: 1.2px; }
   }
