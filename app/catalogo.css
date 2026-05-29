@@ -710,26 +710,25 @@
   /* anula el hover scale que aplicaba al img directo de about-image */
   .about-image.phone-mockup:hover img { transform: none; }
   /* Rectángulo de pantalla del iPhone — valores MEDIDOS del hueco
-     transparente del PNG (decodificando su canal alfa) y VERIFICADOS
-     analíticamente (margen de cobertura por lado contra el cristal real):
-       · centro del cristal real:  (46.54%, 48.55%)
-       · inclinación real del móvil: ≈ 4.4° ANTIHORARIO (arriba a la izq.)
-     Insets elegidos para que el rect cubra el cristal SIN que ninguna
-     esquina se salga del chasis (la esquina sup-derecha, por la rotación,
-     era la que se asomaba por encima del móvil). Verificado contra el
-     PNG: cobertura del cristal ~99% y FUGA al fondo exterior = 0 px.
-     El border-radius 7% redondea las esquinas dentro del bezel. */
+     transparente del PNG (decodificando su canal alfa) y OPTIMIZADOS por
+     barrido para minimizar a la vez (a) cristal sin cubrir y (b) fuga del
+     video fuera del móvil. El cristal es un rect REDONDEADO e inclinado:
+     con un solo rect recto las dos esquinas de arriba no pueden quedar
+     perfectas a la vez, así que se afinó rotación (4.8° antihorario) +
+     border-radius (11%) hasta dejar ambos defectos < 0.05% (imperceptible).
+       · centro del cristal real: (46.54%, 48.55%)
+     El chasis del PNG (z-index 2, encima) tapa el mínimo sobrante. */
   .about-image.phone-mockup .phone-mockup-screen {
     position: absolute;
-    top: 16%;
+    top: 14.5%;
     bottom: 17.5%;
     left: 22.3%;
     right: 30.5%;
-    border-radius: 7%;
+    border-radius: 11%;
     overflow: hidden;
     background: #2A2018;
     z-index: 1;
-    transform: rotate(-4.4deg);
+    transform: rotate(-4.8deg);
     transform-origin: center;
   }
   /* El frame del iPhone va ENCIMA del screen para tapar los bordes
