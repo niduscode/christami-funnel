@@ -401,8 +401,6 @@ export default async function HomePage({
                 </div>
               </a>
 
-              {/* Fila de QR — tamaño fijo, no escalan con la columna */}
-              <div className="contact-tile-qr-row">
               {/* Tile 3 — QR Instagram (cuadrado) */}
               <a
                 className="contact-tile contact-tile-qr"
@@ -466,7 +464,6 @@ export default async function HomePage({
                   <span>WhatsApp</span>
                 </div>
               </a>
-              </div>
             </div>
 
             <div className="map-card reveal">

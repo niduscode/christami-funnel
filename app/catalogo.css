@@ -2959,18 +2959,12 @@
      + mapa a la derecha (col 2)
      ============================================================ */
   .contact-tiles {
-    /* FLEX column en vez de grid: los QR no dependen del ancho de
-       la columna izquierda, son una sub-fila con tamaño FIJO */
-    display: flex;
-    flex-direction: column;
+    /* Grid 2×2: col 1 = wide tiles (Horario, Dirección); col 2 = QRs */
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    grid-template-rows: auto auto;
     gap: 10px;
     align-content: start;
-  }
-  /* Sub-fila con los dos QR — tamaño fijo, no escalan con el viewport */
-  .contact-tile-qr-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
   }
   .contact-tile {
     background: rgba(245, 235, 220, 0.06);
@@ -2990,7 +2984,8 @@
     transform: translateY(-2px);
   }
   .contact-tile-link { cursor: pointer; }
-  .contact-tile-wide { grid-column: 1 / -1; }
+  /* Wide tiles ocupan la columna 1 del grid. Quedan en filas 1 y 2. */
+  .contact-tile-wide { grid-column: 1; }
 
   .contact-tile-icon {
     width: 36px; height: 36px;
@@ -3016,16 +3011,17 @@
     margin: 0;
   }
 
-  /* Tiles cuadrados con QR — TAMAÑO FIJO, no escalan con la columna */
+  /* Tiles cuadrados con QR — van en columna 2 del grid (160px ancho fijo).
+     aspect-ratio 1:1 los mantiene cuadrados (160×160). */
   .contact-tile-qr {
-    flex: 0 0 180px;       /* 180px de ancho, no crece, no se encoge */
-    width: 180px;
+    grid-column: 2;
+    width: 160px;
     aspect-ratio: 1 / 1;
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
-    gap: 8px;
-    padding: 10px;
+    gap: 6px;
+    padding: 8px;
   }
   /* Wrapper del QR + logo central */
   .contact-tile-qr-img {
@@ -3092,9 +3088,18 @@
     .contact-grid { grid-template-columns: 1fr; gap: 20px; }
   }
   @media (max-width: 640px) {
-    .contact-tiles { grid-template-columns: 1fr; }
-    .contact-tile-qr { aspect-ratio: auto; }
-    .contact-tile-qr-img { min-height: 220px; }
+    /* Mobile: wide tiles ocupan todo el ancho, QRs van abajo en su
+       propia fila ocupando una columna cada uno (auto-placement) */
+    .contact-tiles {
+      grid-template-columns: 1fr 1fr;
+    }
+    .contact-tile-wide { grid-column: 1 / -1; }
+    .contact-tile-qr {
+      grid-column: auto;       /* anula el grid-column: 2 del desktop */
+      width: 100%;
+      max-width: 220px;
+      justify-self: center;
+    }
   }
 
   /* DARK MODE: las superficies de tiles ya usan rgba(cream, X), las
