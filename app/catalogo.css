@@ -679,6 +679,82 @@
     margin-top: 4px;
   }
 
+  /* ----------------------------------------------------------
+     PHONE MOCKUP — iPhone con la mano sosteniéndolo, el carrusel
+     se reproduce dentro de la pantalla. El PNG tiene el fondo
+     blanco y la pantalla verde keyeados a transparente.
+     ---------------------------------------------------------- */
+  .about-image.phone-mockup {
+    /* Anula los estilos de "card" del .about-image base: el mockup
+       no necesita border-radius/shadow/border — el iPhone YA es el
+       frame visual. aspect-ratio matchea la imagen 736x1308. */
+    aspect-ratio: 736 / 1308;
+    max-width: 380px;
+    border-radius: 0;
+    overflow: visible;     /* badge puede salir del bounding box */
+    box-shadow: none;
+    background: transparent;
+    /* Drop shadow suave bajo la mano para que el conjunto no flote
+       sobre la sección sin profundidad */
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.18));
+  }
+  .about-image.phone-mockup::after {
+    /* anula el border interno que añade la regla base */
+    display: none;
+  }
+  /* anula el hover scale que aplicaba al img directo de about-image */
+  .about-image.phone-mockup:hover img { transform: none; }
+  /* Rectángulo de pantalla del iPhone (coords medidas con flood-fill
+     sobre el PNG limpio). Ligera asimetría por el tilt del celular. */
+  .phone-mockup-screen {
+    position: absolute;
+    top: 15%;
+    bottom: 18%;
+    left: 20.5%;
+    right: 27.5%;
+    border-radius: 5%;     /* matchea las esquinas redondeadas de la pantalla */
+    overflow: hidden;
+    background: #14100A;   /* fallback mientras carga el primer media */
+    z-index: 1;
+  }
+  /* El frame del iPhone va ENCIMA del screen para tapar los bordes
+     del video con el chasis del propio celular. */
+  .phone-mockup-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 2;
+  }
+  /* Reubica el badge "6 Años" — antes salía en bottom:-30 right:-30
+     pero con el iPhone alto y delgado eso quedaba lejos del visual.
+     Ahora lo pego a la izquierda del celular, a media altura, como
+     accent flotante. Z-index alto para que tape al frame. */
+  .about-image.phone-mockup .about-badge {
+    bottom: auto;
+    right: auto;
+    top: 58%;
+    left: -8px;
+    width: 110px;
+    height: 110px;
+    padding: 22px;
+    z-index: 3;
+  }
+  /* Mobile: badge un poco más chico y pegado al borde para no salirse */
+  @media (max-width: 560px) {
+    .about-image.phone-mockup .about-badge {
+      width: 88px;
+      height: 88px;
+      padding: 16px;
+      left: 0;
+      top: 62%;
+    }
+    .about-image.phone-mockup .about-badge strong { font-size: 1.5rem; }
+    .about-image.phone-mockup .about-badge span { font-size: 0.6rem; }
+  }
+
   /* ---------- SERVICIOS ---------- */
   .services {
     background: var(--cream-soft);
@@ -2375,7 +2451,11 @@
   /* ============================================================
      ABOUT CAROUSEL — crossfade entre fotos (1.2s) y videos (5s)
      ============================================================ */
-  .about-carousel { position: relative !important; }
+  /* Sin !important: el contenedor necesita ser positioning context (relative
+     o absolute). En el caso del phone-mockup, el .phone-mockup-screen es
+     'position: absolute', y eso ya es contexto válido para los img/video
+     internos con inset:0. */
+  .about-carousel { position: relative; }
   .about-carousel img,
   .about-carousel video {
     position: absolute !important;

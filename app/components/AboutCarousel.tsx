@@ -71,24 +71,37 @@ export function AboutCarousel() {
   const nextMedia = playlist[nextI];
 
   return (
-    <div className="about-image about-carousel reveal" style={{ position: "relative" }}>
-      {/* SLOT ACTIVO — visible */}
-      <MediaSlot
-        key={`cur-${i}`}
-        media={curMedia}
-        active
-        videoRef={currVidRef}
-        preload="auto"
-      />
-      {/* SLOT NEXT — invisible, precarga el siguiente. Esto permite
-          que la transición no tenga "popping" porque el media ya está
-          en memoria del browser cuando le toca su turno. */}
-      <MediaSlot
-        key={`next-${nextI}`}
-        media={nextMedia}
-        active={false}
-        videoRef={nextVidRef}
-        preload="metadata"
+    <div className="about-image phone-mockup reveal" style={{ position: "relative" }}>
+      {/* PANTALLA del iPhone — los videos van DETRÁS del frame PNG,
+          recortados al rectángulo de la pantalla con border-radius. */}
+      <div className="phone-mockup-screen about-carousel">
+        <MediaSlot
+          key={`cur-${i}`}
+          media={curMedia}
+          active
+          videoRef={currVidRef}
+          preload="auto"
+        />
+        {/* SLOT NEXT — invisible, precarga el siguiente. Esto permite
+            que la transición no tenga "popping" porque el media ya está
+            en memoria del browser cuando le toca su turno. */}
+        <MediaSlot
+          key={`next-${nextI}`}
+          media={nextMedia}
+          active={false}
+          videoRef={nextVidRef}
+          preload="metadata"
+        />
+      </div>
+      {/* FRAME del iPhone — PNG con fondo + pantalla transparentes.
+          Se renderiza ENCIMA de los videos para que el chasis y la mano
+          tapen los bordes del media. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/iphone-mockup.png"
+        alt=""
+        className="phone-mockup-frame"
+        aria-hidden
       />
       <div className="about-badge">
         <strong>6</strong>
