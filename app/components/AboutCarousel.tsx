@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ABOUT_MEDIA, type AboutMedia } from "@/app/lib/oficina-taller";
 
 // Duraciones (ms) — corta cada slide a estos tiempos exactos
-const IMAGE_MS = 1200;   // 1.20s — fotos cortas
+const IMAGE_MS = 1500;   // 1.50s — fotos más holgadas, transición se nota
 const VIDEO_MS = 3000;   // 3.00s — videos cortados, no esperan a terminar
 
 // Subset máximo del total de media: con 65 videos el navegador
@@ -23,79 +23,98 @@ function shuffle<T>(arr: T[]): T[] {
   return out;
 }
 
+/**
+ * Estrategia de slots PERSISTENTES (keys estables "A" y "B"):
+ * El bug anterior era que keys cur-${i} y next-${nextI} cambiaban en
+ * cada transición → ambos <video> se desmontaban y se volvían a montar.
+ * El "preload" del slot next se perdía porque ese DOM ya no existía
+ * cuando le tocaba ser activo. Resultado: pantalla negra entre slides.
+ *
+ * Ahora: dos slots A y B con keys que NO cambian. Cada uno tiene su
+ * propio índice en la playlist. Mientras uno reproduce (activo), el
+ * otro carga el siguiente (preload). Al swap, el que estaba cargando
+ * ya tiene el primer frame listo → handoff suave.
+ */
 export function AboutCarousel() {
-  // playlist inicial = primeros N items del original (matchea SSR).
-  // Después del mount lo barajamos y tomamos un subset random distinto
-  // en cada carga.
   const [playlist, setPlaylist] = useState<AboutMedia[]>(
     () => ABOUT_MEDIA.slice(0, MAX_ITEMS)
   );
-  const [i, setI] = useState(0);
-  const [nextI, setNextI] = useState(1);
 
-  // Refs separados para los dos slots (current/next) para precargar
-  const currVidRef = useRef<HTMLVideoElement | null>(null);
-  const nextVidRef = useRef<HTMLVideoElement | null>(null);
+  // Índices de cada slot en la playlist y cuál está activo
+  const [idxA, setIdxA] = useState(0);
+  const [idxB, setIdxB] = useState(1);
+  const [active, setActive] = useState<"A" | "B">("A");
+
+  const refA = useRef<HTMLVideoElement | null>(null);
+  const refB = useRef<HTMLVideoElement | null>(null);
 
   // Shuffle inicial post-mount
   useEffect(() => {
-    setPlaylist(shuffle(ABOUT_MEDIA).slice(0, MAX_ITEMS));
-    setI(0);
-    setNextI(1);
+    const sh = shuffle(ABOUT_MEDIA).slice(0, MAX_ITEMS);
+    setPlaylist(sh);
+    setIdxA(0);
+    setIdxB(Math.min(1, sh.length - 1));
+    setActive("A");
   }, []);
 
-  // Avance del carrusel + control de playback de videos
+  // Avance + control de playback
   useEffect(() => {
     if (playlist.length === 0) return;
-    const cur = playlist[i];
+    const curMedia = active === "A" ? playlist[idxA] : playlist[idxB];
+    if (!curMedia) return;
 
-    // Reproducir el video actual (si lo es) desde 0
-    if (cur.type === "video" && currVidRef.current) {
+    // Reproducir el video activo desde 0
+    const curRef = active === "A" ? refA.current : refB.current;
+    if (curMedia.type === "video" && curRef) {
       try {
-        currVidRef.current.currentTime = 0;
-        currVidRef.current.play().catch(() => {});
+        curRef.currentTime = 0;
+        // play() devuelve Promise — la atrapamos para que iOS no warn
+        const p = curRef.play();
+        if (p && typeof p.catch === "function") p.catch(() => {});
       } catch {}
     }
 
-    const dur = cur.type === "video" ? VIDEO_MS : IMAGE_MS;
+    const dur = curMedia.type === "video" ? VIDEO_MS : IMAGE_MS;
     const id = window.setTimeout(() => {
-      setI((x) => (x + 1) % playlist.length);
-      setNextI((x) => (x + 1) % playlist.length);
+      // Swap: el slot inactivo carga el siguiente, activo cambia.
+      if (active === "A") {
+        // B será el nuevo activo (ya estaba precargando idxB).
+        // A pasa a cargar el siguiente para tenerlo listo cuando le toque.
+        setIdxA((idxB + 1) % playlist.length);
+        setActive("B");
+      } else {
+        setIdxB((idxA + 1) % playlist.length);
+        setActive("A");
+      }
     }, dur);
     return () => window.clearTimeout(id);
-  }, [i, playlist]);
+  }, [active, idxA, idxB, playlist]);
 
   if (playlist.length === 0) return null;
 
-  const curMedia = playlist[i];
-  const nextMedia = playlist[nextI];
+  const mediaA = playlist[idxA];
+  const mediaB = playlist[idxB];
 
   return (
     <div className="about-image phone-mockup reveal" style={{ position: "relative" }}>
-      {/* PANTALLA del iPhone — los videos van DETRÁS del frame PNG,
-          recortados al rectángulo de la pantalla con border-radius. */}
       <div className="phone-mockup-screen about-carousel">
-        <MediaSlot
-          key={`cur-${i}`}
-          media={curMedia}
-          active
-          videoRef={currVidRef}
-          preload="auto"
-        />
-        {/* SLOT NEXT — invisible, precarga el siguiente. Esto permite
-            que la transición no tenga "popping" porque el media ya está
-            en memoria del browser cuando le toca su turno. */}
-        <MediaSlot
-          key={`next-${nextI}`}
-          media={nextMedia}
-          active={false}
-          videoRef={nextVidRef}
-          preload="metadata"
-        />
+        {mediaA && (
+          <MediaSlot
+            key="A"
+            media={mediaA}
+            active={active === "A"}
+            videoRef={refA}
+          />
+        )}
+        {mediaB && (
+          <MediaSlot
+            key="B"
+            media={mediaB}
+            active={active === "B"}
+            videoRef={refB}
+          />
+        )}
       </div>
-      {/* FRAME del iPhone — PNG con fondo + pantalla transparentes.
-          Se renderiza ENCIMA de los videos para que el chasis y la mano
-          tapen los bordes del media. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/iphone-mockup.png"
@@ -115,13 +134,14 @@ function MediaSlot({
   media,
   active,
   videoRef,
-  preload,
 }: {
   media: AboutMedia;
   active: boolean;
   videoRef: React.RefObject<HTMLVideoElement | null>;
-  preload: "auto" | "metadata" | "none";
 }) {
+  // preload="auto" en AMBOS slots: con keys estables, los <video> persisten
+  // y el slot inactivo va cargando en paralelo. Cuando le toque activo,
+  // el primer frame ya está decodificado → no más pantalla negra.
   if (media.type === "video") {
     return (
       <video
@@ -129,7 +149,7 @@ function MediaSlot({
         src={media.src}
         muted
         playsInline
-        preload={preload}
+        preload="auto"
         className={active ? "is-active" : ""}
       />
     );
@@ -138,7 +158,7 @@ function MediaSlot({
     <img
       src={media.src}
       alt=""
-      loading={active ? "eager" : "lazy"}
+      loading="eager"
       className={active ? "is-active" : ""}
     />
   );

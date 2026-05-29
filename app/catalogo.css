@@ -704,24 +704,28 @@
   }
   /* anula el hover scale que aplicaba al img directo de about-image */
   .about-image.phone-mockup:hover img { transform: none; }
-  /* Rectángulo de pantalla del iPhone (coords medidas con flood-fill
-     sobre el PNG limpio). Ligera asimetría por el tilt del celular.
+  /* Rectángulo de pantalla del iPhone — tightening 1.5-2% hacia adentro
+     de las coords medidas (flood-fill marcó top 15% / bottom 18% / left
+     20.5% / right 27.5%) porque el chroma-key dejaba un anillo translúcido
+     en los bordes y el video se "veía" desbordando el chasis.
      Specificity .about-image.phone-mockup > .about-carousel (1 clase)
      para vencer la regla legacy '.about-carousel { position: relative }'
      que viene MÁS ABAJO en el archivo y la pisaría. */
   .about-image.phone-mockup .phone-mockup-screen {
     position: absolute;
-    top: 15%;
-    bottom: 18%;
-    left: 20.5%;
-    right: 27.5%;
-    border-radius: 5%;     /* matchea las esquinas redondeadas de la pantalla */
+    top: 17%;
+    bottom: 20%;
+    left: 22.5%;
+    right: 29.5%;
+    border-radius: 6%;          /* esquinas un punto más redondeadas */
     overflow: hidden;
-    background: #14100A;   /* fallback mientras carga el primer media */
+    background: #2A2018;        /* fallback más cálido y menos jarring que negro */
     z-index: 1;
   }
   /* El frame del iPhone va ENCIMA del screen para tapar los bordes
-     del video con el chasis del propio celular. */
+     del video con el chasis del propio celular. Aplicamos una máscara
+     que difumina la zona BAJA (muñeca) para que no se vea el corte
+     duro de la foto contra el fondo de la sección. */
   .phone-mockup-frame {
     position: absolute;
     inset: 0;
@@ -730,6 +734,23 @@
     object-fit: contain;
     pointer-events: none;
     z-index: 2;
+    /* Fade SÓLO en la zona de la muñeca (90%-100% de altura) para que
+       no se note el corte horizontal de la foto contra el bg de la
+       sección. El chasis del celular y los dedos quedan intactos. */
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 88%,
+      rgba(0, 0, 0, 0.5) 95%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 88%,
+      rgba(0, 0, 0, 0.5) 95%,
+      transparent 100%
+    );
   }
   /* Reubica el badge "6 Años" — antes salía en bottom:-30 right:-30
      pero con el iPhone alto y delgado eso quedaba lejos del visual.
