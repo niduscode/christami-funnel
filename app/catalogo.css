@@ -585,9 +585,21 @@
   .about-grid {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
-    gap: 80px;
-    align-items: center;
+    grid-template-areas:
+      "heading carousel"
+      "body    carousel"
+      "stats   carousel";
+    column-gap: 80px;
+    row-gap: 24px;
+    align-items: start;
   }
+  .about-heading { grid-area: heading; }
+  .about-body    { grid-area: body; }
+  .about-grid > .stats { grid-area: stats; }
+  .about-grid > .about-image { grid-area: carousel; align-self: center; }
+  /* Compat: si en algún lado queda .about-text aún, lo tratamos como body */
+  .about-text { grid-area: body; }
+  .about-heading h2,
   .about-text h2 {
     font-family: var(--serif);
     font-size: clamp(1.8rem, 3.5vw, 2.6rem);
@@ -596,6 +608,7 @@
     line-height: 1.2;
     font-weight: 500;
   }
+  .about-body p,
   .about-text p {
     color: var(--muted);
     margin-bottom: 18px;
@@ -1793,15 +1806,49 @@
   .reveal-stagger.in-view > *:nth-child(n+9) { transition-delay: 0.6s; }
 
   @media (max-width: 880px) {
-    .about-grid, .contact-grid {
+    .about-grid {
+      grid-template-columns: 1fr;
+      /* MOBILE: el celular sube ENTRE heading y body para que el video
+         aparezca apenas debajo del título (sin scroll largo). Stats al
+         final como cierre. */
+      grid-template-areas:
+        "heading"
+        "carousel"
+        "body"
+        "stats";
+      column-gap: 0;
+      row-gap: 24px;
+    }
+    .contact-grid {
       grid-template-columns: 1fr;
       gap: 50px;
     }
+    /* Celular más compacto en mobile: max-width chico para que NO
+       tome toda la pantalla vertical (era 380 que daba ~675px alto). */
+    .about-image.phone-mockup {
+      max-width: 240px;
+      justify-self: center;
+    }
     .about-image { max-width: 100%; justify-self: stretch; }
     .about-badge { width: 110px; height: 110px; right: 20px; bottom: -20px; }
-    section.block { padding: 80px 0; }
+    section.block { padding: 60px 0; }
+    /* Heading mobile: tip de tamaño */
+    .about-heading h2 { margin-bottom: 0; font-size: 1.65rem; line-height: 1.25; }
+    .about-body p { font-size: 0.96rem; line-height: 1.7; margin-bottom: 14px; }
+    /* Stats mobile más densos: menos padding-top y border más cerca */
+    .about-grid > .stats {
+      margin-top: 8px;
+      padding-top: 24px;
+      gap: 12px;
+    }
     .project { margin-bottom: 80px; }
     .map-card { min-height: 320px; }
+  }
+  @media (max-width: 480px) {
+    .about-image.phone-mockup { max-width: 210px; }
+    .about-heading h2 { font-size: 1.5rem; }
+    .stat-num { font-size: 1.6rem; }
+    .stat-label { font-size: 0.68rem; letter-spacing: 1.2px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

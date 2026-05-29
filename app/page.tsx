@@ -176,7 +176,10 @@ export default async function HomePage({
       <section className="block about wood-bg" id="nosotros">
         <div className="container">
           <div className="about-grid">
-            <div className="about-text reveal">
+            {/* Heading: en mobile aparece arriba del celular para dar
+                contexto inmediato. En desktop ocupa la fila superior
+                izquierda del grid. */}
+            <div className="about-heading reveal">
               <div className="section-eyebrow">Sobre nosotros</div>
               <h2>
                 Seis años fabricando los{" "}
@@ -185,6 +188,14 @@ export default async function HomePage({
                 </em>{" "}
                 de la Región de Los Lagos
               </h2>
+            </div>
+            {/* En desktop ocupa toda la columna derecha (3 filas).
+                En mobile aparece JUSTO DEBAJO del heading, antes de
+                los párrafos, para que el usuario vea el video sin
+                scrollear medio metro. */}
+            <AboutCarousel />
+            {/* Body: párrafos descriptivos. */}
+            <div className="about-body reveal">
               <p>
                 En Mueblería Christami diseñamos y fabricamos cada mueble desde cero, escuchando lo
                 que necesitas y adaptándolo a tu espacio. Cocinas, closets, vitrinas, islas,
@@ -202,22 +213,21 @@ export default async function HomePage({
                 Puerto Montt, Puerto Varas, Osorno, Los Muermos, Isla de Chiloé y más ciudades.
                 Diseñamos, fabricamos, trasladamos e instalamos donde estés.
               </p>
-              <div className="stats reveal">
-                <div>
-                  <div className="stat-num" data-counter="6">0</div>
-                  <div className="stat-label">Años de experiencia</div>
-                </div>
-                <div>
-                  <div className="stat-num" data-counter="100">0</div>
-                  <div className="stat-label">Proyectos entregados</div>
-                </div>
-                <div>
-                  <div className="stat-num" data-counter="100" data-suffix="%">0</div>
-                  <div className="stat-label">A medida</div>
-                </div>
+            </div>
+            <div className="stats reveal">
+              <div>
+                <div className="stat-num" data-counter="6">0</div>
+                <div className="stat-label">Años de experiencia</div>
+              </div>
+              <div>
+                <div className="stat-num" data-counter="100">0</div>
+                <div className="stat-label">Proyectos entregados</div>
+              </div>
+              <div>
+                <div className="stat-num" data-counter="100" data-suffix="%">0</div>
+                <div className="stat-label">A medida</div>
               </div>
             </div>
-            <AboutCarousel />
           </div>
         </div>
       </section>
