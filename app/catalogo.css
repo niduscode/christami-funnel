@@ -709,21 +709,24 @@
   }
   /* anula el hover scale que aplicaba al img directo de about-image */
   .about-image.phone-mockup:hover img { transform: none; }
-  /* Rectángulo de pantalla del iPhone — coords y dimensiones calibradas
-     para que el centro coincida con el centro de la pantalla real (46.5%
-     horizontal, 48.5% vertical en el PNG 736x1308). Ancho 50%, alto 69%
-     son casi exactos a la pantalla real (51.9% × 67.3%).
-     ROTACIÓN: el iPhone en la foto está tilteado ~3° clockwise. Rotamos
-     el screen container la misma cantidad para que el video siga el
-     ángulo del bezel en vez de quedar derecho mientras la pantalla está
-     diagonal. */
+  /* Rectángulo de pantalla del iPhone — dimensiones CALCULADAS para
+     que después de la rotación 3° quepa DENTRO del rect real medido
+     (52.04% × 67.43% del PNG, centro en 46.54%, 48.55%).
+     Math: un rect de W × H rotado θ° tiene bbox proyectada de
+       W' = W·cos(θ) + H·sin(θ),  H' = W·sin(θ) + H·cos(θ)
+     Resolviendo W' = 50% y H' = 65% (con margen de seguridad de 2%
+     respecto al real), con cos(3°)=0.9986, sin(3°)=0.0523:
+       W ≈ 46.5%, H ≈ 62.5%
+     → top 17.5% bottom 20% left 23.5% right 30%, center (46.75%, 48.75%).
+     border-radius más alto (7%) ayuda a que las esquinas queden
+     adentro del bezel del iPhone. */
   .about-image.phone-mockup .phone-mockup-screen {
     position: absolute;
-    top: 14%;
-    bottom: 17%;
-    left: 22%;
-    right: 28%;
-    border-radius: 6%;
+    top: 17.5%;
+    bottom: 20%;
+    left: 23.5%;
+    right: 30%;
+    border-radius: 7%;
     overflow: hidden;
     background: #2A2018;
     z-index: 1;
@@ -2226,7 +2229,19 @@
   }
   @media (max-width: 560px) {
     .lf-form { padding: 22px 18px; gap: 16px; }
-    .lf-type-grid { grid-template-columns: repeat(2, 1fr); }
+    /* Type-cards más compactas: 3 cols en lugar de 2 → 5 opciones quedan
+       en 2 filas (3+2) en vez de 3 filas. Cards más chicas con padding
+       y tipografía reducida. */
+    .lf-type-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .lf-type-card {
+      padding: 8px 4px 8px;
+      gap: 3px;
+      min-height: 60px;
+      border-radius: 10px;
+    }
+    .lf-type-icon { font-size: 1.1rem; }
+    .lf-type-text { font-size: 0.66rem; line-height: 1.2; }
+    .lf-type-dot { top: 5px; right: 5px; width: 7px; height: 7px; }
     .lead-form-title { font-size: 1.7rem; }
   }
 
