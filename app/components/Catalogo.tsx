@@ -109,8 +109,17 @@ export function Catalogo() {
                 </div>
                 <div className="catalog-card-overlay">
                   <span className="card-tag">{p.tag}</span>
-                  <h3 className="card-title">{p.title}</h3>
-                  {p.material && <span className="card-material">{p.material}</span>}
+                  <h3
+                    className={`card-title${
+                      p.title.length > 50
+                        ? " card-title--xs"
+                        : p.title.length > 32
+                        ? " card-title--sm"
+                        : ""
+                    }`}
+                  >
+                    {p.title}
+                  </h3>
                   <span className="card-cta">Ver proyecto →</span>
                 </div>
               </article>
