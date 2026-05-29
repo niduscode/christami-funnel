@@ -367,51 +367,16 @@ export default async function HomePage({
             </p>
           </div>
           <div className="contact-grid">
-            <div className="contact-tiles reveal-stagger">
-              {/* Tile 1 — Horario (ancho) */}
-              <div className="contact-tile contact-tile-wide">
-                <div className="contact-tile-icon">{ICONS.clock}</div>
-                <div className="contact-tile-body">
-                  <h4>Horario</h4>
-                  <p>
-                    Lun – Vie · 08:00 — 18:00
-                    <br />
-                    Sábado · 08:00 — 14:00
-                    <br />
-                    Domingo · cerrado
-                  </p>
-                </div>
-              </div>
-
-              {/* Tile 2 — Dirección (ancho) */}
+            <div className="contact-qr-stack reveal-stagger">
+              {/* QR card 1 — Instagram */}
               <a
-                className="contact-tile contact-tile-wide contact-tile-link"
-                href={CONTACT.maps}
-                target="_blank"
-                rel="noopener"
-              >
-                <div className="contact-tile-icon">{ICONS.pin}</div>
-                <div className="contact-tile-body">
-                  <h4>Dirección</h4>
-                  <p>
-                    Vía Romana 1812, Parque Cardonal
-                    <br />
-                    Los Lagos, Chile 5480000
-                  </p>
-                </div>
-              </a>
-
-              {/* Tile 3 — QR Instagram (cuadrado) */}
-              <a
-                className="contact-tile contact-tile-qr"
+                className="contact-qr-card"
                 href={CONTACT.instagram}
                 target="_blank"
                 rel="noopener"
                 aria-label="Síguenos en Instagram"
               >
-                <div className="contact-tile-qr-img">
-                  {/* QR con ecc=H (30% corrección de errores) para tolerar
-                      el logo central sin perder escaneabilidad */}
+                <div className="contact-qr-card-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=8&bgcolor=FFFFFF&color=1F1308&ecc=H&data=${encodeURIComponent(CONTACT.instagram)}`}
@@ -422,27 +387,35 @@ export default async function HomePage({
                   <img
                     src="/logo.jpg"
                     alt=""
-                    className="contact-tile-qr-logo"
+                    className="contact-qr-card-logo"
                     loading="lazy"
                   />
                 </div>
-                <div className="contact-tile-qr-label">
-                  <span className="contact-tile-qr-icon contact-item-icon-ig">
-                    {ICONS.instagram}
+                <div className="contact-qr-card-body">
+                  <span className="contact-qr-card-badge">Síguenos en Instagram</span>
+                  <h3>El taller en vivo</h3>
+                  <p>
+                    Fotos, videos del proceso y proyectos recién entregados.
+                    Te enterás de las nuevas piezas apenas salen.
+                  </p>
+                  <span className="contact-qr-card-link">
+                    <span className="contact-qr-card-link-icon contact-item-icon-ig">
+                      {ICONS.instagram}
+                    </span>
+                    @muebleriachristami
                   </span>
-                  <span>Instagram</span>
                 </div>
               </a>
 
-              {/* Tile 4 — QR WhatsApp (cuadrado) */}
+              {/* QR card 2 — WhatsApp */}
               <a
-                className="contact-tile contact-tile-qr"
+                className="contact-qr-card"
                 href="https://api.whatsapp.com/send/?phone=56953041094&text&type=phone_number&app_absent=0&utm_source=qr"
                 target="_blank"
                 rel="noopener"
                 aria-label="Escríbenos por WhatsApp"
               >
-                <div className="contact-tile-qr-img">
+                <div className="contact-qr-card-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=8&bgcolor=FFFFFF&color=1F1308&ecc=H&data=https%3A%2F%2Fwa.me%2F56953041094"
@@ -453,15 +426,23 @@ export default async function HomePage({
                   <img
                     src="/logo.jpg"
                     alt=""
-                    className="contact-tile-qr-logo"
+                    className="contact-qr-card-logo"
                     loading="lazy"
                   />
                 </div>
-                <div className="contact-tile-qr-label">
-                  <span className="contact-tile-qr-icon contact-item-icon-wa">
-                    {ICONS.whatsapp}
+                <div className="contact-qr-card-body">
+                  <span className="contact-qr-card-badge">Escríbenos por WhatsApp</span>
+                  <h3>Respondemos en menos de 1 h</h3>
+                  <p>
+                    Cotización por escrito en menos de 48 h hábiles.
+                    Visita técnica gratuita, sin compromiso.
+                  </p>
+                  <span className="contact-qr-card-link">
+                    <span className="contact-qr-card-link-icon contact-item-icon-wa">
+                      {ICONS.whatsapp}
+                    </span>
+                    {CONTACT.whatsappE164}
                   </span>
-                  <span>WhatsApp</span>
                 </div>
               </a>
             </div>

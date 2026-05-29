@@ -1271,12 +1271,13 @@
   .contact .section-eyebrow { color: var(--wood-light); }
   .contact-grid {
     display: grid;
-    /* Tiles a la izquierda, mapa angosto y vertical a la derecha */
-    grid-template-columns: 1fr minmax(220px, 0.5fr);
+    /* QR cards (más anchos por contenido horizontal) y mapa */
+    grid-template-columns: 1.35fr 1fr;
     gap: 24px;
     margin-top: 30px;
     position: relative;
     z-index: 2;
+    align-items: stretch;
   }
   /* Defensivo: los items del grid no deben desbordar sus columnas
      (sin esto un iframe con width:100% puede empujar el track) */
@@ -1328,13 +1329,10 @@
 
   .map-card {
     position: relative;          /* contenedor de referencia para el iframe abs */
-    border-radius: 6px;
+    border-radius: 12px;
     overflow: hidden;
-    /* Aspect-ratio vertical: la columna es angosta (~240px), así con 9/16
-       el mapa queda ~420px de alto, claramente más largo que ancho */
-    aspect-ratio: 9 / 16;
-    min-height: 460px;
-    align-self: stretch;
+    min-height: 380px;           /* aprox altura del stack de QR cards */
+    align-self: stretch;         /* matchea altura del row del grid */
     border: 1px solid rgba(245,235,220,0.15);
     box-shadow: 0 12px 40px rgba(0,0,0,0.3);
   }
@@ -2953,97 +2951,56 @@
   }
 
   /* ============================================================
-     CONTACTO — NUEVO LAYOUT
-     2 tiles anchos (Horario, Dirección) arriba
-     2 tiles cuadrados (QR Instagram, QR WhatsApp) abajo
-     + mapa a la derecha (col 2)
+     CONTACTO — QR cards horizontales tipo "invitación" + mapa
+     2 cards apilados a la izquierda (Instagram, WhatsApp), mapa
+     a la derecha. Cada card tiene QR a la izquierda y texto a la
+     derecha (badge + título + descripción + handle con icono).
      ============================================================ */
-  .contact-tiles {
-    /* Grid 2×2: col 1 = wide tiles (Horario, Dirección); col 2 = QRs */
-    display: grid;
-    grid-template-columns: 1fr 160px;
-    grid-template-rows: auto auto;
-    gap: 10px;
-    align-content: start;
-  }
-  .contact-tile {
-    background: rgba(245, 235, 220, 0.06);
-    border: 1px solid rgba(245, 235, 220, 0.12);
-    border-radius: 12px;
-    padding: 14px 16px;
+  .contact-qr-stack {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-qr-card {
+    flex: 1 1 0;             /* ambos cards reparten altura igual */
+    min-height: 0;
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    padding: 18px;
+    background: rgba(245, 235, 220, 0.05);
+    border: 1px solid rgba(245, 235, 220, 0.12);
+    border-radius: 16px;
     text-decoration: none;
     color: inherit;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
   }
-  .contact-tile:hover {
-    background: rgba(245, 235, 220, 0.10);
+  .contact-qr-card:hover {
+    background: rgba(245, 235, 220, 0.09);
     border-color: var(--olive);
     transform: translateY(-2px);
   }
-  .contact-tile-link { cursor: pointer; }
-  /* Wide tiles ocupan la columna 1 del grid. Quedan en filas 1 y 2. */
-  .contact-tile-wide { grid-column: 1; }
-
-  .contact-tile-icon {
-    width: 36px; height: 36px;
-    background: var(--olive);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .contact-tile-icon svg { width: 16px; height: 16px; color: #fff; }
-
-  .contact-tile-body h4 {
-    font-family: var(--serif);
-    font-size: 0.95rem;
-    margin-bottom: 2px;
-    color: var(--cream);
-  }
-  .contact-tile-body p {
-    color: rgba(245, 235, 220, 0.82);
-    font-size: 0.82rem;
-    line-height: 1.45;
-    margin: 0;
-  }
-
-  /* Tiles cuadrados con QR — van en columna 2 del grid (160px ancho fijo).
-     aspect-ratio 1:1 los mantiene cuadrados (160×160). */
-  .contact-tile-qr {
-    grid-column: 2;
-    width: 160px;
-    aspect-ratio: 1 / 1;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: space-between;
-    gap: 6px;
-    padding: 8px;
-  }
-  /* Wrapper del QR + logo central */
-  .contact-tile-qr-img {
+  /* Imagen QR + logo */
+  .contact-qr-card-img {
     position: relative;
-    flex: 1 1 auto;
-    min-height: 0;
-    border-radius: 10px;
+    flex-shrink: 0;
+    width: 130px;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
     background: #fff;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    align-self: center;
   }
-  .contact-tile-qr-img > img:first-child {
+  .contact-qr-card-img > img:first-child {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 5px;
+    padding: 4px;
     display: block;
   }
-  /* Logo de la mueblería al centro del QR — ECC=H tolera ~30% obstrucción */
-  .contact-tile-qr-logo {
+  .contact-qr-card-logo {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -3052,71 +3009,88 @@
     height: 26%;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid #fff;
+    border: 2.5px solid #fff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
     background: #fff;
   }
-
-  .contact-tile-qr-label {
+  /* Cuerpo de texto */
+  .contact-qr-card-body {
+    flex: 1 1 auto;
+    min-width: 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    gap: 8px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--cream);
-    padding: 2px 4px;
-    line-height: 1.2;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    gap: 6px;
   }
-  .contact-tile-qr-icon {
-    width: 22px; height: 22px;
+  .contact-qr-card-badge {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--olive);
+  }
+  .contact-qr-card h3 {
+    font-family: var(--serif);
+    font-size: 1.12rem;
+    line-height: 1.25;
+    color: var(--cream);
+    margin: 0;
+    font-weight: 500;
+  }
+  .contact-qr-card p {
+    color: rgba(245, 235, 220, 0.78);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .contact-qr-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--brown-warm);
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  .contact-qr-card-link-icon {
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .contact-tile-qr-icon svg { width: 13px; height: 13px; }
-  /* Los colores de marca (.contact-item-icon-wa / -ig) ya están definidos
-     más arriba en el CSS. */
+  .contact-qr-card-link-icon svg { width: 13px; height: 13px; }
 
-  /* Mobile: stack vertical y el grid del contacto pasa a 1 sola columna */
+  /* Mobile */
   @media (max-width: 820px) {
     .contact-grid { grid-template-columns: 1fr; gap: 20px; }
   }
-  @media (max-width: 640px) {
-    /* Mobile: wide tiles ocupan todo el ancho, QRs van abajo en su
-       propia fila ocupando una columna cada uno (auto-placement) */
-    .contact-tiles {
-      grid-template-columns: 1fr 1fr;
+  @media (max-width: 560px) {
+    .contact-qr-card {
+      flex-direction: column;
+      text-align: center;
+      gap: 14px;
+      padding: 18px 16px;
     }
-    .contact-tile-wide { grid-column: 1 / -1; }
-    .contact-tile-qr {
-      grid-column: auto;       /* anula el grid-column: 2 del desktop */
-      width: 100%;
-      max-width: 220px;
-      justify-self: center;
-    }
+    .contact-qr-card-img { width: 160px; align-self: center; }
+    .contact-qr-card-body { align-items: center; }
+    .contact-qr-card-link { justify-content: center; }
   }
 
-  /* DARK MODE: las superficies de tiles ya usan rgba(cream, X), las
-     bordes se ven bien, los textos están en bloque dark previo.
-     Solo aseguramos que el fondo del QR PNG quede blanco real (no
-     se mezcle con el bg) */
+  /* Dark mode override */
   @media (prefers-color-scheme: dark) {
-    .contact-tile {
-      background: rgba(241, 229, 200, 0.05);
+    .contact-qr-card {
+      background: rgba(241, 229, 200, 0.04);
       border-color: rgba(241, 229, 200, 0.12);
     }
-    .contact-tile:hover {
-      background: rgba(241, 229, 200, 0.09);
-    }
-    .contact-tile-body h4 { color: #F0DDB7; }
-    .contact-tile-body p  { color: rgba(241, 229, 200, 0.85); }
-    .contact-tile-qr-label { color: #F1E5C8; }
+    .contact-qr-card:hover { background: rgba(241, 229, 200, 0.09); }
+    .contact-qr-card h3 { color: #F0DDB7; }
+    .contact-qr-card p  { color: rgba(241, 229, 200, 0.82); }
+    .contact-qr-card-badge { color: #9DA866; }
+    .contact-qr-card-link { color: #E0B988; }
   }
 
   /* ============================================================
