@@ -97,23 +97,28 @@ export function AboutCarousel() {
 
   return (
     <div className="about-image phone-mockup reveal" style={{ position: "relative" }}>
-      <div className="phone-mockup-screen about-carousel">
-        {mediaA && (
-          <MediaSlot
-            key="A"
-            media={mediaA}
-            active={active === "A"}
-            videoRef={refA}
-          />
-        )}
-        {mediaB && (
-          <MediaSlot
-            key="B"
-            media={mediaB}
-            active={active === "B"}
-            videoRef={refB}
-          />
-        )}
+      {/* Capa exterior: recorta con la forma EXACTA del cristal (clip-path)
+          para que el video no asome por las esquinas ni deje hueco. */}
+      <div className="phone-mockup-screen">
+        {/* Capa interior: rectángulo inclinado que encuadra el video. */}
+        <div className="phone-mockup-rect about-carousel">
+          {mediaA && (
+            <MediaSlot
+              key="A"
+              media={mediaA}
+              active={active === "A"}
+              videoRef={refA}
+            />
+          )}
+          {mediaB && (
+            <MediaSlot
+              key="B"
+              media={mediaB}
+              active={active === "B"}
+              videoRef={refB}
+            />
+          )}
+        </div>
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
