@@ -289,7 +289,8 @@ export default async function HomePage({
       <section className="block quote" id="cotizar">
         <div className="container">
           <div className="lead-form-wrap">
-            {/* Columna izquierda: info y contacto */}
+            {/* Header: eyebrow + título + sub. En desktop ocupa la columna
+                izquierda arriba, en mobile va primero. */}
             <aside className="lead-form-info reveal">
               <div className="section-eyebrow">Cotizar</div>
               <h2 className="lead-form-title">
@@ -299,7 +300,18 @@ export default async function HomePage({
                 Respondemos en menos de 1 hora hábil. Visita técnica gratuita y cotización por
                 escrito en menos de 48&nbsp;h — sin compromiso.
               </p>
+            </aside>
 
+            {/* Formulario: en desktop ocupa la columna derecha completa.
+                En mobile va SEGUNDO (después del header, antes de contactos)
+                para máxima facilidad — el cliente ve el form sin scrollear. */}
+            <div className="reveal lead-form-col-form">
+              <LeadForm utm={utm} />
+            </div>
+
+            {/* Contactos: en desktop debajo del header en la col izquierda.
+                En mobile van al final, como info secundaria. */}
+            <aside className="lead-form-contacts reveal">
               <ul className="lead-info-list">
                 <li>
                   <span className="lead-info-icon lead-info-icon-wa" aria-hidden>
@@ -345,11 +357,6 @@ export default async function HomePage({
                 </li>
               </ul>
             </aside>
-
-            {/* Columna derecha: formulario */}
-            <div className="reveal">
-              <LeadForm utm={utm} />
-            </div>
           </div>
         </div>
       </section>
