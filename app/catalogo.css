@@ -894,73 +894,6 @@
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 24px;
   }
-  /* Mobile (≤640px): pasa a 2 columnas con cards más compactas. En 'Todos'
-     pueden ser 14-20 proyectos → con 1 col de aspect 4/3 eso era ~3800px
-     de scroll. Con 2 cols + aspect 4/5 baja a ~2100px. */
-  @media (max-width: 640px) {
-    .catalog-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .catalog-card {
-      aspect-ratio: 4 / 5;       /* algo más vertical, encaja mejor 2-up */
-      border-radius: 8px;
-    }
-    /* Overlay sin pile de elementos — sólo el título limpio. El tag
-       (categoría) ya está visible en el filter bar, el material es
-       info secundaria que se ve en el modal al tap. */
-    .catalog-card-overlay {
-      padding: 10px 12px;
-      /* Gradiente menos largo: sólo difumina el bottom 50% para que
-         el título destaque sin oscurecer la foto entera */
-      background: linear-gradient(to top,
-        rgba(58, 38, 20, 0.95) 0%,
-        rgba(58, 38, 20, 0.55) 35%,
-        rgba(58, 38, 20, 0) 65%
-      );
-    }
-    /* Tag verde sigue visible (es el nombre corto del proyecto), pero
-       achicado para entrar en cards de 2-col. card-material ya no existe
-       en el JSX. */
-    .card-tag {
-      font-size: 0.56rem;
-      padding: 2px 8px;
-      margin-bottom: 5px;
-      letter-spacing: 1px;
-    }
-    .card-title {
-      font-size: 0.88rem;
-      line-height: 1.2;
-      font-weight: 600;
-      margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    /* Mobile: títulos largos achican aún más para que las 2 líneas
-       siempre quepan sin cortar. */
-    .card-title.card-title--sm { font-size: 0.78rem; -webkit-line-clamp: 2; }
-    .card-title.card-title--xs { font-size: 0.72rem; -webkit-line-clamp: 3; }
-    .card-cta { display: none; }
-    .card-media-count {
-      top: 8px; right: 8px;
-      font-size: 0.62rem;
-      padding: 2px 7px;
-    }
-    .filter-bar { gap: 6px; margin-bottom: 28px; }
-    .filter-btn {
-      padding: 7px 14px;
-      font-size: 0.76rem;
-    }
-    .filter-btn .count { display: none; }
-  }
-  @media (max-width: 380px) {
-    .catalog-grid { gap: 10px; }
-    .card-title { font-size: 0.86rem; }
-    .filter-btn { padding: 6px 12px; font-size: 0.72rem; }
-  }
   .catalog-card {
     position: relative;
     border-radius: 6px;
@@ -1055,6 +988,89 @@
     text-align: center;
     color: var(--muted);
     font-style: italic;
+  }
+
+  /* ============================================================
+     RESPONSIVE del catálogo — IMPORTANTE: este bloque va DESPUÉS de
+     las reglas base de la card. Tienen la misma especificidad, así que
+     el orden de aparición decide: si estuviera antes (como estaba), el
+     desktop lo anulaba y en móvil salían las cards con estilos grandes
+     → el subtexto (título) se cortaba/desaparecía. Aquí abajo sí gana.
+     ============================================================ */
+  /* Mobile (≤640px): pasa a 2 columnas con cards más compactas. En 'Todos'
+     pueden ser 14-20 proyectos → con 1 col de aspect 4/3 eso era ~3800px
+     de scroll. Con 2 cols + aspect 4/5 baja a ~2100px. */
+  @media (max-width: 640px) {
+    .catalog-grid {
+      /* minmax(0,1fr) en vez de 1fr: permite que las columnas se encojan
+         por debajo del min-content de su contenido (las fotos), evitando
+         que el grid se desborde y recorte la columna derecha en móvil. */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .catalog-card {
+      aspect-ratio: 4 / 5;       /* algo más vertical, encaja mejor 2-up */
+      border-radius: 8px;
+      min-width: 0;              /* refuerza: el item del grid puede encogerse */
+    }
+    /* Overlay sin pile de elementos — sólo el título limpio. El tag
+       (categoría) ya está visible en el filter bar, el material es
+       info secundaria que se ve en el modal al tap. */
+    .catalog-card-overlay {
+      padding: 10px 12px;
+      /* Gradiente menos largo: sólo difumina el bottom 50% para que
+         el título destaque sin oscurecer la foto entera */
+      background: linear-gradient(to top,
+        rgba(58, 38, 20, 0.95) 0%,
+        rgba(58, 38, 20, 0.55) 35%,
+        rgba(58, 38, 20, 0) 65%
+      );
+    }
+    /* Tag verde sigue visible (es el nombre corto del proyecto), pero
+       achicado para entrar en cards de 2-col. card-material ya no existe
+       en el JSX. */
+    .card-tag {
+      font-size: 0.56rem;
+      padding: 2px 8px;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+      white-space: nowrap;       /* tags largos no se parten en varias líneas */
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-title {
+      font-size: 0.88rem;
+      line-height: 1.2;
+      font-weight: 600;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Mobile: títulos largos achican aún más para que las 2 líneas
+       siempre quepan sin cortar. */
+    .card-title.card-title--sm { font-size: 0.78rem; -webkit-line-clamp: 2; }
+    .card-title.card-title--xs { font-size: 0.72rem; -webkit-line-clamp: 3; }
+    .card-cta { display: none; }
+    .card-media-count {
+      top: 8px; right: 8px;
+      font-size: 0.62rem;
+      padding: 2px 7px;
+    }
+    .filter-bar { gap: 6px; margin-bottom: 28px; }
+    .filter-btn {
+      padding: 7px 14px;
+      font-size: 0.76rem;
+    }
+    .filter-btn .count { display: none; }
+  }
+  @media (max-width: 380px) {
+    .catalog-grid { gap: 10px; }
+    .card-title { font-size: 0.86rem; }
+    .filter-btn { padding: 6px 12px; font-size: 0.72rem; }
   }
 
   /* Project Modal */
