@@ -21,10 +21,9 @@ function formatTipos(csv: string): string {
 }
 
 const PLAZO_LABELS: Record<Lead["plazo"], string> = {
-  inmediato: "Inmediato",
-  "1_3_meses": "1–3 meses",
-  "3_6_meses": "3–6 meses",
-  solo_cotizando: "Sólo cotizando",
+  inmediato: "En las próximas 2 semanas",
+  "1_3_meses": "Dentro de los próximos 3 meses",
+  "3_6_meses": "Más adelante este año",
 };
 
 const PRESUP_LABELS: Record<Lead["presupuesto_rango"], string> = {

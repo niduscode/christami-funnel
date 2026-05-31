@@ -17,7 +17,6 @@ export function calcScore(lead: LeadInput): number {
     inmediato: 40,
     "1_3_meses": 28,
     "3_6_meses": 12,
-    solo_cotizando: 4,
   };
   score += plazoPts[lead.plazo] ?? 0;
 

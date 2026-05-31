@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const tipoProyectoEnum = z.enum(["cocina", "dormitorio", "living", "oficina", "otro"]);
 export const presupuestoEnum = z.enum(["menos_1m", "1m_3m", "3m_5m", "mas_5m"]);
-export const plazoEnum = z.enum(["inmediato", "1_3_meses", "3_6_meses", "solo_cotizando"]);
+export const plazoEnum = z.enum(["inmediato", "1_3_meses", "3_6_meses"]);
 
 /**
  * `tipo_proyecto` ahora acepta MÚLTIPLES tipos (el form lo manda como CSV).

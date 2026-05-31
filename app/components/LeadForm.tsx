@@ -13,11 +13,13 @@ const TIPOS: { id: string; label: string; icon: string }[] = [
   { id: "otro", label: "Otro", icon: "📐" },
 ];
 
+// Sin "Sólo cotizando" — el que sólo investiga precios no llena 6 campos
+// para mandar un mensaje. Las 3 opciones que quedan son compromisos
+// concretos a plazo, no abstractos ("inmediato", "1-3 meses").
 const PLAZO_OPTS: [string, string][] = [
-  ["inmediato", "Lo antes posible"],
-  ["1_3_meses", "En 1 a 3 meses"],
-  ["3_6_meses", "En 3 a 6 meses"],
-  ["solo_cotizando", "Sólo estoy cotizando"],
+  ["inmediato", "En las próximas 2 semanas"],
+  ["1_3_meses", "Dentro de los próximos 3 meses"],
+  ["3_6_meses", "Más adelante este año"],
 ];
 
 const PRESUP_OPTS: [string, string][] = [
