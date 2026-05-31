@@ -779,6 +779,36 @@
     .about-image.phone-mockup .about-badge strong { font-size: 1.5rem; }
     .about-image.phone-mockup .about-badge span { font-size: 0.6rem; }
   }
+  /* Mobile: el fade alpha del PNG se ve menos suave en pantallas chicas
+     (las transiciones de 14% de altura quedan en pocos pixeles → escalera
+     más visible). Apilamos un CSS mask sobre el frame que EXTIENDE y
+     suaviza la transición: el resultado es mask_png × mask_css, así el
+     fade arranca antes y va más gradual.
+     También reducimos el drop-shadow porque a tamaño chico el offset 24px
+     se ve desproporcionado y crea un "borde" debajo del wrist. */
+  @media (max-width: 880px) {
+    .about-image.phone-mockup {
+      filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.15));
+    }
+    .phone-mockup-frame {
+      mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        black 70%,
+        rgba(0, 0, 0, 0.7) 82%,
+        rgba(0, 0, 0, 0.3) 92%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        black 70%,
+        rgba(0, 0, 0, 0.7) 82%,
+        rgba(0, 0, 0, 0.3) 92%,
+        transparent 100%
+      );
+    }
+  }
 
   /* ---------- SERVICIOS ---------- */
   .services {
