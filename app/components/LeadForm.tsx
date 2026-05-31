@@ -14,11 +14,12 @@ const TIPOS: { id: string; label: string; icon: string }[] = [
 ];
 
 // Sin "Sólo cotizando" — el que sólo investiga precios no llena 6 campos
-// para mandar un mensaje. Las 3 opciones que quedan son compromisos
-// concretos a plazo, no abstractos ("inmediato", "1-3 meses").
+// para mandar un mensaje. Las 3 opciones realistas: Christami tiene un
+// plazo mínimo de fabricación de 20-30 días hábiles (4-6 semanas) desde
+// que se aprueba el diseño, así que el primer slot NO promete "2 semanas".
 const PLAZO_OPTS: [string, string][] = [
-  ["inmediato", "En las próximas 2 semanas"],
-  ["1_3_meses", "Dentro de los próximos 3 meses"],
+  ["inmediato", "Lo antes posible"],
+  ["1_3_meses", "Dentro de los próximos 2 meses"],
   ["3_6_meses", "Más adelante este año"],
 ];
 

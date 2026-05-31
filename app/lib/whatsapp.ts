@@ -21,8 +21,8 @@ function formatTipos(csv: string): string {
 }
 
 const PLAZO_LABELS: Record<Lead["plazo"], string> = {
-  inmediato: "En las próximas 2 semanas",
-  "1_3_meses": "Dentro de los próximos 3 meses",
+  inmediato: "Lo antes posible",
+  "1_3_meses": "Dentro de los próximos 2 meses",
   "3_6_meses": "Más adelante este año",
 };
 
