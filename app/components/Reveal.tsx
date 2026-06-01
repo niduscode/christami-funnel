@@ -45,9 +45,22 @@ export function Reveal() {
     );
     document.querySelectorAll("[data-counter]").forEach((c) => counterIO.observe(c));
 
+    // bfcache: al volver atrás (p.ej. desde WhatsApp) el navegador restaura
+    // la página CONGELADA y el IntersectionObserver no se vuelve a disparar,
+    // así que las secciones que quedaron en opacity:0 se veían en blanco.
+    // En una restauración desde caché, revelamos todo de inmediato.
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (!e.persisted) return;
+      document
+        .querySelectorAll(".reveal, .reveal-stagger")
+        .forEach((el) => el.classList.add("in-view"));
+    };
+    window.addEventListener("pageshow", onPageShow);
+
     return () => {
       io.disconnect();
       counterIO.disconnect();
+      window.removeEventListener("pageshow", onPageShow);
     };
   }, []);
 

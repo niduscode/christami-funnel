@@ -39,7 +39,10 @@ export default async function GraciasPage({ searchParams }: { searchParams: SP }
       <SiteNav solid />
       <GraciasRedirect waUrl={waUrl} score={score} />
       <main className="gracias-page">
-        <section className="gracias-card reveal">
+        {/* Sin clase .reveal: esta página no monta <Reveal/>, así que con
+            .reveal (opacity:0) la tarjeta quedaba invisible — se veía solo
+            al redirigir, y al VOLVER desde WhatsApp quedaba en blanco. */}
+        <section className="gracias-card">
           <div className="gracias-badge" aria-hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 6 9 17l-5-5" />
