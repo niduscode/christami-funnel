@@ -146,7 +146,7 @@ const SERVICE_GRADIENT: { bg: string; fg: string }[] = [
 ];
 
 const PROCESO: { num: string; title: string; desc: string }[] = [
-  { num: "01", title: "Conversamos", desc: "Nos cuentas tu idea por WhatsApp y agendamos visita técnica o llamada — ambas gratis." },
+  { num: "01", title: "Conversamos", desc: "Nos cuentas tu idea por WhatsApp y coordinamos una llamada o la visita técnica. La visita tiene un costo simbólico que se descuenta de tu cotización." },
   { num: "02", title: "Diseñamos", desc: "Levantamos medidas en sitio, te enviamos render y cotización por escrito antes de tocar madera." },
   { num: "03", title: "Fabricamos", desc: "Construimos en nuestro taller propio. Te mandamos avances para que veas el progreso real." },
   { num: "04", title: "Instalamos", desc: "Trasladamos e instalamos en tu casa. Dejamos todo limpio y listo para usar." },
@@ -217,7 +217,7 @@ export default async function HomePage({
                   <div className="stat-label">Años de experiencia</div>
                 </div>
                 <div>
-                  <div className="stat-num" data-counter="100">0</div>
+                  <div className="stat-num" data-counter="200" data-suffix="+">0</div>
                   <div className="stat-label">Proyectos entregados</div>
                 </div>
                 <div>
@@ -306,8 +306,8 @@ export default async function HomePage({
                 Cuéntanos sobre <em>tu mueble</em>
               </h2>
               <p className="lead-form-sub">
-                Respondemos en menos de 1 hora hábil. Visita técnica gratuita y cotización por
-                escrito en menos de 48&nbsp;h — sin compromiso.
+                Respondemos en menos de 1 hora hábil. Cotización por escrito en menos de
+                48&nbsp;h, sin compromiso. La visita técnica se descuenta de tu cotización.
               </p>
             </aside>
 
@@ -438,8 +438,8 @@ export default async function HomePage({
                   <span className="contact-qr-card-badge">Escríbenos por WhatsApp</span>
                   <h3>Respondemos en menos de 1 h</h3>
                   <p>
-                    Cotización por escrito en menos de 48 h hábiles.
-                    Visita técnica gratuita, sin compromiso.
+                    Cotización por escrito en menos de 48 h hábiles, sin compromiso.
+                    La visita técnica se descuenta de tu cotización.
                   </p>
                   <span className="contact-qr-card-link">
                     <span className="contact-qr-card-link-icon contact-item-icon-wa">
