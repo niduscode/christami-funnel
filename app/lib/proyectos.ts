@@ -493,5 +493,34 @@ export const proyectos: Proyecto[] = [
       { "src": "/assets/PROYECTO%20%2313%20COCINA/VIDEO-2026-03-09-21-55-52.mp4", "type": "video" },
       { "src": "/assets/PROYECTO%20%2313%20COCINA/VIDEO-2026-03-09-21-56-03.mp4", "type": "video" }
     ]
+  },
+  {
+    "id": "p14",
+    "category": "cocinas",
+    "tag": "Cocina Verde Jade",
+    "material": "Verde Jade · Valle · Cuarzo · Porcelanato · LED",
+    "title": "Cocina Verde Jade y Valle con salpicadero de porcelanato y rotondas de esquina",
+    "description": "Cocina en color Verde Jade combinada con Valle, con luz LED integrada en los aéreos. Suma un salpicadero de porcelanato blanco con vetas y un ripado de PVC en la pared, también con luz LED. En las esquinas incorpora una rotonda tipo riñón y una rotonda giratoria — dos soluciones que aprovechan al máximo los rincones que normalmente se pierden. Se complementa con un mueble rack de entretenimiento en color Valle, con luz LED y cubierta de cuarzo: un proyecto integral donde la cocina y el living conversan en el mismo lenguaje.",
+    "cover": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.16.04%20%284%29.jpeg",
+    "media": [
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.16.04%20%284%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.51%20%281%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.51.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%281%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%2811%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%2812%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%2814%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%2815%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%2816%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%2819%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%284%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%285%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%286%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%287%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Image%202026-06-11%20at%2017.19.56%20%288%29.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Video%202026-06-11%20at%2017.16.05.mp4", "type": "video" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Video%202026-06-11%20at%2017.20.13%20%282%29.mp4", "type": "video" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Video%202026-06-11%20at%2017.20.14%20%281%29.mp4", "type": "video" }
+    ]
   }
 ];

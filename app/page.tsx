@@ -2,6 +2,7 @@
 import { SiteNav } from "@/app/components/SiteNav";
 import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Catalogo } from "@/app/components/Catalogo";
+import { CalculadoraPresupuesto } from "@/app/components/CalculadoraPresupuesto";
 import { AboutCarousel } from "@/app/components/AboutCarousel";
 import { LeadForm } from "@/app/components/LeadForm";
 import { SiteFooter, WhatsAppFloat, CONTACT } from "@/app/components/SiteFooter";
@@ -293,6 +294,23 @@ export default async function HomePage({
 
       {/* ========== FAQ ========== */}
       <FAQ />
+
+      {/* ========== CALCULA TU PRESUPUESTO (sección inline, antes del form) ========== */}
+      <section className="block calc-section" id="presupuesto">
+        <div className="container">
+          <div className="section-header reveal">
+            <div className="section-eyebrow">Presupuesto</div>
+            <h2 className="section-title">
+              ¿Cuánto costaría <em>tu mueble</em>?
+            </h2>
+            <p className="section-sub">
+              Dinos qué quieres y cuánto piensas invertir, y te mostramos qué proyectos puedes
+              lograr — con ejemplos reales de nuestro catálogo y valores referenciales.
+            </p>
+          </div>
+          <CalculadoraPresupuesto />
+        </div>
+      </section>
 
       {/* ========== COTIZA / FORMULARIO ========== */}
       <section className="block quote" id="cotizar">
