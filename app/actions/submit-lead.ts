@@ -6,6 +6,13 @@ import { getSupabaseAdmin } from "@/app/lib/supabase/admin";
 import { leadInputSchema, normalizeTelefono } from "@/app/lib/schemas";
 import { calcScore } from "@/app/lib/score";
 import { renderLeadEmail } from "@/app/lib/email";
+import { createHash } from "crypto";
+import { headers } from "next/headers";
+
+/** SHA-256 en hex. Meta exige hashear el PII (teléfono/email) antes de enviarlo por CAPI. */
+function sha256(value: string): string {
+  return createHash("sha256").update(value).digest("hex");
+}
 
 export type SubmitState = {
   ok: boolean;
@@ -73,6 +80,51 @@ export async function submitLead(_prev: SubmitState | null, formData: FormData):
       });
     } catch (e) {
       console.error("[submit-lead] resend error:", e);
+    }
+  }
+
+  // CAPI (Conversions API) best-effort: evento Lead server-side. Mejora el matching
+  // de Meta y resiste iOS 14.5+/Safari ITP/bloqueadores que matan al Pixel del
+  // navegador. Si falla, el lead ya está guardado (igual que Resend).
+  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const capiToken = process.env.META_CAPI_ACCESS_TOKEN;
+  if (pixelId && capiToken) {
+    try {
+      const h = await headers();
+      const userData: Record<string, unknown> = {
+        ph: [sha256(input.telefono.replace(/\D/g, ""))],
+      };
+      if (input.email) userData.em = [sha256(input.email.trim().toLowerCase())];
+      const ua = h.get("user-agent");
+      if (ua) userData.client_user_agent = ua;
+      const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim();
+      if (ip) userData.client_ip_address = ip;
+
+      const event: Record<string, unknown> = {
+        event_name: "Lead",
+        event_time: Math.floor(Date.now() / 1000),
+        event_id: inserted.id, // permite deduplicar con el Pixel del navegador
+        action_source: "website",
+        user_data: userData,
+        custom_data: { value: score, currency: "CLP" },
+      };
+      const src = h.get("referer") ?? process.env.NEXT_PUBLIC_SITE_URL;
+      if (src) event.event_source_url = src;
+
+      const capiBody = new URLSearchParams();
+      capiBody.set("data", JSON.stringify([event]));
+      capiBody.set("access_token", capiToken);
+      if (process.env.META_CAPI_TEST_EVENT_CODE) {
+        capiBody.set("test_event_code", process.env.META_CAPI_TEST_EVENT_CODE);
+      }
+
+      await fetch(`https://graph.facebook.com/v21.0/${pixelId}/events`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: capiBody.toString(),
+      });
+    } catch (e) {
+      console.error("[submit-lead] capi error:", e);
     }
   }
 
