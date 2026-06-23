@@ -280,6 +280,7 @@
   .hero {
     position: relative;
     min-height: 100vh;
+    min-height: 100svh; /* evita el "salto" cuando la barra del navegador móvil aparece/desaparece */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -301,17 +302,21 @@
     opacity: 0;
     transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity, transform;
+    backface-visibility: hidden; /* fuerza capa GPU limpia → menos "shimmer" sub-píxel */
     animation-duration: 16s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+    /* Solo el slide ACTIVO anima su Ken Burns; los demás quedan pausados (sin trabajo
+       de GPU y sin "snap" al desaparecer) → mucho menos jank en equipos débiles. */
+    animation-play-state: paused;
   }
   .hero-slide.kb-zoom-in   { animation-name: kbZoomIn; }
   .hero-slide.kb-pan-left  { animation-name: kbPanLeft; }
   .hero-slide.kb-pan-right { animation-name: kbPanRight; }
   .hero-slide.kb-diagonal  { animation-name: kbDiagonal; }
   .hero-slide.kb-zoom-out  { animation-name: kbZoomOut; }
-  .hero-slide.active { opacity: 1; }
+  .hero-slide.active { opacity: 1; animation-play-state: running; }
 
   /* Desfases para que cada slide esté en una posición distinta del ciclo */
   .hero-slide:nth-child(2) { animation-delay: -3s; }
@@ -338,6 +343,12 @@
   @keyframes kbZoomOut {
     0%   { transform: scale(1.22); }
     100% { transform: scale(1.08); }
+  }
+
+  /* Equipos/usuarios con "reducir movimiento": sin Ken Burns ni parallax (cero temblor) */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-slide { animation: none !important; transition: opacity 0.5s linear; }
+    .hero-carousel { transform: none !important; }
   }
 
   .hero-dots {

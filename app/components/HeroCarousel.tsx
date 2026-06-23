@@ -44,13 +44,21 @@ export function HeroCarousel() {
     return () => cancelAnimationFrame(raf);
   }, [current]);
 
-  // Parallax suave del carrusel
+  // Parallax del carrusel — GPU-smooth (translate3d), redondeado a píxel entero (sin
+  // shimmer sub-píxel), throttled con rAF y desactivado en "reducir movimiento".
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let ticking = false;
     const onScroll = () => {
-      const y = window.scrollY;
-      if (y < window.innerHeight && carRef.current) {
-        carRef.current.style.transform = `translateY(${y * 0.3}px)`;
-      }
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (y < window.innerHeight && carRef.current) {
+          carRef.current.style.transform = `translate3d(0, ${Math.round(y * 0.3)}px, 0)`;
+        }
+        ticking = false;
+      });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
