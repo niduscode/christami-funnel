@@ -6,6 +6,7 @@ import { CalculadoraPresupuesto } from "@/app/components/CalculadoraPresupuesto"
 import { AboutCarousel } from "@/app/components/AboutCarousel";
 import { LeadForm } from "@/app/components/LeadForm";
 import { SiteFooter, WhatsAppFloat, CONTACT } from "@/app/components/SiteFooter";
+import { WaLink } from "@/app/components/WaLink";
 import { Reveal } from "@/app/components/Reveal";
 import { Spotlight } from "@/app/components/Spotlight";
 import { FAQ } from "@/app/components/FAQ";
@@ -346,13 +347,12 @@ export default async function HomePage({
                   </span>
                   <div>
                     <div className="lead-info-label">WhatsApp · Teléfono</div>
-                    <a
+                    <WaLink
                       href="https://api.whatsapp.com/send/?phone=56953041094&text&type=phone_number&app_absent=0&utm_source=ig"
-                      target="_blank"
-                      rel="noopener"
+                      source="form-contactos"
                     >
                       {CONTACT.whatsappE164}
-                    </a>
+                    </WaLink>
                   </div>
                 </li>
                 <li>

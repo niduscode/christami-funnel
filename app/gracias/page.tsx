@@ -37,7 +37,7 @@ export default async function GraciasPage({ searchParams }: { searchParams: SP }
   return (
     <>
       <SiteNav solid />
-      <GraciasRedirect waUrl={waUrl} score={score} />
+      <GraciasRedirect waUrl={waUrl} score={score} eventId={sp.id} />
       <main className="gracias-page">
         {/* Sin clase .reveal: esta página no monta <Reveal/>, así que con
             .reveal (opacity:0) la tarjeta quedaba invisible — se veía solo

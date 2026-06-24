@@ -40,8 +40,9 @@ export function LeadForm({ utm }: { utm: { source?: string; campaign?: string; m
   useEffect(() => {
     const handler = () => {
       if (typeof window === "undefined") return;
-      // @ts-expect-error fbq global
-      window.fbq?.("track", "Lead");
+      // Solo micro-evento de GA (inicio de form). El Lead REAL se dispara en
+      // /gracias al enviar de verdad, deduplicado con CAPI por event_id — así
+      // no contamos Leads fantasma de quien solo toca un campo y se va.
       // @ts-expect-error gtag global
       window.gtag?.("event", "form_start");
     };

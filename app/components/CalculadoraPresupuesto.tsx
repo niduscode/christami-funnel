@@ -1,7 +1,7 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { proyectos, categoryLabels } from "@/app/lib/proyectos";
 import {
   RANGOS,
@@ -11,6 +11,7 @@ import {
   featuresDe,
 } from "@/app/lib/precios";
 import { plainWaLink } from "@/app/lib/whatsapp";
+import { trackContact } from "@/app/lib/track";
 
 // Tipos presentes en el catálogo (mismas categorías que usa el catálogo real)
 const TIPOS = Array.from(new Set(proyectos.map((p) => p.category))).map((c) => ({
@@ -34,6 +35,61 @@ export function CalculadoraPresupuesto() {
 
   const rango = useMemo(() => RANGOS.find((r) => r.id === rangoId) ?? null, [rangoId]);
   const resultados = useMemo(() => proyectosParaPresupuesto(tipo, rango), [tipo, rango]);
+
+  // Auto-avance al formulario. La PRIMERA vez (una sola por visita) que el
+  // usuario llega a la sección de presupuesto arrancamos un conteo de 30 s. Si
+  // para entonces no bajó solo al form, lo llevamos al formulario para que sí o
+  // sí sepa que hay algo que rellenar. No se repite aunque vuelva a subir, y si
+  // ya pasó al form por su cuenta no lo zarandeamos.
+  useEffect(() => {
+    const KEY = "christami:presupuesto-autoavance";
+    try {
+      if (sessionStorage.getItem(KEY) === "1") return;
+    } catch {}
+
+    const seccion = document.getElementById("presupuesto");
+    const form = document.getElementById("cotizar");
+    if (!seccion || !form) return;
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let armado = false;
+    let hecho = false;
+
+    const finalizar = () => {
+      hecho = true;
+      try {
+        sessionStorage.setItem(KEY, "1");
+      } catch {}
+      if (timer) clearTimeout(timer);
+      obs.disconnect();
+    };
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (hecho || armado) return;
+        if (entries.some((e) => e.isIntersecting)) {
+          armado = true; // el conteo arranca UNA sola vez
+          timer = setTimeout(() => {
+            if (hecho) return;
+            // Si ya está viendo (o pasó) el form, no lo movemos.
+            const rect = form.getBoundingClientRect();
+            const formYaVisible = rect.top < window.innerHeight * 0.5;
+            if (!formYaVisible) {
+              form.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            finalizar();
+          }, 30000);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    obs.observe(seccion);
+    return () => {
+      if (timer) clearTimeout(timer);
+      obs.disconnect();
+    };
+  }, []);
 
   const listo = Boolean(tipo && rango);
   const tipoLabel =
@@ -188,6 +244,7 @@ export function CalculadoraPresupuesto() {
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackContact("calculadora")}
               >
                 Escribir por WhatsApp
               </a>

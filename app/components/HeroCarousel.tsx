@@ -89,7 +89,7 @@ export function HeroCarousel() {
           <a href="#catalogo" className="btn btn-primary">
             Ver catálogo
           </a>
-          <a href="#cotizar" className="btn btn-accent">
+          <a href="#presupuesto" className="btn btn-accent">
             Cotiza tu proyecto
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="18" height="18" aria-hidden>
               <path d="M5 12h14" />
