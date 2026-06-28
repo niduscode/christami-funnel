@@ -394,6 +394,15 @@
   @media (max-width: 768px) {
     .hero-dots { right: 14px; gap: 10px; }
     .hero-dot { width: 7px; height: 7px; }
+    /* Móvil: NO centrar el hero verticalmente. En pantallas bajas (Android con
+       barra del navegador) o con fuente del sistema grande, el contenido era
+       más alto que la pantalla y el centrado lo empujaba BAJO el nav fijo
+       (título encimado). Lo alineamos arriba, con espacio para el nav, y dejamos
+       que crezca hacia abajo. En iPhone se veía bien porque el contenido cabía. */
+    .hero { align-items: flex-start; }
+    .hero-content { padding-top: 100px; padding-bottom: 56px; }
+    /* El indicador "Desliza" se encimaba con los botones en móvil; es decorativo. */
+    .scroll-indicator { display: none; }
   }
   .hero-overlay {
     position: absolute;
