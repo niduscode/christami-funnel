@@ -4,7 +4,7 @@ import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Catalogo } from "@/app/components/Catalogo";
 import { CalculadoraPresupuesto } from "@/app/components/CalculadoraPresupuesto";
 import { AboutCarousel } from "@/app/components/AboutCarousel";
-import { LeadForm } from "@/app/components/LeadForm";
+import { LeadFormConversacional } from "@/app/components/LeadFormConversacional";
 import { SiteFooter, WhatsAppFloat, CONTACT } from "@/app/components/SiteFooter";
 import { WaLink } from "@/app/components/WaLink";
 import { Reveal } from "@/app/components/Reveal";
@@ -334,7 +334,7 @@ export default async function HomePage({
                 En mobile va SEGUNDO (después del header, antes de contactos)
                 para máxima facilidad — el cliente ve el form sin scrollear. */}
             <div className="reveal lead-form-col-form">
-              <LeadForm utm={utm} />
+              <LeadFormConversacional utm={utm} />
             </div>
 
             {/* Contactos: en desktop debajo del header en la col izquierda.
@@ -400,75 +400,7 @@ export default async function HomePage({
               Cuéntanos qué necesitas — pasa por la oficina o escríbenos por WhatsApp.
             </p>
           </div>
-          <div className="contact-grid">
-            <div className="contact-qr-stack reveal-stagger">
-              {/* QR card 1 — Instagram (no clickeable, solo informativo) */}
-              <div className="contact-qr-card">
-                <div className="contact-qr-card-img">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=8&bgcolor=FFFFFF&color=1F1308&ecc=H&data=${encodeURIComponent(CONTACT.instagram)}`}
-                    alt=""
-                    loading="lazy"
-                  />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/logo.jpg"
-                    alt=""
-                    className="contact-qr-card-logo"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="contact-qr-card-body">
-                  <span className="contact-qr-card-badge">Síguenos en Instagram</span>
-                  <h3>El taller en vivo</h3>
-                  <p>
-                    Fotos, videos del proceso y proyectos recién entregados.
-                    Te enterás de las nuevas piezas apenas salen.
-                  </p>
-                  <span className="contact-qr-card-link">
-                    <span className="contact-qr-card-link-icon contact-item-icon-ig">
-                      {ICONS.instagram}
-                    </span>
-                    Instagram
-                  </span>
-                </div>
-              </div>
-
-              {/* QR card 2 — WhatsApp (no clickeable, solo informativo) */}
-              <div className="contact-qr-card">
-                <div className="contact-qr-card-img">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=8&bgcolor=FFFFFF&color=1F1308&ecc=H&data=https%3A%2F%2Fwa.me%2F56953041094"
-                    alt=""
-                    loading="lazy"
-                  />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/logo.jpg"
-                    alt=""
-                    className="contact-qr-card-logo"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="contact-qr-card-body">
-                  <span className="contact-qr-card-badge">Escríbenos por WhatsApp</span>
-                  <h3>Respondemos en menos de 1 h</h3>
-                  <p>
-                    Cotización por escrito en menos de 48 h hábiles, sin compromiso.
-                    La visita técnica se descuenta de tu cotización.
-                  </p>
-                  <span className="contact-qr-card-link">
-                    <span className="contact-qr-card-link-icon contact-item-icon-wa">
-                      {ICONS.whatsapp}
-                    </span>
-                    WhatsApp
-                  </span>
-                </div>
-              </div>
-            </div>
-
+          <div className="contact-grid contact-grid--map-only">
             <div className="map-card reveal">
               <iframe
                 src={CONTACT.mapEmbed}

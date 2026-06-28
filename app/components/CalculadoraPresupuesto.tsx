@@ -12,6 +12,7 @@ import {
 } from "@/app/lib/precios";
 import { plainWaLink } from "@/app/lib/whatsapp";
 import { trackContact } from "@/app/lib/track";
+import { ProjectModal } from "@/app/components/ProjectModal";
 
 // Tipos presentes en el catálogo (mismas categorías que usa el catálogo real)
 const TIPOS = Array.from(new Set(proyectos.map((p) => p.category))).map((c) => ({
@@ -32,9 +33,11 @@ const TIPO_ICON: Record<string, string> = {
 export function CalculadoraPresupuesto() {
   const [tipo, setTipo] = useState<string | null>(null);
   const [rangoId, setRangoId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const rango = useMemo(() => RANGOS.find((r) => r.id === rangoId) ?? null, [rangoId]);
   const resultados = useMemo(() => proyectosParaPresupuesto(tipo, rango), [tipo, rango]);
+  const openProject = openId ? proyectos.find((p) => p.id === openId) ?? null : null;
 
   // Auto-avance al formulario. La PRIMERA vez (una sola por visita) que el
   // usuario llega a la sección de presupuesto arrancamos un conteo de 30 s. Si
@@ -175,7 +178,20 @@ export function CalculadoraPresupuesto() {
               {resultados.map((p) => {
                 const feats = featuresDe(p);
                 return (
-                  <article key={p.id} className="calc-card">
+                  <article
+                    key={p.id}
+                    className="calc-card"
+                    role="button"
+                    tabIndex={0}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setOpenId(p.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setOpenId(p.id);
+                      }
+                    }}
+                  >
                     <div className="calc-card-media">
                       <img src={p.cover} alt={p.tag} loading="lazy" />
                       <span className="calc-card-precio">≈ {formatCLP(p.precio)}</span>
@@ -195,9 +211,7 @@ export function CalculadoraPresupuesto() {
                           ))}
                         </ul>
                       )}
-                      <a className="calc-card-link" href="/#catalogo">
-                        Ver en el catálogo →
-                      </a>
+                      <span className="calc-card-link">Ver proyecto →</span>
                     </div>
                   </article>
                 );
@@ -252,6 +266,8 @@ export function CalculadoraPresupuesto() {
           </div>
         </div>
       )}
+
+      <ProjectModal project={openProject} onClose={() => setOpenId(null)} backLabel="← Volver" />
     </div>
   );
 }

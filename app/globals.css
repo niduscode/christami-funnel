@@ -13,8 +13,8 @@
   --color-muted: #6F5E50;
   --color-line: #E5D9C7;
 
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  --font-serif: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
 }
 
 :root {
