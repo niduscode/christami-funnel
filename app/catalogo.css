@@ -4756,3 +4756,85 @@
       width: 100%;
     }
   }
+
+  /* Modo oscuro del catálogo de cuarzos.
+     Estas reglas van después de las reglas base del componente para que
+     los textos nunca hereden tonos claros sobre tarjetas también claras. */
+  @media (prefers-color-scheme: dark) {
+    .quartz-catalog {
+      background:
+        radial-gradient(circle at 8% 12%, rgba(157, 168, 102, 0.10), transparent 28%),
+        #14100A;
+    }
+    .quartz-modal {
+      background:
+        radial-gradient(circle at 85% 15%, rgba(157, 168, 102, 0.10), transparent 30%),
+        #14100A;
+    }
+    .quartz-modal-swatch {
+      background: #EDE0C5;
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.58);
+    }
+    .quartz-modal-swatch span {
+      color: #4B3D31;
+    }
+    .quartz-composition {
+      background: #211A12;
+      border-left-color: #AEB978;
+      box-shadow: inset 0 0 0 1px rgba(241, 229, 200, 0.07);
+    }
+    .quartz-composition span {
+      color: #C6B8A6;
+    }
+    .quartz-composition strong {
+      color: #F4E8CC;
+    }
+    .quartz-price-card {
+      background: #1D1710;
+      border-color: #3A2E23;
+      box-shadow: inset 0 0 0 1px rgba(241, 229, 200, 0.03);
+    }
+    .quartz-price-card span {
+      color: #C6B8A6;
+    }
+    .quartz-price-card strong {
+      color: #F0DDB7;
+    }
+    .quartz-price-card small {
+      color: #B9AB9A;
+    }
+    .quartz-price-card.featured {
+      background: #E9D4A9;
+      border-color: #E9D4A9;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    }
+    .quartz-price-card.featured span {
+      color: #58462F;
+    }
+    .quartz-price-card.featured strong {
+      color: #14100A;
+    }
+    .quartz-price-card.featured small {
+      color: #5E4D39;
+    }
+    .quartz-price-note {
+      color: #C2B5A5;
+    }
+    .quartz-quote-btn {
+      background: #E9D4A9;
+      color: #14100A;
+      box-shadow: 0 9px 24px rgba(0, 0, 0, 0.24);
+    }
+    .quartz-quote-btn:hover {
+      background: #F1E2C2;
+    }
+    .quartz-wa-btn {
+      color: #F1E5C8;
+      border-color: rgba(241, 229, 200, 0.28);
+    }
+    .quartz-wa-btn:hover {
+      color: #F7ECD5;
+      border-color: #9DA866;
+      background: rgba(157, 168, 102, 0.14);
+    }
+  }
