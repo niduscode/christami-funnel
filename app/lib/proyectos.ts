@@ -522,5 +522,27 @@ export const proyectos: Proyecto[] = [
       { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Video%202026-06-11%20at%2017.20.13%20%282%29.mp4", "type": "video" },
       { "src": "/assets/PROYECTO%20COCINA%20%2314/WhatsApp%20Video%202026-06-11%20at%2017.20.14%20%281%29.mp4", "type": "video" }
     ]
+  },
+  {
+    "id": "p15",
+    "category": "cocinas",
+    "tag": "Cocina Lagunita",
+    "material": "Colina · Blanco Galaxy · Metal · LED cálida",
+    "title": "Cocina Lagunita con isla Galaxy y repisas colgantes",
+    "description": "Una cocina cálida y funcional en color Colina, coronada por una cubierta Blanco Galaxy. Integra herrajes con rieles ocultos y cierre suave, despensa extraíble y una mesa auxiliar que aparece solo cuando se necesita. La isla de cuarzo se convierte en el centro del ambiente, acompañada por repisas colgantes de estructura metálica con iluminación tipo ojo de buey y luz LED cálida — una composición que aprovecha cada espacio y transforma la cocina en un lugar para compartir.",
+    "cover": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-01.jpeg",
+    "media": [
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-01.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-02.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-03.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-04.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-05.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-06.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/PHOTO-07.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/VIDEO-01.mp4", "type": "video" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/VIDEO-02.mp4", "type": "video" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/VIDEO-03.mp4", "type": "video" },
+      { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/VIDEO-04.mp4", "type": "video" }
+    ]
   }
 ];

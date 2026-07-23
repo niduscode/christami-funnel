@@ -2,6 +2,7 @@
 import { SiteNav } from "@/app/components/SiteNav";
 import { HeroCarousel } from "@/app/components/HeroCarousel";
 import { Catalogo } from "@/app/components/Catalogo";
+import { QuartzCatalog } from "@/app/components/QuartzCatalog";
 import { CalculadoraPresupuesto } from "@/app/components/CalculadoraPresupuesto";
 import { AboutCarousel } from "@/app/components/AboutCarousel";
 import { LeadFormConversacional } from "@/app/components/LeadFormConversacional";
@@ -292,6 +293,9 @@ export default async function HomePage({
 
       {/* ========== CATÁLOGO ========== */}
       <Catalogo />
+
+      {/* ========== CATÁLOGO DE CUARZOS ========== */}
+      <QuartzCatalog />
 
       {/* ========== FAQ ========== */}
       <FAQ />

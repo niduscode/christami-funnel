@@ -4415,3 +4415,344 @@
     font-family: inherit;
     font-size: 0.85em;
   }
+
+  /* ============================================================
+     CATÁLOGO DE CUARZOS
+     Mantiene el lenguaje visual del catálogo de muebles, pero agrega
+     muestra física, composición y precios propios de cada cubierta.
+     ============================================================ */
+  .quartz-catalog {
+    position: relative;
+    background:
+      radial-gradient(circle at 8% 12%, rgba(122, 132, 80, 0.10), transparent 28%),
+      var(--cream-soft);
+  }
+  .quartz-catalog::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line), transparent);
+  }
+  .quartz-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .quartz-card {
+    aspect-ratio: 4 / 5;
+    border-radius: 12px;
+    outline: none;
+  }
+  .quartz-card:focus-visible {
+    box-shadow: 0 0 0 4px var(--cream-soft), 0 0 0 7px var(--olive);
+  }
+  .catalog-card .quartz-card-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .catalog-card .quartz-card-swatch {
+    position: absolute;
+    z-index: 2;
+    top: 16px;
+    right: 16px;
+    width: 66px;
+    height: 66px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid rgba(244, 234, 219, 0.96);
+    box-shadow: 0 8px 22px rgba(42, 31, 24, 0.28);
+    transition: transform 0.45s ease, box-shadow 0.45s ease;
+  }
+  .quartz-card:hover .quartz-card-swatch {
+    transform: scale(1.08);
+    filter: none;
+    box-shadow: 0 12px 28px rgba(42, 31, 24, 0.38);
+  }
+  .quartz-card-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(35, 25, 18, 0.96) 0%,
+      rgba(42, 31, 24, 0.68) 45%,
+      rgba(42, 31, 24, 0.02) 78%
+    );
+  }
+  .quartz-card-price {
+    color: #fff8eb;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 10px;
+  }
+  .quartz-card-price small {
+    font-size: 0.72rem;
+    font-weight: 500;
+    opacity: 0.72;
+  }
+
+  /* Ficha de cuarzo */
+  .quartz-modal {
+    background:
+      radial-gradient(circle at 85% 15%, rgba(122, 132, 80, 0.12), transparent 30%),
+      var(--cream-soft);
+  }
+  .quartz-modal-inner {
+    max-width: 1240px;
+  }
+  .quartz-modal-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+    gap: clamp(34px, 5vw, 74px);
+    align-items: center;
+  }
+  .quartz-modal-visual {
+    position: relative;
+    min-width: 0;
+  }
+  .quartz-modal-ambient {
+    width: 100%;
+    min-height: 520px;
+    max-height: 680px;
+    object-fit: cover;
+    border-radius: 18px;
+    box-shadow: 0 26px 70px rgba(58, 38, 20, 0.20);
+  }
+  .quartz-modal-swatch {
+    position: absolute;
+    right: -26px;
+    bottom: 28px;
+    width: 170px;
+    padding: 9px;
+    border-radius: 16px;
+    background: rgba(244, 234, 219, 0.96);
+    box-shadow: 0 18px 46px rgba(42, 31, 24, 0.28);
+    backdrop-filter: blur(12px);
+  }
+  .quartz-modal-swatch img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  .quartz-modal-swatch span {
+    display: block;
+    padding: 7px 4px 2px;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 650;
+    text-align: center;
+  }
+  .quartz-modal-copy {
+    padding: 24px 0;
+  }
+  .quartz-modal-copy .modal-title {
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    margin-bottom: 14px;
+  }
+  .quartz-modal-copy .modal-desc {
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+  .quartz-composition {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 28px 0 20px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--olive);
+    background: rgba(236, 223, 198, 0.58);
+    border-radius: 0 10px 10px 0;
+  }
+  .quartz-composition span,
+  .quartz-price-card span {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .quartz-composition strong {
+    color: var(--brown-deep);
+    font-size: 0.98rem;
+    font-weight: 650;
+  }
+  .quartz-price-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .quartz-price-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 132px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(255, 251, 244, 0.64);
+  }
+  .quartz-price-card.featured {
+    color: var(--cream-soft);
+    border-color: var(--brown-deep);
+    background: var(--brown-deep);
+  }
+  .quartz-price-card.featured span,
+  .quartz-price-card.featured small {
+    color: rgba(244, 234, 219, 0.72);
+  }
+  .quartz-price-card strong {
+    color: var(--brown-deep);
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.2;
+    margin: 8px 0 5px;
+  }
+  .quartz-price-card.featured strong {
+    color: var(--cream-soft);
+  }
+  .quartz-price-card small {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+  .quartz-price-note {
+    margin: 12px 2px 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+  .quartz-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .quartz-quote-btn,
+  .quartz-wa-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  .quartz-wa-btn {
+    color: var(--brown-deep);
+    border: 1px solid rgba(58, 38, 20, 0.24);
+    background: transparent;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .quartz-wa-btn:hover {
+    border-color: var(--olive);
+    background: rgba(122, 132, 80, 0.10);
+  }
+
+  /* La nueva opción de navegación cabe limpia en tablets horizontales. */
+  @media (min-width: 821px) and (max-width: 1080px) {
+    .nav-links { gap: 14px; }
+    .nav-links a { font-size: 0.84rem; }
+    .nav-cta { padding-inline: 16px; }
+  }
+
+  @media (max-width: 980px) {
+    .quartz-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .quartz-modal-layout {
+      grid-template-columns: 1fr;
+      gap: 42px;
+    }
+    .quartz-modal-ambient {
+      min-height: 420px;
+      max-height: 560px;
+    }
+    .quartz-modal-swatch {
+      right: 18px;
+    }
+    .quartz-modal-copy {
+      max-width: 720px;
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .quartz-grid {
+      gap: 12px;
+    }
+    .quartz-card {
+      aspect-ratio: 4 / 5.5;
+    }
+    .catalog-card .quartz-card-swatch {
+      top: 9px;
+      right: 9px;
+      width: 44px;
+      height: 44px;
+      border-width: 2px;
+    }
+    .quartz-card-overlay {
+      padding: 12px;
+    }
+    .quartz-card .card-tag {
+      display: inline-block;
+      max-width: 100%;
+    }
+    .quartz-card .card-title {
+      font-size: 0.98rem;
+      margin-bottom: 4px;
+    }
+    .quartz-card-price {
+      font-size: 0.78rem;
+      margin-bottom: 0;
+    }
+    .quartz-card-price small {
+      display: none;
+    }
+    .quartz-card .card-cta {
+      display: none;
+    }
+    .quartz-modal-inner {
+      padding: 76px 16px 44px;
+    }
+    .quartz-modal-layout {
+      gap: 30px;
+    }
+    .quartz-modal-ambient {
+      min-height: 330px;
+      max-height: 430px;
+      border-radius: 14px;
+    }
+    .quartz-modal-swatch {
+      right: 12px;
+      bottom: -20px;
+      width: 112px;
+      padding: 6px;
+      border-radius: 12px;
+    }
+    .quartz-modal-swatch span {
+      font-size: 0.62rem;
+      padding-top: 5px;
+    }
+    .quartz-modal-copy {
+      padding-top: 12px;
+    }
+    .quartz-modal-copy .modal-title {
+      font-size: 2.25rem;
+    }
+    .quartz-modal-copy .modal-desc {
+      font-size: 1rem;
+    }
+    .quartz-price-grid {
+      grid-template-columns: 1fr;
+    }
+    .quartz-price-card {
+      min-height: 0;
+    }
+    .quartz-modal-actions {
+      flex-direction: column;
+    }
+    .quartz-quote-btn,
+    .quartz-wa-btn {
+      width: 100%;
+    }
+  }
