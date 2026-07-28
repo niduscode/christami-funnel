@@ -21,6 +21,7 @@ export const categoryLabels: Record<string, string> = {
   "living": "Living & Comedor",
   "oficina": "Oficina",
   "banos": "Baños",
+  "especiales": "Proyectos especiales",
   "otros": "Otros"
 };
 
@@ -543,6 +544,23 @@ export const proyectos: Proyecto[] = [
       { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/VIDEO-02.mp4", "type": "video" },
       { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/VIDEO-03.mp4", "type": "video" },
       { "src": "/assets/PROYECTO%20COCINA%20%2315%20LAGUNITA/VIDEO-04.mp4", "type": "video" }
+    ]
+  },
+  {
+    "id": "p16",
+    "category": "especiales",
+    "tag": "Cubierta Rojo Galaxy",
+    "material": "Cuarzo Rojo Galaxy · Formato media luna",
+    "title": "Cubierta de cuarzo Rojo Galaxy en media luna para embarcación",
+    "description": "El rojo que transforma cualquier ambiente. En este proyecto realizado para la empresa Detroit, una cubierta de cuarzo Rojo Galaxy en formato media luna se convirtió en el centro de todas las miradas dentro de una embarcación en Puerto Montt. Su superficie resistente y fácil de limpiar aporta elegancia, personalidad y un acabado de alto nivel; una solución ideal para barras, recepciones, cocinas y espacios comerciales. Fabricación e instalación profesional por Mueblería Christami, haciendo realidad un proyecto único con materiales de primera calidad.",
+    "cover": "/assets/PROYECTO%20ESPECIAL%20%2316%20ROJO%20GALAXY/PHOTO-01.jpeg",
+    "media": [
+      { "src": "/assets/PROYECTO%20ESPECIAL%20%2316%20ROJO%20GALAXY/PHOTO-01.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20ESPECIAL%20%2316%20ROJO%20GALAXY/PHOTO-02.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20ESPECIAL%20%2316%20ROJO%20GALAXY/PHOTO-03.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20ESPECIAL%20%2316%20ROJO%20GALAXY/PHOTO-04.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20ESPECIAL%20%2316%20ROJO%20GALAXY/PHOTO-05.jpeg", "type": "image" },
+      { "src": "/assets/PROYECTO%20ESPECIAL%20%2316%20ROJO%20GALAXY/VIDEO-01.mp4", "type": "video" }
     ]
   }
 ];
